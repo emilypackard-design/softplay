@@ -26,8 +26,7 @@ export default function Home() {
             gap: 12px !important;
           }
           .playground-link {
-            margin-top: 20px !important;
-            font-size: 12px !important;
+            font-size: 16px !important;
           }
         }
       `}</style>
@@ -188,21 +187,21 @@ export default function Home() {
       </div>
 
       {/* Playground link */}
-      <Link href="/playground" style={{ textDecoration: 'none' }}>
+      <Link href="/playground" style={{ textDecoration: 'none', display: 'block', width: '100%', maxWidth: 440, marginTop: 16 }}>
         <div className="playground-link" style={{
-          marginTop: 32,
-          background: '#FFFFFF',
-          color: '#1C7E46',
-          border: '2px solid #1C7E46',
-          borderRadius: 20,
-          padding: '8px 18px',
-          fontSize: 13,
+          background: 'linear-gradient(180deg, #2E9D5B 0%, #1C7E46 100%)',
+          color: '#FFFFFF',
+          borderRadius: 24,
+          padding: '20px 26px',
+          fontFamily: 'var(--font-heading)',
+          fontSize: 16,
           fontWeight: 700,
-          display: 'inline-flex',
+          display: 'flex',
           alignItems: 'center',
-          gap: 6,
-          textDecoration: 'none',
+          justifyContent: 'center',
+          gap: 8,
           cursor: 'pointer',
+          boxShadow: '0 4px 24px rgba(28,25,23,0.10)',
         }}>
           📌 Playground
         </div>
