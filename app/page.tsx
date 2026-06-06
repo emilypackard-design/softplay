@@ -191,10 +191,11 @@ export default function Home() {
       <Link href="/playground" style={{ textDecoration: 'none' }}>
         <div className="playground-link" style={{
           marginTop: 32,
-          background: '#1C7E46',
-          color: '#FFFFFF',
+          background: '#FFFFFF',
+          color: '#1C7E46',
           borderRadius: 20,
           padding: '8px 18px',
+          boxShadow: '0 2px 10px rgba(28,25,23,0.08)',
           fontSize: 13,
           fontWeight: 700,
           display: 'inline-flex',
