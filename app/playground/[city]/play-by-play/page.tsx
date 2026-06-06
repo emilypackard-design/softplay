@@ -134,7 +134,8 @@ export default function PlaygroundPlayByPlayPage() {
   }
 
   const handlePlanAnotherDay = () => {
-    router.push('/playground')
+    // Go Home (fresh start) — the top "← Back to Playground" already covers returning to saves.
+    router.push('/')
   }
 
   return (
