@@ -26,6 +26,7 @@
 - **"Plan another day"** (Playground play-by-play) now routes to Home `/` (top "← Back to Playground" covers returning to saves).
 
 ### Still Open for V1.5
+- **City header spacing (deferred polish):** on the Playground city detail page, the city name (e.g., "DUBLIN") sits too high / too close to the "← Playground" back button. Fix: increase header top padding (e.g. 52px → ~68px) OR add a divider line under the back button like the home page. Quick 1-line tweak.
 - Restore GitHub auto-deploy (see diagnosis below)
 - City-name deduplication (Greystones variants)
 - Playground card styling to new spec
