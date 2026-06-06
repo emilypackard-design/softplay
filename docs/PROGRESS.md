@@ -85,6 +85,42 @@
 - **Playground button color** — Fern green (#5AAA32) is deployed and working, but user wants to workshop color choice (consider other greens from palette or test alternatives)
 - Otherwise stable
 
+### V1.5 Testing Notes — Playground Page Fixes
+
+**Back Button (city detail page):**
+- Current: "← back" uses browser back, too small/faint on mobile
+- Fix: Navigate to `/playground` (home), label "← Home", 14px bold, light colour for contrast on dark green
+- Alternative: Use 🏠 home icon instead of text
+
+**City List Grouping:**
+- Issue: Duplicate cities showing (e.g., "Greystones" entered different ways)
+- Fix: Normalise city strings in localStorage before grouping (lowercase, trim whitespace)
+
+**Preview Pills:**
+- Current: Only showing 1 pill per city
+- Fix: Show 1 heart + 1 pin preview pill per city (if both exist)
+
+**Background Gradient (full page, not just header):**
+- Current: Too saturated, abrupt stop at header
+- Fix: Apply 6-stop gradient covering full page height:
+  ```
+  linear-gradient(180deg, 
+    #2E6A14 0%,      ← dark fern
+    #5AAA32 20%,     
+    #96D060 42%,     
+    #CCE8A0 65%,     ← lightening
+    #EEF8DC 82%,     ← almost cream
+    #FEFBF3 100%     ← full cream
+  )
+  ```
+
+**Daisy SVG:**
+- Current: Oversized
+- Fix: 72px (not larger)
+
+**Card Styling:**
+- Playground city cards not yet updated to new design spec
+
 ---
 
-**Next steps:** Verify redeploy succeeded, full testing pass, then start V1.5 Supabase planning.
+**Next steps:** Fix deployment blocker first, then these UI refinements in V1.5.
