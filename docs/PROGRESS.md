@@ -131,6 +131,26 @@
 - **Conclusion:** Production deployment is stuck on an older commit; git-push deploys are not promoting to production. The original CLI `vercel deploy` worked (that's why the daisy + initial design are live), but subsequent GitHub-push deploys aren't replacing production.
 - **Next:** Confirm which commit the "Current" production deployment shows in Vercel dashboard to decide fix.
 
+### Session 2 Outcome — Deployment RESOLVED (via CLI)
+- **Confirmed:** Production was frozen at commit `5c2cc3c` (predated the `#B8E090` button). After the GitHub disconnect/reconnect, git pushes stopped creating ANY new deployments (not even failed ones) — points to the auto-deploy webhook not firing, NOT a user setup mistake.
+- **Fix used:** `npx vercel --prod --yes` from the linked local project (`.vercel/` already authenticated as emilypackard-7296). This is the SAME CLI method used before GitHub was added — proven to work. Ran it 3x this session; all READY/production.
+- **How to deploy now (until git auto-deploy is fixed):** from the project folder run `npx vercel --prod --yes`. Builds on Vercel, aliases to softplay-five.vercel.app in ~30-60s.
+- **GitHub still valuable:** code is now backed up + version-controlled + ready for staging workflow. Auto-deploy is a convenience to restore, not a blocker.
+
+### V1.5 TASK — Restore Git Auto-Deploy (convenience, not blocker)
+Diagnosis plan:
+1. Make one trivial commit + push to master.
+2. Watch Vercel Deployments list. If NO new deployment appears → webhook not firing (most likely). If one appears but errors → build issue.
+3. If webhook: in Vercel → Settings → Git, disconnect/reconnect once more, OR check GitHub repo → Settings → Webhooks for a Vercel webhook + recent delivery status (look for failed deliveries).
+4. Until fixed, CLI deploy is the official method.
+
+### Code Fixes Deployed This Session (commits 384fcca, + saves-counter)
+- Playground path no longer shows default "2 adults" crew chips
+- Dropped hardcoded "Check website" from address/hours/price
+- Food prompt: varied language, no "legendary"/superlatives
+- Back buttons readable: main Playground "← Home" (white/bold/14px); city-detail "← Playground" (white/bold)
+- Saves counter: readable white on dark header
+
 ### Playground Pathway — Real Code Fixes Needed (separate from deployment)
 Found in `app/playground/[city]/play-by-play/page.tsx`:
 1. **Crew default** — page hardcodes `sessionAdults: 2` (line ~56). Not a bug, just a default. Fix: in Playground pathway, don't render crew chips at all (no Playbill = no crew shown).
