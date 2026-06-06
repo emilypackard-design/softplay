@@ -44,17 +44,26 @@
 - `c8aa0ef` — Trigger deployment (test commit to force Vercel rebuild)
 
 ### Current Status
-- ✅ All code changes on GitHub and deployed to Vercel
-- ✅ Production branch correctly configured
-- 🔄 Awaiting manual redeploy to test changes on live site
-- ⏱️ Last redeploy triggered ~[current time]
+- ✅ All code changes committed to GitHub master branch
+- ✅ GitHub default branch set to master
+- ✅ Vercel Production environment configured to track master
+- ✅ Repo disconnected/reconnected for fresh sync
+- ❌ **BLOCKER:** Vercel builds succeed but deployed code doesn't match GitHub source
+  - Hypothesis: Next.js build caching issue or infrastructure-level problem at Vercel
+  - Affects: PlayByPlayView crew size fix, Playground gradient background
+  - Workaround: Code is safe on GitHub; investigate build process in V1.5
 
-### Testing Checklist (Next Session)
-- [ ] Home page: Playground button has coral pin + fern green (visual check)
-- [ ] Playbook no crew: No "2 adults" header
+### What DID Deploy Successfully ✅
+- Home page Playground button: Coral pin icon visible
+- (Other fixes blocked by deployment issue)
+
+### Testing Checklist (Next Session — After Fixing Build)
+- [ ] Home page: Playground button has coral pin + fern green background
+- [ ] Playbook no crew: No "2 adults" header (crew size fix)
 - [ ] Playbook with crew: Header appears correctly
-- [ ] Half-time only on "Play On" click
+- [ ] Half-time only on "Play On" click (no auto-load)
 - [ ] No "Check website" placeholder text
+- [ ] Playground page: Fern gradient background applied
 - [ ] Mobile responsive
 - [ ] All three pathways work: Playbook → Free Play → Playground
 
