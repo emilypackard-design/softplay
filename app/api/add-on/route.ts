@@ -40,6 +40,8 @@ Suggest ${typeLabel}.
 
 ${type === 'food' ? `The food stop is a highlight — not an afterthought. Specific local favourite, never a chain or museum cafeteria. ${playbill.foodNote ? `Note: ${playbill.foodNote}` : ''}` : ''}
 
+Write the tip in plain, varied language. Describe what's specifically good about this place in concrete terms (a dish, the atmosphere, a detail). Do NOT lean on generic superlatives like "legendary", "famous", "iconic", "renowned", or "must-try" — vary your wording so a list of these never sounds repetitive.
+
 Return ONLY valid JSON:
 {
   "id": "addon-${type}",

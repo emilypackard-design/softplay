@@ -94,7 +94,7 @@ export default function CityDetailPage() {
   const S = {
     screen: { minHeight: '100vh', background: 'linear-gradient(180deg, #2E6A14 0%, #5AAA32 20%, #96D060 42%, #CCE8A0 65%, #EEF8DC 82%, #FEFBF3 100%)', display: 'flex', flexDirection: 'column' as const },
     header: { background: 'linear-gradient(180deg, #2E6A14 0%, #5AAA32 20%, #96D060 42%, #CCE8A0 65%, #EEF8DC 82%, #FEFBF3 100%)', padding: '32px 24px', borderBottom: '1px solid rgba(143,184,138,0.2)' },
-    backLink: { fontFamily: 'var(--font-body)', fontSize: 12, color: 'rgba(28,25,23,0.6)', textDecoration: 'underline', cursor: 'pointer', marginBottom: 12 },
+    backLink: { fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: 'rgba(255,255,255,0.95)', textDecoration: 'none', cursor: 'pointer', marginBottom: 12, display: 'inline-block' },
     title: { fontFamily: 'var(--font-wordmark)', fontSize: 28, fontWeight: 700, color: '#1C1917', margin: '0 0 8px' },
     meta: { fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 700, color: 'rgba(28,25,23,0.75)', margin: 0 },
     main: { flex: 1, padding: '20px', maxWidth: 480, margin: '0 auto', width: '100%', overflowY: 'auto' as const },

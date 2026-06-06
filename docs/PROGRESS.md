@@ -121,6 +121,25 @@
 **Card Styling:**
 - Playground city cards not yet updated to new design spec
 
+**Gradient banding bug (city detail page) — for V1.5 design pass:**
+- `app/playground/[city]/page.tsx` applies the full 6-stop gradient TWICE: once on `screen` (full height) and again on `header` (~100px). The header's compressed gradient ends in cream, then the content area jumps back to green — causing the "green block / no fade" look.
+- Proper fix: make header `background: transparent` so the single screen gradient flows continuously. BUT this puts dark title/meta text on the dark-fern top → must also decide light-vs-dark header text for contrast (design decision, do with visual preview). Deferred to V1.5 gradient pass.
+
+### Deployment Diagnosis (Session 2)
+- **Confirmed via curl:** Live home page serves old `#5AAA32` button, not latest `#B8E090`. Response headers show `Age: ~20500s (~5.7h)` and `X-Vercel-Cache: HIT`.
+- **Local build succeeds** (exit code 0) — code is NOT broken.
+- **Conclusion:** Production deployment is stuck on an older commit; git-push deploys are not promoting to production. The original CLI `vercel deploy` worked (that's why the daisy + initial design are live), but subsequent GitHub-push deploys aren't replacing production.
+- **Next:** Confirm which commit the "Current" production deployment shows in Vercel dashboard to decide fix.
+
+### Playground Pathway — Real Code Fixes Needed (separate from deployment)
+Found in `app/playground/[city]/play-by-play/page.tsx`:
+1. **Crew default** — page hardcodes `sessionAdults: 2` (line ~56). Not a bug, just a default. Fix: in Playground pathway, don't render crew chips at all (no Playbill = no crew shown).
+2. **"Check website" redundancy** — page hardcodes `'Check website'` into address, hours, AND price (lines ~75-78). Our earlier filter only cleaned the `tip` field, so it missed these. Fix: leave these blank when unknown rather than "Check website".
+3. **Back button** — currently "← Back to Playground", small underlined teal (line ~142). Fix per testing notes: clearer label + readable styling.
+
+### Content Quality Note
+- **"Legendary" overuse** — food cards (from `/api/add-on`, type=food) repeatedly describe dishes as "legendary." Not forced by prompt; LLM wording habit. Fix: add instruction to vary language and avoid superlatives (legendary/famous/iconic). Noticeable when browsing 10 food options in a row.
+
 ---
 
 **Next steps:** Fix deployment blocker first, then these UI refinements in V1.5.

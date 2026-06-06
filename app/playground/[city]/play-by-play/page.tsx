@@ -68,14 +68,15 @@ export default function PlaygroundPlayByPlayPage() {
     }
 
     // Create winner/main stop from the playground card
+    // Leave address/hours/price blank when unknown (don't show "Check website" placeholders)
     const mainStop: Stop = {
       id: playgroundCard.id,
       name: playgroundCard.title,
       emoji: playgroundCard.emoji,
-      address: 'Check website',
+      address: '',
       mapsUrl: `https://maps.google.com/?q=${encodeURIComponent(playgroundCard.title + ' ' + playgroundCard.city)}`,
-      hours: 'Check website',
-      price: 'Check website',
+      hours: '',
+      price: '',
       tip: playgroundCard.pitch,
       props: '',
       isHalfTime: false,
@@ -102,8 +103,10 @@ export default function PlaygroundPlayByPlayPage() {
 
   const playStructure: PlayStructureData = {
     city: card.city,
-    sessionAdults: playbill.adults,
-    sessionKids: playbill.kids,
+    // No Playbill is filled in via the Playground path, so don't show crew chips.
+    // (Passing 0 / empty keeps the crew summary hidden in PlayByPlayView.)
+    sessionAdults: 0,
+    sessionKids: [],
     mood: 'middle-ground',
     duration: 'half-day',
     transport: [],
