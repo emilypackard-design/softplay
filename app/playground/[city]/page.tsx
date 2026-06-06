@@ -93,9 +93,9 @@ export default function CityDetailPage() {
 
   const S = {
     // One continuous SAGE gradient (anchored on card-accent #8FB88A): deeper sage at top → cream by ~240px, then stays cream.
-    screen: { minHeight: '100vh', backgroundImage: 'linear-gradient(180deg, #4E7B51 0%, #6E9A6B 20%, #8FB88A 40%, #C2D9B8 64%, #E6F0DC 84%, #FEFBF3 100%)', backgroundRepeat: 'no-repeat', backgroundSize: '100% 240px', backgroundColor: '#FEFBF3', display: 'flex', flexDirection: 'column' as const },
-    header: { background: 'transparent', padding: '32px 24px' },
-    backLink: { fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: 'rgba(255,255,255,0.95)', textDecoration: 'none', cursor: 'pointer', marginBottom: 12, display: 'inline-block' },
+    screen: { minHeight: '100vh', backgroundImage: 'linear-gradient(180deg, #4E7B51 0%, #6E9A6B 20%, #8FB88A 40%, #C2D9B8 64%, #E6F0DC 84%, #FEFBF3 100%)', backgroundRepeat: 'no-repeat', backgroundSize: '100% 240px', backgroundColor: '#FEFBF3', display: 'flex', flexDirection: 'column' as const, alignItems: 'center' as const },
+    header: { background: 'transparent', padding: '52px 24px 36px', textAlign: 'center' as const, position: 'relative' as const, width: '100%', maxWidth: 480 },
+    backLink: { position: 'absolute' as const, left: 16, top: 16, fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: 'rgba(255,255,255,0.95)', textDecoration: 'none', cursor: 'pointer' },
     title: { fontFamily: 'var(--font-wordmark)', fontSize: 28, fontWeight: 700, color: '#1C1917', margin: '0 0 8px' },
     meta: { fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 700, color: 'rgba(28,25,23,0.75)', margin: 0 },
     main: { flex: 1, padding: '20px', maxWidth: 480, margin: '0 auto', width: '100%', overflowY: 'auto' as const },
