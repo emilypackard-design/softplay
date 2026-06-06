@@ -95,7 +95,7 @@ export default function CityDetailPage() {
     // One continuous gradient anchored on emerald #1C7E46: rich green at top → cream by ~240px, then stays cream.
     screen: { minHeight: '100vh', backgroundImage: 'linear-gradient(180deg, #1C7E46 0%, #4F9D6C 20%, #84BD93 42%, #B9D9C0 64%, #E4F1E5 84%, #FEFBF3 100%)', backgroundRepeat: 'no-repeat', backgroundSize: '100% 240px', backgroundColor: '#FEFBF3', display: 'flex', flexDirection: 'column' as const, alignItems: 'center' as const },
     header: { background: 'transparent', padding: '52px 24px 36px', textAlign: 'center' as const, position: 'relative' as const, width: '100%', maxWidth: 480 },
-    backLink: { position: 'absolute' as const, left: 16, top: 16, fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: '#1C1917', textDecoration: 'none', cursor: 'pointer' },
+    backLink: { position: 'absolute' as const, left: 16, top: 16, display: 'inline-flex', alignItems: 'center', gap: 5, fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: 'rgba(255,255,255,0.95)', textDecoration: 'none', cursor: 'pointer' },
     title: { fontFamily: 'var(--font-wordmark)', fontSize: 28, fontWeight: 700, color: '#1C1917', margin: '0 0 8px' },
     meta: { fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 700, color: 'rgba(28,25,23,0.75)', margin: 0 },
     main: { flex: 1, padding: '20px', maxWidth: 480, margin: '0 auto', width: '100%', overflowY: 'auto' as const },
@@ -121,7 +121,23 @@ export default function CityDetailPage() {
   return (
     <div style={S.screen}>
       <div style={S.header}>
-        <Link href="/playground" style={S.backLink}>← Playground</Link>
+        <Link href="/playground" style={S.backLink}>
+          <span>←</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(12,12)">
+              <ellipse rx="2" ry="4.6" fill="white" transform="rotate(0) translate(0,-6)"/>
+              <ellipse rx="2" ry="4.6" fill="white" transform="rotate(45) translate(0,-6)"/>
+              <ellipse rx="2" ry="4.6" fill="white" transform="rotate(90) translate(0,-6)"/>
+              <ellipse rx="2" ry="4.6" fill="white" transform="rotate(135) translate(0,-6)"/>
+              <ellipse rx="2" ry="4.6" fill="white" transform="rotate(180) translate(0,-6)"/>
+              <ellipse rx="2" ry="4.6" fill="white" transform="rotate(225) translate(0,-6)"/>
+              <ellipse rx="2" ry="4.6" fill="white" transform="rotate(270) translate(0,-6)"/>
+              <ellipse rx="2" ry="4.6" fill="white" transform="rotate(315) translate(0,-6)"/>
+              <circle r="3.2" fill="#F0A820"/>
+            </g>
+          </svg>
+          <span>Playground</span>
+        </Link>
         <div style={{ textAlign: 'center' }}>
           <h1 style={S.title}>{city}</h1>
           <p style={S.meta}>Tap 'Play this card' on any save to create your full itinerary.</p>
