@@ -92,8 +92,9 @@ export default function CityDetailPage() {
   if (!mounted || !city) return null
 
   const S = {
-    screen: { minHeight: '100vh', background: 'linear-gradient(180deg, #2E6A14 0%, #5AAA32 20%, #96D060 42%, #CCE8A0 65%, #EEF8DC 82%, #FEFBF3 100%)', display: 'flex', flexDirection: 'column' as const },
-    header: { background: 'linear-gradient(180deg, #2E6A14 0%, #5AAA32 20%, #96D060 42%, #CCE8A0 65%, #EEF8DC 82%, #FEFBF3 100%)', padding: '32px 24px', borderBottom: '1px solid rgba(143,184,138,0.2)' },
+    // One continuous gradient: dark fern at top → cream by ~240px, then stays cream below.
+    screen: { minHeight: '100vh', backgroundImage: 'linear-gradient(180deg, #2E6A14 0%, #5AAA32 20%, #96D060 42%, #CCE8A0 65%, #EEF8DC 82%, #FEFBF3 100%)', backgroundRepeat: 'no-repeat', backgroundSize: '100% 240px', backgroundColor: '#FEFBF3', display: 'flex', flexDirection: 'column' as const },
+    header: { background: 'transparent', padding: '32px 24px' },
     backLink: { fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: 'rgba(255,255,255,0.95)', textDecoration: 'none', cursor: 'pointer', marginBottom: 12, display: 'inline-block' },
     title: { fontFamily: 'var(--font-wordmark)', fontSize: 28, fontWeight: 700, color: '#1C1917', margin: '0 0 8px' },
     meta: { fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 700, color: 'rgba(28,25,23,0.75)', margin: 0 },
