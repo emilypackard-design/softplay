@@ -148,6 +148,7 @@ interface Props {
   onPlanAnotherDay?: () => void
 }
 
+// Force rebuild - crew size fix
 export default function PlayByPlayView({ winnerStop, chosenOption, playbill, playStructure, vetoes, initialHalfTime, onReplay, onCopyPlan, showCopyFeedback, onPlanAnotherDay }: Props) {
   const [halfTime, setHalfTime] = useState<Stop | null>(initialHalfTime || null)
   const [before, setBefore] = useState<Stop | null>(null)
