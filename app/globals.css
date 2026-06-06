@@ -1,0 +1,113 @@
+/* Fonts temporarily disabled to debug button issue */
+/* @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,300&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap'); */
+@import "tailwindcss";
+
+:root {
+  --yellow:    #F5C842;
+  --bg:        #FEFBF3;
+  --ink:       #1C1917;
+  --brown:     #5A4F48;
+  --card-bg:   #F5EFE0;
+  --teal:      #3D9E8F;
+  --coral:     #E07055;
+  --sand:      #E8DCC8;
+  --white:     #FFFFFF;
+
+  --font-wordmark: Georgia, serif;
+  --font-heading:  -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body:     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  background: radial-gradient(ellipse at 75% 25%, #FEF5CC 0%, #FEFBF3 55%, #E8F5F2 100%);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── TOUCH TARGETS & PRESS FEEDBACK ── */
+
+button, a, [role="button"] {
+  min-height: 44px;
+  min-width: 44px;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: auto !important;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -webkit-user-callout: none;
+  transition: transform 0.08s ease, opacity 0.08s ease;
+}
+
+/* Press feedback for all buttons */
+button:active,
+[role="button"]:active {
+  transform: scale(0.96);
+  opacity: 0.9;
+}
+
+/* Larger press effect for primary action buttons (yellow) */
+button:active {
+  transform: scale(0.96);
+}
+
+input, select {
+  touch-action: auto !important;
+  pointer-events: auto !important;
+  -webkit-appearance: none;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+html { scroll-behavior: smooth; }
+
+/* ── ANIMATIONS ── */
+
+@keyframes spin-pinwheel {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.spin-pinwheel {
+  display: inline-block;
+  animation: spin-pinwheel 1s linear infinite;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fade-up 0.3s ease-out both; }
+
+@keyframes confetti-fall {
+  0%   { transform: translateY(-10px) rotate(0deg);   opacity: 1; }
+  100% { transform: translateY(70vh)  rotate(600deg); opacity: 0; }
+}
+
+@keyframes cardExitRight {
+  from { opacity: 1; transform: translateX(0) rotate(0deg); }
+  to   { opacity: 0; transform: translateX(80px) rotate(3deg); }
+}
+
+@keyframes cardExitLeft {
+  from { opacity: 1; transform: translateX(0) rotate(0deg); }
+  to   { opacity: 0; transform: translateX(-80px) rotate(-3deg); }
+}
+
+@keyframes cardEnter {
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── MOBILE TOUCH AREAS ── */
+
+.scroll-area {
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+}
+
+.card-stack, .wheel-container {
+  touch-action: none;
+}
