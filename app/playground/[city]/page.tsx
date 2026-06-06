@@ -95,7 +95,7 @@ export default function CityDetailPage() {
     // One continuous gradient anchored on emerald #1C7E46: rich green at top → cream by ~240px, then stays cream.
     screen: { minHeight: '100vh', backgroundImage: 'linear-gradient(180deg, #1C7E46 0%, #4F9D6C 20%, #84BD93 42%, #B9D9C0 64%, #E4F1E5 84%, #FEFBF3 100%)', backgroundRepeat: 'no-repeat', backgroundSize: '100% 240px', backgroundColor: '#FEFBF3', display: 'flex', flexDirection: 'column' as const, alignItems: 'center' as const },
     header: { background: 'transparent', padding: '52px 24px 36px', textAlign: 'center' as const, position: 'relative' as const, width: '100%', maxWidth: 480 },
-    backLink: { position: 'absolute' as const, left: 16, top: 16, fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: 'rgba(255,255,255,0.95)', textDecoration: 'none', cursor: 'pointer' },
+    backLink: { position: 'absolute' as const, left: 16, top: 16, fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: '#1C1917', textDecoration: 'none', cursor: 'pointer' },
     title: { fontFamily: 'var(--font-wordmark)', fontSize: 28, fontWeight: 700, color: '#1C1917', margin: '0 0 8px' },
     meta: { fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 700, color: 'rgba(28,25,23,0.75)', margin: 0 },
     main: { flex: 1, padding: '20px', maxWidth: 480, margin: '0 auto', width: '100%', overflowY: 'auto' as const },
