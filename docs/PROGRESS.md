@@ -72,8 +72,9 @@
 - `/docs/PROGRESS.md` — NEW
 - `.github/` config — Auto-created by GitHub
 
-### Known Quirks
-- None yet; stable state
+### Known Quirks & Future Tweaks
+- **Playground button color** — Fern green (#5AAA32) is deployed and working, but user wants to workshop color choice (consider other greens from palette or test alternatives)
+- Otherwise stable
 
 ---
 
