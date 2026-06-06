@@ -157,6 +157,11 @@ Found in `app/playground/[city]/play-by-play/page.tsx`:
 2. **"Check website" redundancy** — page hardcodes `'Check website'` into address, hours, AND price (lines ~75-78). Our earlier filter only cleaned the `tip` field, so it missed these. Fix: leave these blank when unknown rather than "Check website".
 3. **Back button** — currently "← Back to Playground", small underlined teal (line ~142). Fix per testing notes: clearer label + readable styling.
 
+### Decision Pending — "Plan another day" button destination (Playground play-by-play)
+- Bottom CTA currently labeled "Plan another day" → routes to /playground. Previously "Back to Playground".
+- Claude's recommendation: KEEP "Plan another day" but route to HOME (/). The screen already has a top "← Back to Playground", so a bottom button to Playground is redundant. Home opens all three paths and is only one extra tap to replay a Playground card.
+- Awaiting Emily's final call before changing.
+
 ### Content Quality Note
 - **"Legendary" overuse** — food cards (from `/api/add-on`, type=food) repeatedly describe dishes as "legendary." Not forced by prompt; LLM wording habit. Fix: add instruction to vary language and avoid superlatives (legendary/famous/iconic). Noticeable when browsing 10 food options in a row.
 

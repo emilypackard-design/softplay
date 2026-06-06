@@ -191,8 +191,8 @@ export default function Home() {
       <Link href="/playground" style={{ textDecoration: 'none' }}>
         <div className="playground-link" style={{
           marginTop: 32,
-          background: '#B8E090',
-          color: '#1E5010',
+          background: '#1C7E46',
+          color: '#FFFFFF',
           borderRadius: 20,
           padding: '8px 18px',
           fontSize: 13,

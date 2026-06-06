@@ -55,15 +55,16 @@ export default function PlaygroundPage() {
   if (!mounted) return null
 
   const S = {
-    screen: { minHeight: '100vh', background: 'linear-gradient(180deg, #2E6A14 0%, #5AAA32 20%, #96D060 42%, #CCE8A0 65%, #EEF8DC 82%, #FEFBF3 100%)', display: 'flex', flexDirection: 'column' as const, alignItems: 'center' as const },
+    // Match city view: one continuous emerald #1C7E46 gradient → cream by ~240px, then stays cream.
+    screen: { minHeight: '100vh', backgroundImage: 'linear-gradient(180deg, #1C7E46 0%, #4F9D6C 20%, #84BD93 42%, #B9D9C0 64%, #E4F1E5 84%, #FEFBF3 100%)', backgroundRepeat: 'no-repeat', backgroundSize: '100% 240px', backgroundColor: '#FEFBF3', display: 'flex', flexDirection: 'column' as const, alignItems: 'center' as const },
     header: { padding: '52px 24px 36px', textAlign: 'center' as const, position: 'relative' as const, width: '100%', maxWidth: 480 },
-    backBtn: { position: 'absolute' as const, left: 16, top: 16, background: 'none', border: 'none', fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: 'rgba(255,255,255,0.95)', cursor: 'pointer', textDecoration: 'none' },
+    backBtn: { position: 'absolute' as const, left: 16, top: 16, background: 'none', border: 'none', fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: '#1C1917', cursor: 'pointer', textDecoration: 'none' },
     daisy: { display: 'block', margin: '0 auto 12px', width: 72, height: 72 },
     title: { fontFamily: 'var(--font-wordmark)', fontSize: 32, fontWeight: 700, color: '#1C1917', margin: '0 0 11px', letterSpacing: '-0.5px' },
-    divider: { width: 48, height: 1, background: 'rgba(255,255,255,0.75)', border: 'none', margin: '11px auto' },
+    divider: { width: 48, height: 1, background: 'rgba(28,25,23,0.2)', border: 'none', margin: '11px auto' },
     subtitle: { fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 700, color: 'rgba(28,25,23,0.6)', margin: 0 },
-    saveCount: { position: 'absolute' as const, right: 16, top: 18, fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.9)' },
-    main: { padding: '14px 14px 24px', flex: 1, display: 'flex', flexDirection: 'column' as const, gap: 10, background: 'linear-gradient(180deg, #FAFFF6 0%, #FEFBF3 35%)', width: '100%', maxWidth: 480 },
+    saveCount: { position: 'absolute' as const, right: 16, top: 18, fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 700, color: '#1C1917' },
+    main: { padding: '14px 14px 24px', flex: 1, display: 'flex', flexDirection: 'column' as const, gap: 10, background: 'transparent', width: '100%', maxWidth: 480 },
     cityRow: { background: '#FFFFFF', borderRadius: 18, padding: '14px 14px 12px', boxShadow: '0 3px 14px rgba(28,25,23,0.07)' },
     homeCity: { background: '#F8FFF6', border: '1.5px solid rgba(61,107,65,0.3)' },
     cityTop: { display: 'flex', alignItems: 'center', gap: 7, marginBottom: 10 },
