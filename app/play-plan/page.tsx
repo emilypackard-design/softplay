@@ -74,7 +74,9 @@ const FUN_CHIPS = [
 
 const FOOD_LOVE_CHIPS = [
   { id: 'bakery',     emoji: '🥐', label: 'Bakeries' },
+  { id: 'bistro',     emoji: '🍷', label: 'Bistro' },
   { id: 'cafes',      emoji: '☕', label: 'Cafés' },
+  { id: 'gourmet',    emoji: '🍽️', label: 'Gourmet' },
   { id: 'ice-cream',  emoji: '🍦', label: 'Ice cream' },
   { id: 'local',      emoji: '🗺️', label: 'Local specialities' },
   { id: 'picnics',    emoji: '🧺', label: 'Picnics' },
