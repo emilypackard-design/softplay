@@ -62,7 +62,7 @@ export default function PlaygroundPage() {
     title: { fontFamily: 'var(--font-wordmark)', fontSize: 32, fontWeight: 700, color: '#1C1917', margin: '0 0 11px', letterSpacing: '-0.5px' },
     divider: { width: 48, height: 1, background: 'rgba(255,255,255,0.75)', border: 'none', margin: '11px auto' },
     subtitle: { fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 700, color: 'rgba(28,25,23,0.6)', margin: 0 },
-    saveCount: { position: 'absolute' as const, right: 16, top: 18, fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 700, color: 'rgba(28,25,23,0.4)' },
+    saveCount: { position: 'absolute' as const, right: 16, top: 18, fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.9)' },
     main: { padding: '14px 14px 24px', flex: 1, display: 'flex', flexDirection: 'column' as const, gap: 10, background: 'linear-gradient(180deg, #FAFFF6 0%, #FEFBF3 35%)', width: '100%', maxWidth: 480 },
     cityRow: { background: '#FFFFFF', borderRadius: 18, padding: '14px 14px 12px', boxShadow: '0 3px 14px rgba(28,25,23,0.07)' },
     homeCity: { background: '#F8FFF6', border: '1.5px solid rgba(61,107,65,0.3)' },
