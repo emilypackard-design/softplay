@@ -191,20 +191,19 @@ export default function Home() {
       <Link href="/playground" style={{ textDecoration: 'none' }}>
         <div className="playground-link" style={{
           marginTop: 32,
+          background: '#B8E090',
+          color: '#1E5010',
+          borderRadius: 20,
+          padding: '8px 18px',
+          fontSize: 13,
+          fontWeight: 700,
           display: 'inline-flex',
           alignItems: 'center',
-          gap: 8,
-          background: '#5AAA32',
-          color: '#FFFFFF',
-          fontFamily: 'var(--font-heading)',
-          fontSize: 12,
-          fontWeight: 700,
-          borderRadius: 20,
-          padding: '8px 16px',
+          gap: 6,
+          textDecoration: 'none',
           cursor: 'pointer',
         }}>
-          <span style={{ color: '#E07055', fontSize: 14 }}>📌</span>
-          Playground
+          📌 Playground
         </div>
       </Link>
     </main>
