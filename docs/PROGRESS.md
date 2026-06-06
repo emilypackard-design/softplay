@@ -1,5 +1,38 @@
 # softplay — Development Progress Log
 
+## Session 2 (2026-06-06) — Deployment Fix + Design Pass
+
+### Deployment — RESOLVED (use CLI)
+- **Root cause of "changes not showing":** git push to GitHub stopped triggering production deploys after the disconnect/reconnect; production was frozen at an old commit. Build is fine (passes locally + on Vercel).
+- **Working method:** deploy with `npx vercel --prod --yes` from the project folder (authenticated CLI, project already linked via `.vercel/`). Aliases to softplay-five.vercel.app in ~30-60s. Used ~20x this session, all READY.
+- **V1.5 task:** restore GitHub→Vercel auto-deploy (convenience, not a blocker). Diagnosis plan already logged below.
+
+### Design System — LOCKED
+- **Primary green:** emerald `#1C7E46` (chosen over lime fern, which read too yellow/grey).
+- **Playground gradient (both main + city pages):** one continuous gradient, NOT two. Implementation: on the `screen` div use `backgroundImage: linear-gradient(180deg, #1C7E46 0%, #4F9D6C 20%, #84BD93 42%, #B9D9C0 64%, #E4F1E5 84%, #FEFBF3 100%)`, `backgroundRepeat: no-repeat`, `backgroundSize: 100% 240px`, `backgroundColor: #FEFBF3`. Header is transparent. This fades emerald→cream over the top ~240px then stays cream behind cards (no two-tone seam).
+- **Nav text on the emerald top:** WHITE (black tested, too low-contrast).
+- **Daisy back-nav convention:** small daisy next to the "Playground" word on links that navigate to Playground. WHITE petals on green backgrounds (city detail back button); GREEN petals (`#2E9D5B`, gold center `#F0A820`) on light backgrounds (play-by-play white header). Applied to: city-detail "← 🌼 Playground" and play-by-play "← 🌼 Back to Playground". NOT on home page, NOT on "View in Playground →", NOT on "Send back to Playground".
+- **Home page Playground link:** thin divider hairline above + pin `📌` + "Playground" in light italic serif (`var(--font-wordmark)`, italic, weight 300, 19px, `#1C1917`). No button/pill/circle, no arrow. (Long iteration — this is the final.)
+- **Back-button placement:** standardized — absolute top-left within the centered 480px header column (city view now matches main page).
+
+### Content + Bug Fixes (this session)
+- **Wildcard-swap cards bug:** were white text on white card (unreadable). Now dark text (`#1C1917`/`#8C7B6B`) like the options screen.
+- **Crew chips:** Playground play-by-play no longer passes default 2 adults (sessionAdults: 0, sessionKids: []), so no crew chips when no Playbill.
+- **"Check website":** removed hardcoded placeholders from address/hours/price on the Playground main stop (left blank → omitted).
+- **"Legendary" overuse:** `/api/add-on` food prompt now instructs varied language, no superlatives.
+
+### Features / Nav
+- **Food chips added:** 🍷 Bistros, 🍽️ Gourmet meals (FOOD_LOVE_CHIPS, ids `bistro`/`gourmet` feed the prompt).
+- **"Plan another day"** (Playground play-by-play) now routes to Home `/` (top "← Back to Playground" covers returning to saves).
+
+### Still Open for V1.5
+- Restore GitHub auto-deploy (see diagnosis below)
+- City-name deduplication (Greystones variants)
+- Playground card styling to new spec
+- (Optional) gradient continuity treatment already solved on Playground pages; reuse pattern elsewhere if needed
+
+---
+
 ## Session 1 (2026-06-06)
 
 ### What Was Built
