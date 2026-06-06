@@ -197,7 +197,7 @@ export default function Home() {
             cursor: 'pointer',
           }}>
             <span style={{ fontSize: 24 }}>📌</span>
-            <span style={{ fontFamily: 'var(--font-heading)', fontSize: 14, fontWeight: 600, color: '#1C1917' }}>Playground</span>
+            <span style={{ fontFamily: 'var(--font-wordmark)', fontStyle: 'italic', fontSize: 19, fontWeight: 700, color: '#1C1917' }}>Playground</span>
           </div>
         </Link>
       </div>
