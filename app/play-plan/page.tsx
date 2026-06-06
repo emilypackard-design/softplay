@@ -1222,8 +1222,8 @@ export default function PlayPlanPage() {
                     <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start', position: 'relative', zIndex: 2 }}>
                       <span style={{ fontSize: 24, flexShrink: 0 }}>{opt.emoji}</span>
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 13, color: '#FFFFFF', wordBreak: 'break-word', textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>{opt.name}</div>
-                        <div style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: '#FFFFFF', marginTop: 2, lineHeight: 1.3, opacity: 0.95, textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>{opt.pitch}</div>
+                        <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 13, color: '#1C1917', wordBreak: 'break-word' }}>{opt.name}</div>
+                        <div style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: '#8C7B6B', marginTop: 2, lineHeight: 1.3 }}>{opt.pitch}</div>
                       </div>
                     </div>
                   </div>
