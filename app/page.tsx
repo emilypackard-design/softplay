@@ -187,23 +187,27 @@ export default function Home() {
       </div>
 
       {/* Playground link */}
-      <Link href="/playground" style={{ textDecoration: 'none', display: 'block', width: '100%', maxWidth: 440, marginTop: 16 }}>
+      <Link href="/playground" style={{ textDecoration: 'none', marginTop: 28 }}>
         <div className="playground-link" style={{
-          background: 'linear-gradient(180deg, #2E9D5B 0%, #1C7E46 100%)',
-          color: '#FFFFFF',
-          borderRadius: 24,
-          padding: '20px 26px',
-          fontFamily: 'var(--font-heading)',
-          fontSize: 16,
-          fontWeight: 700,
           display: 'flex',
+          flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center',
           gap: 8,
           cursor: 'pointer',
-          boxShadow: '0 4px 24px rgba(28,25,23,0.10)',
         }}>
-          📌 Playground
+          <div style={{
+            width: 64,
+            height: 64,
+            borderRadius: '50%',
+            background: '#E5EFE3',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 2px 12px rgba(28,25,23,0.10)',
+          }}>
+            <span style={{ fontSize: 28 }}>📌</span>
+          </div>
+          <span style={{ fontFamily: 'var(--font-heading)', fontSize: 16, fontWeight: 800, color: '#1C7E46' }}>Playground</span>
         </div>
       </Link>
     </main>
