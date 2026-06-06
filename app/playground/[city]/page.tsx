@@ -92,8 +92,8 @@ export default function CityDetailPage() {
   if (!mounted || !city) return null
 
   const S = {
-    // One continuous gradient: dark fern at top → cream by ~240px, then stays cream below.
-    screen: { minHeight: '100vh', backgroundImage: 'linear-gradient(180deg, #2E6A14 0%, #5AAA32 20%, #96D060 42%, #CCE8A0 65%, #EEF8DC 82%, #FEFBF3 100%)', backgroundRepeat: 'no-repeat', backgroundSize: '100% 240px', backgroundColor: '#FEFBF3', display: 'flex', flexDirection: 'column' as const },
+    // One continuous SAGE gradient (anchored on card-accent #8FB88A): deeper sage at top → cream by ~240px, then stays cream.
+    screen: { minHeight: '100vh', backgroundImage: 'linear-gradient(180deg, #4E7B51 0%, #6E9A6B 20%, #8FB88A 40%, #C2D9B8 64%, #E6F0DC 84%, #FEFBF3 100%)', backgroundRepeat: 'no-repeat', backgroundSize: '100% 240px', backgroundColor: '#FEFBF3', display: 'flex', flexDirection: 'column' as const },
     header: { background: 'transparent', padding: '32px 24px' },
     backLink: { fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: 'rgba(255,255,255,0.95)', textDecoration: 'none', cursor: 'pointer', marginBottom: 12, display: 'inline-block' },
     title: { fontFamily: 'var(--font-wordmark)', fontSize: 28, fontWeight: 700, color: '#1C1917', margin: '0 0 8px' },
