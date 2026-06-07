@@ -56,7 +56,7 @@ export default function PlaygroundPage() {
 
   const S = {
     // Match city view: one continuous emerald #1C7E46 gradient → cream by ~240px, then stays cream.
-    screen: { minHeight: '100vh', backgroundImage: 'linear-gradient(180deg, #1C7E46 0%, #4F9D6C 20%, #84BD93 42%, #B9D9C0 64%, #E4F1E5 84%, #FEFBF3 100%)', backgroundRepeat: 'no-repeat', backgroundSize: '100% 300px', backgroundColor: '#FEFBF3', display: 'flex', flexDirection: 'column' as const, alignItems: 'center' as const },
+    screen: { minHeight: '100vh', backgroundImage: 'linear-gradient(180deg, #1C7E46 0%, #4F9D6C 22%, #84BD93 45%, #B9D9C0 66%, #E4F1E5 85%, #FEFBF3 100%)', backgroundRepeat: 'no-repeat', backgroundSize: '100% 420px', backgroundColor: '#FEFBF3', display: 'flex', flexDirection: 'column' as const, alignItems: 'center' as const },
     topBar: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px', width: '100%', borderBottom: '1px solid #E8DCC8', background: '#FEFBF3' },
     wordmark: { fontFamily: 'var(--font-wordmark)', fontSize: 24, fontWeight: 300, fontStyle: 'italic' as const, color: '#5A4F48', textDecoration: 'none', letterSpacing: '-0.5px' },
     pathwayLabel: { fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 600, color: '#B0A090' },
