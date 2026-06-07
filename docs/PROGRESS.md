@@ -24,7 +24,8 @@
 - Wildcard swapped into the wheel used `title` (no `name`); wheel chips render `name` → blank chip. Now maps `name: familyFaveHeart.title`. (Was intermittent — only with a wildcard in play.)
 
 ### Back-button audit + standardization
-- **Header (softplay left, pathway name right) already exists and matches on Playbook AND Free Play** (shared `<header>` on all steps). Playground uses its own daisy hero by design. (If unifying further: add the softplay|pathway bar to Playground — pending Emily's confirm.)
+- **Header (softplay left, pathway name right) already exists and matches on Playbook AND Free Play** (shared `<header>` on all steps).
+- **TODO (CONFIRMED by Emily):** add the same softplay|pathway header bar to the **Playground** pages (main + city detail + play-by-play) to unify with Playbook/Free Play. Playground currently uses only its daisy hero. Need to fit the header above/with the daisy hero without breaking the emerald gradient look.
 - **Playbook:** removed the redundant TOP "← Back" on steps that already have a bottom Back│Next (fun-chips, not-fun-chips, food, great-day, practical).
 - **Kept + restyled** the only-back on **crew** and **play-structure** to bold/colored (14px, 700, ink) — Playground style, not the old underlined grey.
 - **Back-button style rule:** bold/colored (not underlined grey). Color need not be uniform — white on dark backgrounds where chosen (e.g., Playground on emerald), dark ink on light backgrounds (Playbook).

@@ -56,8 +56,11 @@ export default function PlaygroundPage() {
 
   const S = {
     // Match city view: one continuous emerald #1C7E46 gradient → cream by ~240px, then stays cream.
-    screen: { minHeight: '100vh', backgroundImage: 'linear-gradient(180deg, #1C7E46 0%, #4F9D6C 20%, #84BD93 42%, #B9D9C0 64%, #E4F1E5 84%, #FEFBF3 100%)', backgroundRepeat: 'no-repeat', backgroundSize: '100% 240px', backgroundColor: '#FEFBF3', display: 'flex', flexDirection: 'column' as const, alignItems: 'center' as const },
-    header: { padding: '52px 24px 36px', textAlign: 'center' as const, position: 'relative' as const, width: '100%', maxWidth: 480 },
+    screen: { minHeight: '100vh', backgroundImage: 'linear-gradient(180deg, #1C7E46 0%, #4F9D6C 20%, #84BD93 42%, #B9D9C0 64%, #E4F1E5 84%, #FEFBF3 100%)', backgroundRepeat: 'no-repeat', backgroundSize: '100% 300px', backgroundColor: '#FEFBF3', display: 'flex', flexDirection: 'column' as const, alignItems: 'center' as const },
+    topBar: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px', width: '100%', maxWidth: 480 },
+    wordmark: { fontFamily: 'var(--font-wordmark)', fontSize: 24, fontWeight: 300, fontStyle: 'italic' as const, color: '#FFFFFF', textDecoration: 'none', letterSpacing: '-0.5px' },
+    pathwayLabel: { fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.85)' },
+    header: { padding: '20px 24px 36px', textAlign: 'center' as const, position: 'relative' as const, width: '100%', maxWidth: 480 },
     backBtn: { position: 'absolute' as const, left: 16, top: 16, background: 'none', border: 'none', fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: 'rgba(255,255,255,0.95)', cursor: 'pointer', textDecoration: 'none' },
     daisy: { display: 'block', margin: '0 auto 12px', width: 72, height: 72 },
     title: { fontFamily: 'var(--font-wordmark)', fontSize: 32, fontWeight: 700, color: '#1C1917', margin: '0 0 11px', letterSpacing: '-0.5px' },
@@ -85,8 +88,11 @@ export default function PlaygroundPage() {
 
   return (
     <div style={S.screen}>
+      <header style={S.topBar}>
+        <Link href="/" style={S.wordmark}>softplay</Link>
+        <span style={S.pathwayLabel}>Playground</span>
+      </header>
       <div style={S.header}>
-        <Link href="/" style={S.backBtn}>← Home</Link>
         <div style={S.saveCount}>{totalSaves} saves</div>
         <svg style={S.daisy} viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
           <g transform="translate(36,36)">
