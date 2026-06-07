@@ -412,6 +412,16 @@ export default function FreePlayPage() {
     }
   }
 
+  // Keep the deck topped up so flagging/skipping always yields a fresh card
+  // (universal rule: a flagged card gets a free replacement). Loads more when
+  // only a couple of unseen cards remain.
+  useEffect(() => {
+    if (step === 'cards' && !loadingCards && cards.length > 0 && (cards.length - currentIndex) <= 2) {
+      loadMoreCards()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentIndex, cards.length, step, loadingCards])
+
   const startCards = async () => {
     if (!city) return
     setStep('cards')
