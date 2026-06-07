@@ -399,7 +399,11 @@ export default function FreePlayPage() {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
-      setCards(prev => [...prev, ...data.cards])
+      // Safety net: never show a card that was previously flagged/vetoed for this city,
+      // even if the API returns it anyway. (Resurfaced cards otherwise come in unflagged.)
+      const vetoSet = new Set(vetoes.map((v: string) => v.toLowerCase()))
+      const freshCards = data.cards.filter((c: Card) => !vetoSet.has(c.name.toLowerCase()))
+      setCards(prev => [...prev, ...freshCards])
       setSeen(prev => [...prev, ...data.cards.map((c: Card) => c.name)])
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Could not load cards')

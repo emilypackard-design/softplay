@@ -140,13 +140,15 @@ export default function PlaygroundPlayByPlayPage() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#FEFBF3', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ padding: '16px 20px', borderBottom: '1px solid #E8DCC8', background: '#FFFFFF' }}>
-        <button
-          onClick={() => router.back()}
-          style={{ background: 'none', border: 'none', fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 700, color: '#3D9E8F', cursor: 'pointer', marginBottom: 8, padding: 0 }}
-        >
-          ← Back
-        </button>
+      <div style={{ borderBottom: '1px solid #E8DCC8', background: '#FFFFFF' }}>
+        <div style={{ maxWidth: 480, margin: '0 auto', padding: '16px 20px' }}>
+          <button
+            onClick={() => router.back()}
+            style={{ background: 'none', border: 'none', fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 700, color: '#3D9E8F', cursor: 'pointer', padding: 0 }}
+          >
+            ← Back
+          </button>
+        </div>
       </div>
 
       <div style={{ flex: 1, padding: '20px', maxWidth: 480, margin: '0 auto', width: '100%', overflowY: 'auto' }}>

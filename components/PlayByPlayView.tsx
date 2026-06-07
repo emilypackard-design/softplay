@@ -30,16 +30,6 @@ function StopCard({ stop, onFlag, onSwap, accent, swapLoading, stopType, carouse
       {/* Action buttons */}
       {(onFlag || onSwap) && (
         <div style={{ position: 'absolute', top: 14, right: 14, display: 'flex', gap: 6 }}>
-          {onSwap && stopType === 'food' && (
-            <button
-              onClick={onSwap}
-              disabled={swapLoading}
-              title="Swap for another option"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: '#FFF0EC', border: 'none', borderRadius: 14, padding: '4px 10px', cursor: swapLoading ? 'not-allowed' : 'pointer', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 700, color: '#E07055', opacity: swapLoading ? 0.5 : 1, lineHeight: 1 }}
-            >
-              ↻ Swap
-            </button>
-          )}
           {onSwap && stopType !== 'food' && (
             <button
               onClick={onSwap}
@@ -120,6 +110,17 @@ function StopCard({ stop, onFlag, onSwap, accent, swapLoading, stopType, carouse
           )}
         </div>
       </div>
+
+      {/* Half Time swap — bottom-right, matching the Playbook "✕ Swap" style */}
+      {onSwap && stopType === 'food' && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 12 }}>
+          <button onClick={onSwap} disabled={swapLoading}
+            title="Swap for another option"
+            style={{ background: '#FFF0EC', border: 'none', borderRadius: 12, padding: '7px 14px', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: '#E07055', cursor: swapLoading ? 'not-allowed' : 'pointer', opacity: swapLoading ? 0.5 : 1 }}>
+            {swapLoading ? '…' : '✕ Swap'}
+          </button>
+        </div>
+      )}
     </div>
   )
 }
@@ -364,7 +365,7 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
 
       {/* Generated add-ons */}
       {before && <StopCard stop={before} stopType="before" onFlag={handleFlag} onSwap={() => handleRemove('before')} accent="#3D9E8F" />}
-      {halfTime && <StopCard stop={halfTime} stopType="food" onFlag={handleFlag} onSwap={swapsRemaining.food > 0 ? () => { setSwapsRemaining(prev => ({ ...prev, food: prev.food - 1 })); setFlaggedVetoes(prev => [...prev, halfTime.name]); generateAddOn('food') } : undefined} swapLoading={swappingFood} accent="#3D9E8F" />}
+      {halfTime && <StopCard stop={halfTime} stopType="food" onFlag={handleFlag} onSwap={swapsRemaining.food > 0 && loading !== 'food' ? () => { setSwapsRemaining(prev => ({ ...prev, food: prev.food - 1 })); setFlaggedVetoes(prev => [...prev, halfTime.name]); generateAddOn('food') } : undefined} swapLoading={loading === 'food'} accent="#3D9E8F" />}
       {after && <StopCard stop={after} stopType="after" onFlag={handleFlag} onSwap={() => handleRemove('after')} accent="#3D9E8F" />}
       {evening && <StopCard stop={evening} stopType="evening" onFlag={handleFlag} onSwap={() => handleRemove('evening')} accent="#1C1917" />}
 
