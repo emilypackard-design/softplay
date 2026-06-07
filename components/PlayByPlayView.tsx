@@ -127,18 +127,19 @@ function StopCard({ stop, onFlag, onSwap, accent, swapLoading, stopType, carouse
 
 // ── Add-on button ─────────────────────────────────────────────────
 
-function AddOnButton({ label, emoji, onClick, loading, done }: {
-  label: string; emoji: string; onClick: () => void; loading: boolean; done: boolean
+function AddOnButton({ label, emoji, onClick, loading, done, disabled }: {
+  label: string; emoji: string; onClick: () => void; loading: boolean; done: boolean; disabled?: boolean
 }) {
   if (done) return null
+  const inactive = loading || disabled
   return (
-    <button onClick={onClick} disabled={loading}
-      style={{ display: 'flex', alignItems: 'center', gap: 10, width: '100%', background: loading ? '#F5EFE0' : '#FFFFFF', border: '1.5px solid #E8DCC8', borderRadius: 16, padding: '13px 16px', cursor: loading ? 'not-allowed' : 'pointer', marginBottom: 10, textAlign: 'left' }}>
+    <button onClick={disabled ? undefined : onClick} disabled={inactive}
+      style={{ display: 'flex', alignItems: 'center', gap: 10, width: '100%', background: disabled ? '#FEFBF3' : (loading ? '#F5EFE0' : '#FFFFFF'), border: disabled ? '1.5px dashed #E8DCC8' : '1.5px solid #E8DCC8', borderRadius: 16, padding: '13px 16px', cursor: inactive ? 'not-allowed' : 'pointer', marginBottom: 10, textAlign: 'left', opacity: disabled ? 0.55 : 1 }}>
       {loading
         ? <PinwheelIcon size={28} spinning />
         : <span style={{ fontSize: 22 }}>{emoji}</span>}
-      <span style={{ fontFamily: 'var(--font-heading)', fontSize: 15, fontWeight: 700, color: loading ? '#8C7B6B' : '#1C1917' }}>
-        {loading ? 'Finding something good…' : label}
+      <span style={{ fontFamily: 'var(--font-heading)', fontSize: 15, fontWeight: 700, color: inactive ? '#8C7B6B' : '#1C1917' }}>
+        {loading ? 'Finding something good…' : disabled ? `${label} — removed` : label}
       </span>
     </button>
   )
@@ -171,6 +172,8 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
   const [foodOptions, setFoodOptions] = useState<Stop[]>([])
   const [foodIndex, setFoodIndex] = useState(0)
   const [removalConfirm, setRemovalConfirm] = useState<'before' | 'after' | 'evening' | null>(null)
+  // Once an add-on is removed, its "Play On" button is greyed out — one choice, take it or leave it.
+  const [dismissed, setDismissed] = useState<Set<'before' | 'after' | 'evening'>>(new Set())
   const [notes, setNotes] = useState<string>('')
   // Swaps per stop type (food gets 10, others get 3) — flags don't count
   const [swapsRemaining, setSwapsRemaining] = useState({
@@ -223,19 +226,24 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
     }
   }, [notes, winnerStop.id])
 
-  // Generate 10 food options for browsing (called on mount)
+  // Generate a batch of food options in PARALLEL so the first load is quick and
+  // subsequent swaps are instant (cycling through the batch, like Free Play).
   const generateFoodOptions = async () => {
     setLoading('food')
     try {
-      const options: Stop[] = []
-      for (let i = 0; i < 10; i++) {
-        const res = await fetch('/api/add-on', {
+      const reqs = Array.from({ length: 6 }).map(() =>
+        fetch('/api/add-on', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ playbill, playStructure, winner: chosenOption, type: 'food', existingStops: [winnerStop, ...options], vetoes: [...vetoes, ...flaggedVetoes] }),
-        })
-        const data = await res.json()
-        if (res.ok && data.stop) {
-          options.push(data.stop)
+          body: JSON.stringify({ playbill, playStructure, winner: chosenOption, type: 'food', existingStops: [winnerStop], vetoes: [...vetoes, ...flaggedVetoes] }),
+        }).then(r => (r.ok ? r.json() : null)).catch(() => null)
+      )
+      const results = await Promise.all(reqs)
+      const seen = new Set<string>()
+      const options: Stop[] = []
+      for (const d of results) {
+        if (d && d.stop && !seen.has(d.stop.name)) {
+          seen.add(d.stop.name)
+          options.push(d.stop)
         }
       }
       if (options.length > 0) {
@@ -320,7 +328,16 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
     if (type === 'before') setBefore(null)
     if (type === 'after') setAfter(null)
     if (type === 'evening') setEvening(null)
+    setDismissed(prev => new Set([...prev, type]))
     setRemovalConfirm(null)
+  }
+
+  // Instant Half Time swap — cycle through the pre-loaded batch (no API wait, like Free Play)
+  const swapFood = () => {
+    if (foodOptions.length === 0) return
+    const next = (foodIndex + 1) % foodOptions.length
+    setFoodIndex(next)
+    setHalfTime(foodOptions[next])
   }
 
   return (
@@ -365,7 +382,7 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
 
       {/* Generated add-ons */}
       {before && <StopCard stop={before} stopType="before" onFlag={handleFlag} onSwap={() => handleRemove('before')} accent="#3D9E8F" />}
-      {halfTime && <StopCard stop={halfTime} stopType="food" onFlag={handleFlag} onSwap={swapsRemaining.food > 0 && loading !== 'food' ? () => { setSwapsRemaining(prev => ({ ...prev, food: prev.food - 1 })); setFlaggedVetoes(prev => [...prev, halfTime.name]); generateAddOn('food') } : undefined} swapLoading={loading === 'food'} accent="#3D9E8F" />}
+      {halfTime && <StopCard stop={halfTime} stopType="food" onFlag={handleFlag} onSwap={foodOptions.length > 1 ? swapFood : undefined} swapLoading={false} accent="#3D9E8F" />}
       {after && <StopCard stop={after} stopType="after" onFlag={handleFlag} onSwap={() => handleRemove('after')} accent="#3D9E8F" />}
       {evening && <StopCard stop={evening} stopType="evening" onFlag={handleFlag} onSwap={() => handleRemove('evening')} accent="#1C1917" />}
 
@@ -375,10 +392,10 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
           <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: 17, fontWeight: 700, color: '#1C1917', marginBottom: 4 }}>Play On</h3>
           <p style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: '#8C7B6B', marginBottom: 14 }}>Build your day — tap to add</p>
 
-          {showBefore && <AddOnButton emoji="🌅" label="Add something before" onClick={() => generateAddOn('before')} loading={loading === 'before'} done={!!before} />}
-          {!halfTime && <AddOnButton emoji="🍽️" label="Half Time — find a food stop" onClick={() => generateAddOn('food')} loading={loading === 'food'} done={!!halfTime} />}
-          {showAfter && <AddOnButton emoji="🌆" label="Add something after" onClick={() => generateAddOn('after')} loading={loading === 'after'} done={!!after} />}
-          <AddOnButton emoji="🌙" label="The play's the thing — add an evening" onClick={() => generateAddOn('evening')} loading={loading === 'evening'} done={!!evening} />
+          {showBefore && <AddOnButton emoji="🌅" label="Add something before" onClick={() => generateAddOn('before')} loading={loading === 'before'} done={!!before} disabled={dismissed.has('before')} />}
+          {!halfTime && <AddOnButton emoji="🍽️" label="Half Time — find a food stop" onClick={generateFoodOptions} loading={loading === 'food'} done={!!halfTime} />}
+          {showAfter && <AddOnButton emoji="🌆" label="Add something after" onClick={() => generateAddOn('after')} loading={loading === 'after'} done={!!after} disabled={dismissed.has('after')} />}
+          <AddOnButton emoji="🌙" label="The play's the thing — add an evening" onClick={() => generateAddOn('evening')} loading={loading === 'evening'} done={!!evening} disabled={dismissed.has('evening')} />
 
           {/* Playlist — V2 placeholder */}
           <button disabled style={{ display: 'flex', alignItems: 'center', gap: 10, width: '100%', background: '#FEFBF3', border: '1.5px dashed #E8DCC8', borderRadius: 16, padding: '13px 16px', cursor: 'not-allowed', marginBottom: 10, opacity: 0.5 }}>

@@ -382,7 +382,7 @@ export default function FreePlayPage() {
 
   // No auto-load — just use the initial 6 cards
 
-  const loadMoreCards = async () => {
+  const loadMoreCards = async (appendLimit?: number) => {
     setLoadingCards(true)
     setError(null)
     try {
@@ -399,10 +399,11 @@ export default function FreePlayPage() {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
-      // Safety net: never show a card that was previously flagged/vetoed for this city,
-      // even if the API returns it anyway. (Resurfaced cards otherwise come in unflagged.)
+      // Safety net: never show a card that was previously flagged/vetoed for this city.
       const vetoSet = new Set(vetoes.map((v: string) => v.toLowerCase()))
-      const freshCards = data.cards.filter((c: Card) => !vetoSet.has(c.name.toLowerCase()))
+      let freshCards = data.cards.filter((c: Card) => !vetoSet.has(c.name.toLowerCase()))
+      // appendLimit: when flagging, we only want ONE replacement card (keeps the 6-card flow).
+      if (appendLimit) freshCards = freshCards.slice(0, appendLimit)
       setCards(prev => [...prev, ...freshCards])
       setSeen(prev => [...prev, ...data.cards.map((c: Card) => c.name)])
     } catch (e: unknown) {
@@ -411,16 +412,6 @@ export default function FreePlayPage() {
       setLoadingCards(false)
     }
   }
-
-  // Keep the deck topped up so flagging/skipping always yields a fresh card
-  // (universal rule: a flagged card gets a free replacement). Loads more when
-  // only a couple of unseen cards remain.
-  useEffect(() => {
-    if (step === 'cards' && !loadingCards && cards.length > 0 && (cards.length - currentIndex) <= 2) {
-      loadMoreCards()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentIndex, cards.length, step, loadingCards])
 
   const startCards = async () => {
     if (!city) return
@@ -469,9 +460,10 @@ export default function FreePlayPage() {
       setVetoes(prev => [...prev, currentCard.name])
       setCurrentIndex(i => i + 1)
     } else if (action === 'flag') {
-      // Flag: add to vetoes and move to next card
+      // Flag: veto it, move on, and add ONE free replacement card (universal flag rule)
       setVetoes(prev => [...prev, currentCard.name])
       setCurrentIndex(i => i + 1)
+      loadMoreCards(1)
     }
   }
 
