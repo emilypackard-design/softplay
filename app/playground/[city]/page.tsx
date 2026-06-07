@@ -93,8 +93,11 @@ export default function CityDetailPage() {
 
   const S = {
     // One continuous gradient anchored on emerald #1C7E46: rich green at top → cream by ~240px, then stays cream.
-    screen: { minHeight: '100vh', backgroundImage: 'linear-gradient(180deg, #1C7E46 0%, #4F9D6C 20%, #84BD93 42%, #B9D9C0 64%, #E4F1E5 84%, #FEFBF3 100%)', backgroundRepeat: 'no-repeat', backgroundSize: '100% 240px', backgroundColor: '#FEFBF3', display: 'flex', flexDirection: 'column' as const, alignItems: 'center' as const },
-    header: { background: 'transparent', padding: '80px 24px 36px', textAlign: 'center' as const, position: 'relative' as const, width: '100%', maxWidth: 480 },
+    screen: { minHeight: '100vh', backgroundImage: 'linear-gradient(180deg, #1C7E46 0%, #4F9D6C 20%, #84BD93 42%, #B9D9C0 64%, #E4F1E5 84%, #FEFBF3 100%)', backgroundRepeat: 'no-repeat', backgroundSize: '100% 300px', backgroundColor: '#FEFBF3', display: 'flex', flexDirection: 'column' as const, alignItems: 'center' as const },
+    topBar: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px', width: '100%', borderBottom: '1px solid #E8DCC8', background: '#FEFBF3' },
+    wordmark: { fontFamily: 'var(--font-wordmark)', fontSize: 24, fontWeight: 300, fontStyle: 'italic' as const, color: '#5A4F48', textDecoration: 'none', letterSpacing: '-0.5px' },
+    pathwayLabel: { fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 600, color: '#B0A090' },
+    header: { background: 'transparent', padding: '44px 24px 36px', textAlign: 'center' as const, position: 'relative' as const, width: '100%', maxWidth: 480 },
     backLink: { position: 'absolute' as const, left: 16, top: 16, display: 'inline-flex', alignItems: 'center', gap: 5, fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: 'rgba(255,255,255,0.95)', textDecoration: 'none', cursor: 'pointer' },
     title: { fontFamily: 'var(--font-wordmark)', fontSize: 28, fontWeight: 700, color: '#1C1917', margin: '0 0 2px' },
     divider: { width: 48, height: 1, background: 'rgba(255,255,255,0.7)', border: 'none', margin: '12px auto 14px' },
@@ -121,6 +124,10 @@ export default function CityDetailPage() {
 
   return (
     <div style={S.screen}>
+      <header style={S.topBar}>
+        <Link href="/" style={S.wordmark}>softplay</Link>
+        <span style={S.pathwayLabel}>Playground</span>
+      </header>
       <div style={S.header}>
         <Link href="/playground" style={S.backLink}>
           <span>←</span>

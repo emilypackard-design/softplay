@@ -57,9 +57,9 @@ export default function PlaygroundPage() {
   const S = {
     // Match city view: one continuous emerald #1C7E46 gradient → cream by ~240px, then stays cream.
     screen: { minHeight: '100vh', backgroundImage: 'linear-gradient(180deg, #1C7E46 0%, #4F9D6C 20%, #84BD93 42%, #B9D9C0 64%, #E4F1E5 84%, #FEFBF3 100%)', backgroundRepeat: 'no-repeat', backgroundSize: '100% 300px', backgroundColor: '#FEFBF3', display: 'flex', flexDirection: 'column' as const, alignItems: 'center' as const },
-    topBar: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px', width: '100%', maxWidth: 480 },
-    wordmark: { fontFamily: 'var(--font-wordmark)', fontSize: 24, fontWeight: 300, fontStyle: 'italic' as const, color: '#FFFFFF', textDecoration: 'none', letterSpacing: '-0.5px' },
-    pathwayLabel: { fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.85)' },
+    topBar: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px', width: '100%', borderBottom: '1px solid #E8DCC8', background: '#FEFBF3' },
+    wordmark: { fontFamily: 'var(--font-wordmark)', fontSize: 24, fontWeight: 300, fontStyle: 'italic' as const, color: '#5A4F48', textDecoration: 'none', letterSpacing: '-0.5px' },
+    pathwayLabel: { fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 600, color: '#B0A090' },
     header: { padding: '20px 24px 36px', textAlign: 'center' as const, position: 'relative' as const, width: '100%', maxWidth: 480 },
     backBtn: { position: 'absolute' as const, left: 16, top: 16, background: 'none', border: 'none', fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: 'rgba(255,255,255,0.95)', cursor: 'pointer', textDecoration: 'none' },
     daisy: { display: 'block', margin: '0 auto 12px', width: 72, height: 72 },
