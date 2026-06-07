@@ -84,10 +84,6 @@ export default function CityDetailPage() {
     router.push(`/playground/${encodeURIComponent(city)}/play-by-play`)
   }
 
-  const handlePlanCityDay = () => {
-    if (!city) return
-    router.push(`/play-plan?city=${encodeURIComponent(city)}`)
-  }
 
   if (!mounted || !city) return null
 
@@ -341,18 +337,6 @@ export default function CityDetailPage() {
           </div>
         )}
       </main>
-
-      {/* Plan a [city] day button at footer */}
-      {totalSaves > 0 && (
-        <div style={{ padding: '20px', maxWidth: 480, margin: '0 auto', width: '100%' }}>
-          <button onClick={handlePlanCityDay}
-            style={{ display: 'block', width: '100%', background: '#F5C842', color: '#1C1917', fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 14, padding: '13px 20px', borderRadius: 26, border: 'none', cursor: 'pointer', boxShadow: '0 4px 16px rgba(245,200,66,0.35)' }}
-          >
-            ✨ Plan a {city} day →
-          </button>
-        </div>
-      )}
-
     </div>
   )
 }
