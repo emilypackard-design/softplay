@@ -94,13 +94,14 @@ export default function CityDetailPage() {
   const S = {
     // One continuous gradient anchored on emerald #1C7E46: rich green at top → cream by ~240px, then stays cream.
     screen: { minHeight: '100vh', backgroundImage: 'linear-gradient(180deg, #1C7E46 0%, #4F9D6C 20%, #84BD93 42%, #B9D9C0 64%, #E4F1E5 84%, #FEFBF3 100%)', backgroundRepeat: 'no-repeat', backgroundSize: '100% 240px', backgroundColor: '#FEFBF3', display: 'flex', flexDirection: 'column' as const, alignItems: 'center' as const },
-    header: { background: 'transparent', padding: '52px 24px 36px', textAlign: 'center' as const, position: 'relative' as const, width: '100%', maxWidth: 480 },
+    header: { background: 'transparent', padding: '68px 24px 36px', textAlign: 'center' as const, position: 'relative' as const, width: '100%', maxWidth: 480 },
     backLink: { position: 'absolute' as const, left: 16, top: 16, display: 'inline-flex', alignItems: 'center', gap: 5, fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: 'rgba(255,255,255,0.95)', textDecoration: 'none', cursor: 'pointer' },
-    title: { fontFamily: 'var(--font-wordmark)', fontSize: 28, fontWeight: 700, color: '#1C1917', margin: '0 0 8px' },
+    title: { fontFamily: 'var(--font-wordmark)', fontSize: 28, fontWeight: 700, color: '#1C1917', margin: '0 0 2px' },
+    divider: { width: 48, height: 1, background: 'rgba(255,255,255,0.7)', border: 'none', margin: '12px auto 14px' },
     meta: { fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 700, color: 'rgba(28,25,23,0.75)', margin: 0 },
     main: { flex: 1, padding: '20px', maxWidth: 480, margin: '0 auto', width: '100%', overflowY: 'auto' as const },
     section: { marginBottom: 24 },
-    sectionLabel: { fontFamily: 'var(--font-heading)', fontSize: 9, fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase' as const, color: 'rgba(28,25,23,0.5)', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 },
+    sectionLabel: { fontFamily: 'var(--font-heading)', fontSize: 9, fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase' as const, color: 'rgba(28,25,23,0.65)', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 },
     line: { flex: 1, height: '1px', background: 'rgba(28,25,23,0.1)' },
     card: { borderRadius: 14, padding: '13px 14px', marginBottom: 12, background: '#FFFFFF' },
     cardContent: { display: 'flex', alignItems: 'center', gap: 11, marginBottom: 12 },
@@ -108,7 +109,7 @@ export default function CityDetailPage() {
     emojiBox: { width: 38, height: 38, borderRadius: 11, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, background: '#FFF0EC', flexShrink: 0 },
     content: { flex: 1 },
     cardTitle: { fontFamily: 'var(--font-heading)', fontSize: 13, fontWeight: 700, color: '#1C1917', margin: 0 },
-    cardPitch: { fontFamily: 'var(--font-body)', fontSize: 11, color: 'rgba(28,25,23,0.6)', margin: '2px 0 0' },
+    cardPitch: { fontFamily: 'var(--font-body)', fontSize: 11, color: 'rgba(28,25,23,0.82)', margin: '2px 0 0' },
     actions: { display: 'flex', alignItems: 'center', gap: 8 },
     badge: { fontFamily: 'var(--font-body)', fontSize: 12 },
     deleteBtn: { background: 'none', border: 'none', fontSize: 16, cursor: 'pointer', color: 'rgba(28,25,23,0.4)', padding: 0, width: 24, height: 24, display: 'flex', alignItems: 'center', justifyContent: 'center' },
@@ -140,6 +141,7 @@ export default function CityDetailPage() {
         </Link>
         <div style={{ textAlign: 'center' }}>
           <h1 style={S.title}>{city}</h1>
+          <hr style={S.divider} />
           <p style={S.meta}>Tap 'Play this card' on any save to create your full itinerary.</p>
           <p style={{ ...S.meta, marginTop: 6, fontSize: 11 }}>The ✕ removes a suggestion from your Playground.</p>
         </div>

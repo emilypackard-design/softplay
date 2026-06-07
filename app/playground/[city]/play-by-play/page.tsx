@@ -143,23 +143,9 @@ export default function PlaygroundPlayByPlayPage() {
       <div style={{ padding: '16px 20px', borderBottom: '1px solid #E8DCC8', background: '#FFFFFF' }}>
         <button
           onClick={() => router.back()}
-          style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: 'none', border: 'none', fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 700, color: '#3D9E8F', cursor: 'pointer', marginBottom: 8, padding: 0 }}
+          style={{ background: 'none', border: 'none', fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 700, color: '#3D9E8F', cursor: 'pointer', marginBottom: 8, padding: 0 }}
         >
-          <span>←</span>
-          <svg width="15" height="15" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <g transform="translate(12,12)">
-              <ellipse rx="2" ry="4.6" fill="#2E9D5B" transform="rotate(0) translate(0,-6)"/>
-              <ellipse rx="2" ry="4.6" fill="#2E9D5B" transform="rotate(45) translate(0,-6)"/>
-              <ellipse rx="2" ry="4.6" fill="#2E9D5B" transform="rotate(90) translate(0,-6)"/>
-              <ellipse rx="2" ry="4.6" fill="#2E9D5B" transform="rotate(135) translate(0,-6)"/>
-              <ellipse rx="2" ry="4.6" fill="#2E9D5B" transform="rotate(180) translate(0,-6)"/>
-              <ellipse rx="2" ry="4.6" fill="#2E9D5B" transform="rotate(225) translate(0,-6)"/>
-              <ellipse rx="2" ry="4.6" fill="#2E9D5B" transform="rotate(270) translate(0,-6)"/>
-              <ellipse rx="2" ry="4.6" fill="#2E9D5B" transform="rotate(315) translate(0,-6)"/>
-              <circle r="3.2" fill="#F0A820"/>
-            </g>
-          </svg>
-          <span>Back to Playground</span>
+          ← Back
         </button>
       </div>
 

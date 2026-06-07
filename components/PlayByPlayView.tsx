@@ -30,11 +30,21 @@ function StopCard({ stop, onFlag, onSwap, accent, swapLoading, stopType, carouse
       {/* Action buttons */}
       {(onFlag || onSwap) && (
         <div style={{ position: 'absolute', top: 14, right: 14, display: 'flex', gap: 6 }}>
-          {onSwap && (
+          {onSwap && stopType === 'food' && (
             <button
               onClick={onSwap}
               disabled={swapLoading}
-              title={stopType === 'food' ? 'Next option' : 'Remove from itinerary'}
+              title="Swap for another option"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: '#FFF0EC', border: 'none', borderRadius: 14, padding: '4px 10px', cursor: swapLoading ? 'not-allowed' : 'pointer', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 700, color: '#E07055', opacity: swapLoading ? 0.5 : 1, lineHeight: 1 }}
+            >
+              ↻ Swap
+            </button>
+          )}
+          {onSwap && stopType !== 'food' && (
+            <button
+              onClick={onSwap}
+              disabled={swapLoading}
+              title="Remove from itinerary"
               style={{ background: 'none', border: 'none', cursor: swapLoading ? 'not-allowed' : 'pointer', fontSize: 16, opacity: swapLoading ? 0.5 : 0.6, lineHeight: 1 }}
             >
               ✕
