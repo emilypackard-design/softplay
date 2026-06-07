@@ -1,5 +1,40 @@
 # softplay — Development Progress Log
 
+## Session 3 (2026-06-06) — Testing Pass: Playground, Free Play, Playbook
+
+### Card Actions — Standard Order
+- **Universal action order: Pin · Heart · Flag · Swap** (Playbook reordered to match).
+- Playground city cards differ structurally (saved items): Heart/Pin toggle, Flag, delete, "Play this card" — alignment TBD.
+
+### Flag = Free Replacement (universal rule)
+- Anytime a card is flagged, the user gets a free replacement: **Playbook** (swap), **Free Play** (flag adds ONE replacement), **Play On** (flag regenerates).
+- **Exception:** flagging in **Playground** removes the saved item, NO replacement (e.g., saved a museum, found it closed).
+
+### Play On (PlayByPlayView) behavior
+- **Before/After/Evening = one choice, take it or leave it** (reduce decision fatigue). Once removed (✕ + confirm), the "Play On" button is **greyed out / unclickable** ("… — removed"). Exception: flagging gives a replacement.
+- **Half Time = the browseable exception.** Opening it loads a batch of food options **in parallel** (quick), then **"✕ Swap"** (bottom-right, matching Playbook's Swap) cycles **instantly** through them (no per-swap API wait) — same feel as Free Play.
+
+### Free Play
+- **6-card limit restored** (earlier endless-deck auto-replenish was reverted).
+- **Flag adds exactly ONE replacement card** (so flagged cards don't shrink the six); pin/heart/skip work through the set.
+- Veto safety filter: flagged/vetoed cards never re-shown for that city.
+- **DECISION PENDING (Emily's go-ahead):** standardize Free Play actions to **Pin · Heart · Flag · Skip** — drop the redundant 👎 "Never" (overlaps with Flag). Claude recommends doing it.
+
+### Wheel chip empty-text bug — FIXED
+- Wildcard swapped into the wheel used `title` (no `name`); wheel chips render `name` → blank chip. Now maps `name: familyFaveHeart.title`. (Was intermittent — only with a wildcard in play.)
+
+### Back-button audit + standardization
+- **Header (softplay left, pathway name right) already exists and matches on Playbook AND Free Play** (shared `<header>` on all steps). Playground uses its own daisy hero by design. (If unifying further: add the softplay|pathway bar to Playground — pending Emily's confirm.)
+- **Playbook:** removed the redundant TOP "← Back" on steps that already have a bottom Back│Next (fun-chips, not-fun-chips, food, great-day, practical).
+- **Kept + restyled** the only-back on **crew** and **play-structure** to bold/colored (14px, 700, ink) — Playground style, not the old underlined grey.
+- **Back-button style rule:** bold/colored (not underlined grey). Color need not be uniform — white on dark backgrounds where chosen (e.g., Playground on emerald), dark ink on light backgrounds (Playbook).
+- Playground back nav: city-detail "← 🌼 Playground" (white daisy), play-by-play "← Back" (centered column), main "← Home". All in centered column, consistent placement.
+
+### Food chips
+- Added **🍷 Bistros** and **🍽️ Gourmet meals** to FOOD_LOVE_CHIPS.
+
+---
+
 ## Session 2 (2026-06-06) — Deployment Fix + Design Pass
 
 ### Deployment — RESOLVED (use CLI)

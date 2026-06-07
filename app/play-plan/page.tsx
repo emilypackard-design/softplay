@@ -681,7 +681,7 @@ export default function PlayPlanPage() {
         {/* ── CREW ── */}
         {step === 'crew' && (
           <div className="fade-up" style={{ width: '100%' }}>
-            <button onClick={() => setStep('welcome')} style={{ background: 'none', border: 'none', fontFamily: 'var(--font-body)', fontSize: 12, color: '#8C7B6B', cursor: 'pointer', marginBottom: 16, textDecoration: 'underline' }}>← Back</button>
+            <button onClick={() => setStep('welcome')} style={{ background: 'none', border: 'none', fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: '#1C1917', cursor: 'pointer', marginBottom: 16, padding: 0 }}>← Back</button>
             <div style={{ textAlign: 'center', marginBottom: 28 }}>
               <div style={{ fontSize: 40, marginBottom: 8 }}>🎭</div>
               <h1 style={S.h1}>Cast Members</h1>
@@ -735,7 +735,6 @@ export default function PlayPlanPage() {
         {/* ── FUN CHIPS ── */}
         {step === 'fun-chips' && (
           <div className="fade-up" style={{ width: '100%' }}>
-            <button onClick={() => setStep('crew')} style={{ background: 'none', border: 'none', fontFamily: 'var(--font-body)', fontSize: 12, color: '#8C7B6B', cursor: 'pointer', marginBottom: 16, textDecoration: 'underline' }}>← Back</button>
             <div style={{ textAlign: 'center', marginBottom: 24 }}>
               <div style={{ fontSize: 40, marginBottom: 8 }}>✨</div>
               <h1 style={S.h1}>What sounds like a good day?</h1>
@@ -769,7 +768,6 @@ export default function PlayPlanPage() {
         {/* ── NOT FUN CHIPS ── */}
         {step === 'not-fun-chips' && (
           <div className="fade-up" style={{ width: '100%' }}>
-            <button onClick={() => setStep('fun-chips')} style={{ background: 'none', border: 'none', fontFamily: 'var(--font-body)', fontSize: 12, color: '#8C7B6B', cursor: 'pointer', marginBottom: 16, textDecoration: 'underline' }}>← Back</button>
             <div style={{ textAlign: 'center', marginBottom: 24 }}>
               <div style={{ fontSize: 40, marginBottom: 8 }}>🚫</div>
               <h1 style={S.h1}>What&apos;s a hard no?</h1>
@@ -803,7 +801,6 @@ export default function PlayPlanPage() {
         {/* ── FOOD ── */}
         {step === 'food' && (
           <div className="fade-up" style={{ width: '100%' }}>
-            <button onClick={() => setStep('not-fun-chips')} style={{ background: 'none', border: 'none', fontFamily: 'var(--font-body)', fontSize: 12, color: '#8C7B6B', cursor: 'pointer', marginBottom: 16, textDecoration: 'underline' }}>← Back</button>
             <div style={{ textAlign: 'center', marginBottom: 24 }}>
               <div style={{ fontSize: 40, marginBottom: 8 }}>🍽️</div>
               <h1 style={S.h1}>Food — loves and avoids.</h1>
@@ -841,7 +838,6 @@ export default function PlayPlanPage() {
         {/* ── GREAT DAY ── */}
         {step === 'great-day' && (
           <div className="fade-up" style={{ width: '100%' }}>
-            <button onClick={() => setStep('food')} style={{ background: 'none', border: 'none', fontFamily: 'var(--font-body)', fontSize: 12, color: '#8C7B6B', cursor: 'pointer', marginBottom: 16, textDecoration: 'underline' }}>← Back</button>
             <div style={{ textAlign: 'center', marginBottom: 24 }}>
               <div style={{ fontSize: 40, marginBottom: 8 }}>🌟</div>
               <h1 style={S.h1}>Picture a perfect day out.</h1>
@@ -863,7 +859,6 @@ export default function PlayPlanPage() {
         {/* ── PRACTICAL ── */}
         {step === 'practical' && (
           <div className="fade-up" style={{ width: '100%' }}>
-            <button onClick={() => setStep('great-day')} style={{ background: 'none', border: 'none', fontFamily: 'var(--font-body)', fontSize: 12, color: '#8C7B6B', cursor: 'pointer', marginBottom: 16, textDecoration: 'underline' }}>← Back</button>
             <div style={{ textAlign: 'center', marginBottom: 24 }}>
               <div style={{ fontSize: 40, marginBottom: 8 }}>🏡</div>
               <h1 style={S.h1}>Home base.</h1>
@@ -899,7 +894,7 @@ export default function PlayPlanPage() {
         {/* ── PLAY STRUCTURE ── */}
         {step === 'play-structure' && (
           <div className="fade-up" style={{ width: '100%' }}>
-            <button onClick={() => setStep('practical')} style={{ background: 'none', border: 'none', fontFamily: 'var(--font-body)', fontSize: 12, color: '#8C7B6B', cursor: 'pointer', marginBottom: 16, textDecoration: 'underline' }}>← Back</button>
+            <button onClick={() => setStep('practical')} style={{ background: 'none', border: 'none', fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: '#1C1917', cursor: 'pointer', marginBottom: 16, padding: 0 }}>← Back</button>
             <div style={{ textAlign: 'center', marginBottom: 28 }}>
               <div style={{ fontSize: 40, marginBottom: 8 }}>⏱️</div>
               <h1 style={S.h1}>Now, today&apos;s plan.</h1>
