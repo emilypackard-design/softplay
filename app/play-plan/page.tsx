@@ -1083,12 +1083,7 @@ export default function PlayPlanPage() {
                   </div>
                   {/* Three actions */}
                   <div style={{ display: 'flex', gap: 6, borderTop: '1px solid #F5EFE0', paddingTop: 10, position: 'relative' }}>
-                    {/* Flag button */}
-                    <button onClick={() => handleFlagOption(opt)} disabled={!!swappingOptionId}
-                      style={{ flex: 1, background: flaggedOptions.has(opt.id) ? '#F5C842' : '#FEF3CC', border: 'none', borderRadius: 12, padding: '7px 4px', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: flaggedOptions.has(opt.id) ? '#C9963A' : '#1C1917', cursor: 'pointer', transition: 'all 0.2s' }}>
-                      🚩 {flaggedOptions.has(opt.id) ? 'Flagged' : 'Flag'}
-                    </button>
-                    {/* Save button */}
+                    {/* Save (Pin) button */}
                     <div style={{ flex: 1, position: 'relative' }}>
                       <button onClick={() => handleSaveToPlayground(opt)} disabled={!!swappingOptionId}
                         style={{ width: '100%', background: pinnedOptions.has(opt.id) ? '#3D9E8F' : '#E5EFE3', border: 'none', borderRadius: 12, padding: '7px 4px', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: pinnedOptions.has(opt.id) ? '#FFFFFF' : '#1C1917', cursor: 'pointer', transition: 'all 0.2s' }}>
@@ -1099,6 +1094,11 @@ export default function PlayPlanPage() {
                     <button onClick={() => handleHeartOption(opt)} disabled={!!swappingOptionId}
                       style={{ flex: 1, background: heartedOptions.has(opt.id) ? '#6E6560' : '#FFF0EC', border: 'none', borderRadius: 12, padding: '7px 4px', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: heartedOptions.has(opt.id) ? '#FFFFFF' : '#1C1917', cursor: 'pointer', transition: 'all 0.2s' }}>
                       ❤️ {heartedOptions.has(opt.id) ? 'Saved' : 'Family Fave'}
+                    </button>
+                    {/* Flag button */}
+                    <button onClick={() => handleFlagOption(opt)} disabled={!!swappingOptionId}
+                      style={{ flex: 1, background: flaggedOptions.has(opt.id) ? '#F5C842' : '#FEF3CC', border: 'none', borderRadius: 12, padding: '7px 4px', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: flaggedOptions.has(opt.id) ? '#C9963A' : '#1C1917', cursor: 'pointer', transition: 'all 0.2s' }}>
+                      🚩 {flaggedOptions.has(opt.id) ? 'Flagged' : 'Flag'}
                     </button>
                     {/* Swap button */}
                     <button onClick={() => handleVetoOption(opt)} disabled={!!swappingOptionId || swapsRemaining <= 0}
@@ -1210,7 +1210,7 @@ export default function PlayPlanPage() {
                 <button
                   key={opt.id}
                   onClick={() => {
-                    setWheelOptions(prev => prev.map(o => o.id === opt.id ? { ...familyFaveHeart, isWildcard: true } : o))
+                    setWheelOptions(prev => prev.map(o => o.id === opt.id ? { ...familyFaveHeart, id: opt.id, name: familyFaveHeart.title, isWildcard: true } : o))
                     setWildcardInWheel(true)
                     setFamilyFaveHeart(null)
                     setStep('countdown')
