@@ -661,20 +661,20 @@ export default function PlayPlanPage() {
         {/* ── WELCOME ── */}
         {step === 'welcome' && (
           <div className="fade-up" style={{ textAlign: 'center', width: '100%' }}>
-            <Link href="/" style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: '#8C7B6B', textDecoration: 'underline', display: 'block', marginBottom: 16 }}>← Back to home</Link>
-            <div style={{ marginBottom: 24 }}><PinwheelIcon size={56} /></div>
-            <h1 style={{ ...S.h1, fontSize: 28, marginBottom: 16 }}>Plan your day.</h1>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: 16, color: '#5C4E3D', lineHeight: 1.65, marginBottom: 36 }}>
-              Before planning your next adventure,<br />choose your cast and crew.
+            <Link href="/" style={{ fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: '#1C1917', textDecoration: 'none', display: 'block', marginBottom: 16, textAlign: 'left' }}>← Back</Link>
+            <div style={{ marginBottom: 24 }}><PinwheelIcon size={56} stem={false} /></div>
+            <h1 style={{ ...S.h1, fontSize: 28, marginBottom: 16 }}>Ready to plan your day?</h1>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: 16, color: '#5C4E3D', lineHeight: 1.65, marginBottom: 16 }}>
+              Every production starts with a cast and crew.
+            </p>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: '#8C7B6B', lineHeight: 1.6, marginBottom: 28 }}>
+              Your Playbill will remember who you are and what you like so you never have to start from scratch.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               <button onClick={() => setStep('crew')} style={S.btnPrimary}>
                 Build my Playbill
               </button>
             </div>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: '#8C7B6B', lineHeight: 1.6, marginTop: 20 }}>
-              Your Playbill stores your preferences<br />and gets smarter with every outing.
-            </p>
           </div>
         )}
 

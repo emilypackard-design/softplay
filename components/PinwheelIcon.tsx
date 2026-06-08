@@ -5,10 +5,12 @@ interface Props {
   size?: number
   spinning?: boolean
   spinDuration?: number // seconds per rotation — higher = slower
+  stem?: boolean // show the stick; false = just the wheel (square)
 }
 
-export default function PinwheelIcon({ size = 48, spinning = false, spinDuration = 1 }: Props) {
-  const totalHeight = Math.round(size * 1.35)
+export default function PinwheelIcon({ size = 48, spinning = false, spinDuration = 1, stem = true }: Props) {
+  const totalHeight = stem ? Math.round(size * 1.35) : size
+  const viewBox = stem ? '0 0 100 135' : '0 0 100 100'
 
   const blades = [
     { color: '#C9963A', stroke: 'none' },        // amber
@@ -21,11 +23,11 @@ export default function PinwheelIcon({ size = 48, spinning = false, spinDuration
     <svg
       width={size}
       height={totalHeight}
-      viewBox="0 0 100 135"
+      viewBox={viewBox}
       style={{ display: 'inline-block', overflow: 'visible' }}
     >
       {/* Stick */}
-      <rect x="45.5" y="54" width="9" height="81" rx="4.5" fill="#C9963A" />
+      {stem && <rect x="45.5" y="54" width="9" height="81" rx="4.5" fill="#C9963A" />}
 
       {/* Spinning wheel group */}
       <g style={{
