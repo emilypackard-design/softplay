@@ -140,6 +140,10 @@ export default function PlaygroundPlayByPlayPage() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#FEFBF3', display: 'flex', flexDirection: 'column' }}>
+      <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px', width: '100%', borderBottom: '1px solid #E8DCC8', background: '#FEFBF3', boxSizing: 'border-box' }}>
+        <Link href="/" style={{ fontFamily: 'var(--font-wordmark)', fontSize: 24, fontWeight: 300, fontStyle: 'italic', color: '#5A4F48', textDecoration: 'none', letterSpacing: '-0.5px' }}>softplay</Link>
+        <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 600, color: '#B0A090' }}>Playground</span>
+      </header>
       <div style={{ borderBottom: '1px solid #E8DCC8', background: '#FFFFFF' }}>
         <div style={{ maxWidth: 480, margin: '0 auto', padding: '16px 20px' }}>
           <button

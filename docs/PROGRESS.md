@@ -1,5 +1,23 @@
 # softplay — Development Progress Log
 
+## ⏭️ NEXT SESSION — Handoff (pending decisions + tests)
+
+**Decisions still open for Emily:**
+- **Playground card action alignment** — Playground city cards (saved items: Heart/Pin toggle, Flag, ✕ delete, "Play this card") aren't a 1:1 match with the Pin·Heart·Flag·Swap set used elsewhere (Playground has no "swap"; it has delete + play). Decide whether/how to align their order, or leave as-is since the context differs.
+- **City-name deduplication** (e.g., "Greystones" entered two ways) — still deferred; needs a reconciliation UI.
+
+**Still to test (full pass):**
+- Playbook end-to-end after the back-button cleanup (no missing/duplicate backs; crew + play-structure backs read bold/colored).
+- Free Play: confirm Pin·Heart·Flag·Skip order, Skip behaves (advances, won't resurface), flag still adds one replacement, 6-card limit holds.
+- Play On: greyed-out removed add-ons; Half Time instant ✕ Swap; flag→replacement.
+- All three pages now have the softplay|Playground header — confirm spacing/gradient feel consistent on mobile.
+- Playground card styling not yet updated to the newer spec (deferred).
+
+**Infra (carried over):**
+- **Restore GitHub→Vercel auto-deploy** (currently deploying via `npx vercel --prod --yes`; auto-deploy webhook still not firing — convenience, not a blocker).
+
+---
+
 ## Session 3 (2026-06-06) — Testing Pass: Playground, Free Play, Playbook
 
 ### Card Actions — Standard Order
@@ -18,14 +36,16 @@
 - **6-card limit restored** (earlier endless-deck auto-replenish was reverted).
 - **Flag adds exactly ONE replacement card** (so flagged cards don't shrink the six); pin/heart/skip work through the set.
 - Veto safety filter: flagged/vetoed cards never re-shown for that city.
-- **DECISION PENDING (Emily's go-ahead):** standardize Free Play actions to **Pin · Heart · Flag · Skip** — drop the redundant 👎 "Never" (overlaps with Flag). Claude recommends doing it.
+- **DONE:** Free Play actions standardized to **Pin · Heart · Flag · Skip** (flex `order`). The 👎 "No Thanks" replaced with a coral **✕ Skip** (same veto+advance behavior). Now matches Playbook/Play On.
 
 ### Wheel chip empty-text bug — FIXED
 - Wildcard swapped into the wheel used `title` (no `name`); wheel chips render `name` → blank chip. Now maps `name: familyFaveHeart.title`. (Was intermittent — only with a wildcard in play.)
 
 ### Back-button audit + standardization
 - **Header (softplay left, pathway name right) already exists and matches on Playbook AND Free Play** (shared `<header>` on all steps).
-- **TODO (CONFIRMED by Emily):** add the same softplay|pathway header bar to the **Playground** pages (main + city detail + play-by-play) to unify with Playbook/Free Play. Playground currently uses only its daisy hero. Need to fit the header above/with the daisy hero without breaking the emerald gradient look.
+- **DONE:** added the **full-width cream softplay|Playground header bar** to ALL Playground pages (main + city detail + play-by-play), matching Playbook/Free Play. Style: `display:flex; justify-content:space-between; padding:16px 20px; width:100%; border-bottom:1px solid #E8DCC8; background:#FEFBF3`. softplay wordmark `#5A4F48` (links home), pathway label `#B0A090`. Sits above the emerald daisy hero; bumped `backgroundSize` to `100% 420px` so the gradient extends down with the content (no cramped feel).
+- Removed the redundant **"← Home"** on the main Playground page (the header's softplay wordmark covers home). City + play-by-play keep their back buttons (they go to the list / one-step-back, not home).
+- **Removed the "Plan a [city] day →" footer button** from the Playground city page — it dropped users into the Playbook flow and muddied the path. Playground is now single-purpose: browse saves + "Play this card".
 - **Playbook:** removed the redundant TOP "← Back" on steps that already have a bottom Back│Next (fun-chips, not-fun-chips, food, great-day, practical).
 - **Kept + restyled** the only-back on **crew** and **play-structure** to bold/colored (14px, 700, ink) — Playground style, not the old underlined grey.
 - **Back-button style rule:** bold/colored (not underlined grey). Color need not be uniform — white on dark backgrounds where chosen (e.g., Playground on emerald), dark ink on light backgrounds (Playbook).
