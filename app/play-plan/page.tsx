@@ -60,16 +60,16 @@ const LOADING_QUIPS = [
 
 const FUN_CHIPS = [
   { id: 'adventure', emoji: '🧗', label: 'Adventure & thrills' },
-  { id: 'galleries', emoji: '🖼️', label: 'Art galleries' },
   { id: 'beach',     emoji: '🏖️', label: 'Beach & coast' },
   { id: 'craft',     emoji: '🎨', label: 'Craft & workshops' },
   { id: 'food',      emoji: '🍜', label: 'Food experiences' },
   { id: 'hiking',    emoji: '🥾', label: 'Hiking & trails' },
   { id: 'history',   emoji: '🏰', label: 'History' },
+  { id: 'shows',     emoji: '🎭', label: 'Live shows' },
   { id: 'markets',   emoji: '🎪', label: 'Markets & fairs' },
   { id: 'playgrounds', emoji: '🛝', label: 'Playgrounds' },
-  { id: 'shows',     emoji: '🎭', label: 'Live shows' },
   { id: 'wander',    emoji: '☕', label: 'Slow wanders & cafés' },
+  { id: 'visual-arts', emoji: '🖼️', label: 'Visual arts' },
 ]
 
 const FOOD_LOVE_CHIPS = [
