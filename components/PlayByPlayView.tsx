@@ -27,19 +27,9 @@ function StopCard({ stop, onFlag, onSwap, accent, swapLoading, stopType, carouse
 
   return (
     <div style={{ background: '#FFFFFF', borderRadius: 20, padding: 18, boxShadow: '0 4px 16px rgba(28,25,23,0.08)', marginBottom: 12, position: 'relative', borderTop: accent ? `3px solid ${accent}` : undefined }}>
-      {/* Action buttons */}
-      {(onFlag || onSwap) && (
+      {/* Top-right: flag only (the Swap/Remove action lives at the bottom-right) */}
+      {onFlag && (
         <div style={{ position: 'absolute', top: 14, right: 14, display: 'flex', gap: 6 }}>
-          {onSwap && stopType !== 'food' && (
-            <button
-              onClick={onSwap}
-              disabled={swapLoading}
-              title="Remove from itinerary"
-              style={{ background: 'none', border: 'none', cursor: swapLoading ? 'not-allowed' : 'pointer', fontSize: 16, opacity: swapLoading ? 0.5 : 0.6, lineHeight: 1 }}
-            >
-              ✕
-            </button>
-          )}
           {onFlag && (
             <button
               onClick={() => setShowFlagMenu(v => !v)}
@@ -111,13 +101,14 @@ function StopCard({ stop, onFlag, onSwap, accent, swapLoading, stopType, carouse
         </div>
       </div>
 
-      {/* Half Time swap — bottom-right, matching the Playbook "✕ Swap" style */}
-      {onSwap && stopType === 'food' && (
+      {/* Bottom-right action pill — Swap for Half Time, Remove for other add-ons.
+          Kept off the title row so long names never collide with it. */}
+      {onSwap && (
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 12 }}>
           <button onClick={onSwap} disabled={swapLoading}
-            title="Swap for another option"
+            title={stopType === 'food' ? 'Swap for another option' : 'Remove from itinerary'}
             style={{ background: '#FFF0EC', border: 'none', borderRadius: 12, padding: '7px 14px', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: '#E07055', cursor: swapLoading ? 'not-allowed' : 'pointer', opacity: swapLoading ? 0.5 : 1 }}>
-            {swapLoading ? '…' : '✕ Swap'}
+            {swapLoading ? '…' : (stopType === 'food' ? '✕ Swap' : '✕ Remove')}
           </button>
         </div>
       )}
