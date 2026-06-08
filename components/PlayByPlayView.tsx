@@ -119,14 +119,14 @@ function StopCard({ stop, onFlag, onSwap, onRemove, accent, swapLoading, stopTyp
           {onSwap && (
             <button onClick={onSwap} disabled={swapLoading}
               title="Swap for another option"
-              style={{ background: '#E5EFE3', border: 'none', borderRadius: 12, padding: '7px 14px', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: '#2C6B60', cursor: swapLoading ? 'not-allowed' : 'pointer', opacity: swapLoading ? 0.5 : 1 }}>
+              style={{ background: '#E5EFE3', border: '1px solid #2C6B60', borderRadius: 12, padding: '7px 14px', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: '#2C6B60', cursor: swapLoading ? 'not-allowed' : 'pointer', opacity: swapLoading ? 0.5 : 1 }}>
               {swapLoading ? '…' : '↻ Swap'}
             </button>
           )}
           {onRemove && (
             <button onClick={onRemove}
               title="Remove from itinerary"
-              style={{ background: '#FFF0EC', border: 'none', borderRadius: 12, padding: '7px 14px', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: '#C2543A', cursor: 'pointer' }}>
+              style={{ background: '#FFF0EC', border: '1px solid #C2543A', borderRadius: 12, padding: '7px 14px', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: '#C2543A', cursor: 'pointer' }}>
               ✕ Remove
             </button>
           )}
