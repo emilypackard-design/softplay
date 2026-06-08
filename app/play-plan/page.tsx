@@ -660,8 +660,8 @@ export default function PlayPlanPage() {
 
         {/* ── WELCOME ── */}
         {step === 'welcome' && (
-          <div className="fade-up" style={{ textAlign: 'center', width: '100%' }}>
-            <Link href="/" style={{ fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: '#1C1917', textDecoration: 'none', display: 'block', marginBottom: 16, textAlign: 'left' }}>← Back</Link>
+          <div className="fade-up" style={{ textAlign: 'left', width: '100%' }}>
+            <Link href="/" style={{ fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: '#1C1917', textDecoration: 'none', display: 'block', marginBottom: 16 }}>← Back</Link>
             <div style={{ marginBottom: 24 }}><PinwheelIcon size={56} stem={false} /></div>
             <h1 style={{ ...S.h1, fontSize: 28, marginBottom: 16 }}>Ready to plan your day?</h1>
             <p style={{ fontFamily: 'var(--font-body)', fontSize: 16, color: '#5C4E3D', lineHeight: 1.65, marginBottom: 16 }}>
