@@ -4,6 +4,18 @@ import { useState, useEffect } from 'react'
 import type { Stop, WheelOption, PlayStructureData, PlaybillData } from '@/types'
 import PinwheelIcon from '@/components/PinwheelIcon'
 
+// Treat two stops as the SAME place even when the name differs slightly
+// (e.g. "Curtis's BBQ" vs "Curtis's BBQ Stand"). Normalise + prefix/equality check.
+const normName = (s: string) => s.toLowerCase().replace(/['’.,&()-]/g, '').replace(/\s+/g, ' ').trim()
+const sameStop = (a: string, b: string) => {
+  const na = normName(a), nb = normName(b)
+  if (!na || !nb) return false
+  if (na === nb) return true
+  const [shorter, longer] = na.length <= nb.length ? [na, nb] : [nb, na]
+  // one name is the other plus a trailing word ("... bbq" vs "... bbq stand")
+  return longer.startsWith(shorter + ' ')
+}
+
 // ── Single stop card (winner or add-on) ───────────────────────────
 
 function StopCard({ stop, onFlag, onSwap, accent, swapLoading, stopType, carouselIndex, carouselTotal, onPrevCarousel, onNextCarousel }: {
@@ -242,7 +254,7 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
       )
       const before = current.length
       for (const stop of wave) {
-        if (stop && !current.some(s => s.name.toLowerCase() === stop.name.toLowerCase())) {
+        if (stop && !current.some(s => sameStop(s.name, stop.name))) {
           current = [...current, stop]
         }
       }
@@ -258,11 +270,9 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
     setFoodExhausted(false)
     try {
       const results = await Promise.all(Array.from({ length: 6 }).map(() => fetchOneFood([winnerStop])))
-      const seen = new Set<string>()
       const options: Stop[] = []
       for (const stop of results) {
-        if (stop && !seen.has(stop.name.toLowerCase())) {
-          seen.add(stop.name.toLowerCase())
+        if (stop && !options.some(o => sameStop(o.name, stop.name))) {
           options.push(stop)
         }
       }
@@ -375,7 +385,7 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
     setSwappingFood(true)
     const stop = await fetchOneFood([winnerStop, ...foodOptions])
     setSwappingFood(false)
-    if (stop && !foodOptions.some(s => s.name.toLowerCase() === stop.name.toLowerCase())) {
+    if (stop && !foodOptions.some(s => sameStop(s.name, stop.name))) {
       const updated = [...foodOptions, stop]
       setFoodOptions(updated)
       setFoodIndex(updated.length - 1)
