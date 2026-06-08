@@ -226,24 +226,44 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
     }
   }, [notes, winnerStop.id])
 
-  // Generate a batch of food options in PARALLEL so the first load is quick and
-  // subsequent swaps are instant (cycling through the batch, like Free Play).
+  // Fetch a single food option, excluding the given stops (and any vetoes/flags).
+  const fetchOneFood = async (existing: Stop[]): Promise<Stop | null> => {
+    try {
+      const res = await fetch('/api/add-on', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ playbill, playStructure, winner: chosenOption, type: 'food', existingStops: existing, vetoes: [...vetoes, ...flaggedVetoes] }),
+      })
+      const data = await res.json()
+      return res.ok && data.stop ? data.stop : null
+    } catch { return null }
+  }
+
+  // Top the list up to 10 DISTINCT options in the background. Sequential so each call
+  // knows the prior ones and never repeats. Updates state as each new one arrives.
+  const topUpFood = async (startList: Stop[]) => {
+    let current = startList
+    let attempts = 0
+    while (current.length < 10 && attempts < 16) {
+      attempts++
+      const stop = await fetchOneFood([winnerStop, ...current])
+      if (stop && !current.some(s => s.name.toLowerCase() === stop.name.toLowerCase())) {
+        current = [...current, stop]
+        setFoodOptions(current)
+      }
+    }
+  }
+
+  // Initial Half Time load: quick parallel batch (instant cycling), then fill to 10 distinct in the background.
   const generateFoodOptions = async () => {
     setLoading('food')
     try {
-      const reqs = Array.from({ length: 6 }).map(() =>
-        fetch('/api/add-on', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ playbill, playStructure, winner: chosenOption, type: 'food', existingStops: [winnerStop], vetoes: [...vetoes, ...flaggedVetoes] }),
-        }).then(r => (r.ok ? r.json() : null)).catch(() => null)
-      )
-      const results = await Promise.all(reqs)
+      const results = await Promise.all(Array.from({ length: 6 }).map(() => fetchOneFood([winnerStop])))
       const seen = new Set<string>()
       const options: Stop[] = []
-      for (const d of results) {
-        if (d && d.stop && !seen.has(d.stop.name)) {
-          seen.add(d.stop.name)
-          options.push(d.stop)
+      for (const stop of results) {
+        if (stop && !seen.has(stop.name.toLowerCase())) {
+          seen.add(stop.name.toLowerCase())
+          options.push(stop)
         }
       }
       if (options.length > 0) {
@@ -251,9 +271,10 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
         setHalfTime(options[0])
         setFoodIndex(0)
       }
+      setLoading(null)
+      void topUpFood(options) // background fill to 10 distinct
     } catch (e) {
       console.error('Error generating food options:', e)
-    } finally {
       setLoading(null)
     }
   }
@@ -313,7 +334,12 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
 
   const handleFlag = (stop: Stop, type?: 'food' | 'before' | 'after' | 'evening') => {
     setFlaggedVetoes(v => [...v, stop.name])
-    // Flags trigger immediate free replacement for add-on items
+    // Half Time: flag advances instantly to the next pre-loaded option (same speed as Swap).
+    if (type === 'food') {
+      swapFood()
+      return
+    }
+    // Before/After/Evening: flag triggers a fresh replacement.
     if (type) {
       generateAddOn(type)
     }
@@ -332,12 +358,16 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
     setRemovalConfirm(null)
   }
 
-  // Instant Half Time swap — cycle through the pre-loaded batch (no API wait, like Free Play)
+  // Instant Half Time swap — advance to the next DISTINCT option (no wrap, so a card
+  // never comes back in the same session). Top up if we're getting near the end.
   const swapFood = () => {
     if (foodOptions.length === 0) return
-    const next = (foodIndex + 1) % foodOptions.length
-    setFoodIndex(next)
-    setHalfTime(foodOptions[next])
+    const next = foodIndex + 1
+    if (next < foodOptions.length) {
+      setFoodIndex(next)
+      setHalfTime(foodOptions[next])
+      if (foodOptions.length < 10 && next >= foodOptions.length - 2) void topUpFood(foodOptions)
+    }
   }
 
   return (
@@ -382,7 +412,7 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
 
       {/* Generated add-ons */}
       {before && <StopCard stop={before} stopType="before" onFlag={handleFlag} onSwap={() => handleRemove('before')} accent="#3D9E8F" />}
-      {halfTime && <StopCard stop={halfTime} stopType="food" onFlag={handleFlag} onSwap={foodOptions.length > 1 ? swapFood : undefined} swapLoading={false} accent="#3D9E8F" />}
+      {halfTime && <StopCard stop={halfTime} stopType="food" onFlag={handleFlag} onSwap={foodIndex < foodOptions.length - 1 ? swapFood : undefined} swapLoading={false} accent="#3D9E8F" />}
       {after && <StopCard stop={after} stopType="after" onFlag={handleFlag} onSwap={() => handleRemove('after')} accent="#3D9E8F" />}
       {evening && <StopCard stop={evening} stopType="evening" onFlag={handleFlag} onSwap={() => handleRemove('evening')} accent="#1C1917" />}
 

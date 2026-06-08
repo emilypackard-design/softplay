@@ -22,6 +22,9 @@
 
 ## Session 4 (2026-06-08) — Screen-by-screen copy/design review + domain
 
+### Season / date awareness (AI prompts)
+- All four suggestion routes (`generate-options`, `free-play-cards`, `play-by-play`, `add-on`) now inject **today's date** (`new Date().toLocaleDateString`) + an instruction to factor the season & typical weather **at the location** (hemisphere-aware). No UI change — server-side prompt only. Auto-adjusts as the calendar moves.
+
 ### Pinwheel (PinwheelIcon component)
 - Added **`spinDuration`** prop (seconds/rotation) and **`stem`** prop (false = wheel only, square viewBox).
 - **Home page** pinwheel: now spins **slowly** (`spinning spinDuration={9}`) — gentle motion, not a "loading" read.
