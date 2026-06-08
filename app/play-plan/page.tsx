@@ -1081,23 +1081,23 @@ export default function PlayPlanPage() {
                     {/* Save (Pin) button */}
                     <div style={{ flex: 1, position: 'relative' }}>
                       <button onClick={() => handleSaveToPlayground(opt)} disabled={!!swappingOptionId}
-                        style={{ width: '100%', background: pinnedOptions.has(opt.id) ? '#3D9E8F' : '#E5EFE3', border: 'none', borderRadius: 12, padding: '7px 4px', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: pinnedOptions.has(opt.id) ? '#FFFFFF' : '#1C1917', cursor: 'pointer', transition: 'all 0.2s' }}>
+                        style={{ width: '100%', background: pinnedOptions.has(opt.id) ? '#3D9E8F' : '#E5EFE3', border: '1px solid #3D9E8F', borderRadius: 12, padding: '7px 4px', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: pinnedOptions.has(opt.id) ? '#FFFFFF' : '#1C1917', cursor: 'pointer', transition: 'all 0.2s' }}>
                         📌 {pinnedOptions.has(opt.id) ? 'Saved' : 'Save for Later'}
                       </button>
                     </div>
                     {/* Heart button */}
                     <button onClick={() => handleHeartOption(opt)} disabled={!!swappingOptionId}
-                      style={{ flex: 1, background: heartedOptions.has(opt.id) ? '#6E6560' : '#FFF0EC', border: 'none', borderRadius: 12, padding: '7px 4px', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: heartedOptions.has(opt.id) ? '#FFFFFF' : '#1C1917', cursor: 'pointer', transition: 'all 0.2s' }}>
+                      style={{ flex: 1, background: heartedOptions.has(opt.id) ? '#6E6560' : '#FFF0EC', border: '1px solid #6E6560', borderRadius: 12, padding: '7px 4px', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: heartedOptions.has(opt.id) ? '#FFFFFF' : '#1C1917', cursor: 'pointer', transition: 'all 0.2s' }}>
                       ❤️ {heartedOptions.has(opt.id) ? 'Saved' : 'Family Fave'}
                     </button>
                     {/* Flag button */}
                     <button onClick={() => handleFlagOption(opt)} disabled={!!swappingOptionId}
-                      style={{ flex: 1, background: flaggedOptions.has(opt.id) ? '#F5C842' : '#FEF3CC', border: 'none', borderRadius: 12, padding: '7px 4px', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: flaggedOptions.has(opt.id) ? '#C9963A' : '#1C1917', cursor: 'pointer', transition: 'all 0.2s' }}>
+                      style={{ flex: 1, background: flaggedOptions.has(opt.id) ? '#F5C842' : '#FEF3CC', border: '1px solid #C9963A', borderRadius: 12, padding: '7px 4px', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: flaggedOptions.has(opt.id) ? '#C9963A' : '#1C1917', cursor: 'pointer', transition: 'all 0.2s' }}>
                       🚩 {flaggedOptions.has(opt.id) ? 'Flagged' : 'Flag'}
                     </button>
                     {/* Swap button */}
                     <button onClick={() => handleVetoOption(opt)} disabled={!!swappingOptionId || swapsRemaining <= 0}
-                      style={{ flex: 1, background: swapsRemaining > 0 ? '#FFF0EC' : '#F5EFE0', border: 'none', borderRadius: 12, padding: '7px 4px', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: swapsRemaining > 0 ? '#E07055' : '#B0A090', cursor: swapsRemaining > 0 && !swappingOptionId ? 'pointer' : 'not-allowed' }}>
+                      style={{ flex: 1, background: swapsRemaining > 0 ? '#FFF0EC' : '#F5EFE0', border: `1px solid ${swapsRemaining > 0 ? '#E07055' : '#C9BEB0'}`, borderRadius: 12, padding: '7px 4px', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: swapsRemaining > 0 ? '#E07055' : '#B0A090', cursor: swapsRemaining > 0 && !swappingOptionId ? 'pointer' : 'not-allowed' }}>
                       {swappingOptionId === opt.id ? '…' : `✕ Swap${swapsRemaining < 2 ? ` (${swapsRemaining})` : ''}`}
                     </button>
 

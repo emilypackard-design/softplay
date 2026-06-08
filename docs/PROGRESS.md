@@ -2,6 +2,10 @@
 
 ## ⏭️ NEXT SESSION — Handoff (pending decisions + tests)
 
+> 🔔 **REMINDER for Emily:** you have **one more Playground copy change** to make — tell Claude the details at the start of next session.
+
+> 📁 **Project moved out of OneDrive.** Repo now lives at **`C:\Users\Emily\dev\softplay`** (stopped the sync prompts + build locks). Deploy as always: `npx vercel --prod --yes` from there. Live at `mysoftplay.app`.
+
 **Decisions still open for Emily:**
 - **Playground card action alignment** — Playground city cards (saved items: Heart/Pin toggle, Flag, ✕ delete, "Play this card") aren't a 1:1 match with the Pin·Heart·Flag·Swap set used elsewhere (Playground has no "swap"; it has delete + play). Decide whether/how to align their order, or leave as-is since the context differs.
 - **City-name deduplication** (e.g., "Greystones" entered two ways) — still deferred; needs a reconciliation UI.
