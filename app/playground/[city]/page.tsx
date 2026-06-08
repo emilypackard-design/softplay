@@ -17,6 +17,8 @@ export default function CityDetailPage() {
   const [mounted, setMounted] = useState(false)
   const [flaggedIds, setFlaggedIds] = useState<Set<string>>(new Set())
   const [flagPopupId, setFlagPopupId] = useState<string | null>(null)
+  const [toast, setToast] = useState<string | null>(null)
+  const [justMovedId, setJustMovedId] = useState<string | null>(null)
 
   useEffect(() => {
     if (!city) return
@@ -58,7 +60,8 @@ export default function CityDetailPage() {
     )
     localStorage.setItem(PLAYGROUND_KEY, JSON.stringify(updated))
 
-    // Update local state
+    // Update local state — moved card lands at the TOP of its new section
+    const movingToHeart = save.type === 'pin'
     if (save.type === 'heart') {
       setHearts(hearts.filter(s => s.id !== save.id))
       setPins([{ ...save, type: 'pin' }, ...pins])
@@ -66,6 +69,12 @@ export default function CityDetailPage() {
       setPins(pins.filter(s => s.id !== save.id))
       setHearts([{ ...save, type: 'heart' }, ...hearts])
     }
+
+    // Feedback: toast + brief "land" highlight on the moved card
+    setToast(movingToHeart ? '❤️ Saved to Family Faves' : '📌 Moved to Save for Later')
+    setJustMovedId(save.id)
+    window.setTimeout(() => setToast(null), 1800)
+    window.setTimeout(() => setJustMovedId(prev => (prev === save.id ? null : prev)), 600)
   }
 
   const handleDelete = (id: string) => {
@@ -120,6 +129,10 @@ export default function CityDetailPage() {
 
   return (
     <div style={S.screen}>
+      <style>{`
+        @keyframes pg-card-land { from { transform: translateY(-8px); opacity: 0.35; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes pg-toast-in { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
+      `}</style>
       <header style={S.topBar}>
         <Link href="/" style={S.wordmark}>softplay</Link>
         <span style={S.pathwayLabel}>Playground</span>
@@ -158,7 +171,7 @@ export default function CityDetailPage() {
               <div style={S.line} />
             </div>
             {hearts.map(save => !flaggedIds.has(save.id) && (
-              <div key={save.id} style={{ borderRadius: 14, padding: 0, marginBottom: 12, background: '#FFFFFF', overflow: 'hidden' }}>
+              <div key={save.id} style={{ borderRadius: 14, padding: 0, marginBottom: 12, background: '#FFFFFF', overflow: 'hidden', animation: justMovedId === save.id ? 'pg-card-land 0.35s ease-out' : undefined }}>
                 {/* Accent line */}
                 <div style={{ height: 4, background: 'linear-gradient(90deg, #E07055, #E8A0A8)' }} />
 
@@ -248,7 +261,7 @@ export default function CityDetailPage() {
               <div style={S.line} />
             </div>
             {pins.map(save => !flaggedIds.has(save.id) && (
-              <div key={save.id} style={{ borderRadius: 14, padding: 0, marginBottom: 12, background: '#FFFFFF', overflow: 'hidden' }}>
+              <div key={save.id} style={{ borderRadius: 14, padding: 0, marginBottom: 12, background: '#FFFFFF', overflow: 'hidden', animation: justMovedId === save.id ? 'pg-card-land 0.35s ease-out' : undefined }}>
                 {/* Accent line */}
                 <div style={{ height: 4, background: 'linear-gradient(90deg, #8FB88A, #3D9E8F)' }} />
 
@@ -337,6 +350,12 @@ export default function CityDetailPage() {
           </div>
         )}
       </main>
+
+      {toast && (
+        <div style={{ position: 'fixed', bottom: 28, left: '50%', transform: 'translateX(-50%)', background: '#1C1917', color: '#FEFBF3', borderRadius: 14, padding: '10px 18px', fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 600, zIndex: 1000, boxShadow: '0 4px 16px rgba(28,25,23,0.3)', animation: 'pg-toast-in 0.25s ease-out', whiteSpace: 'nowrap' }}>
+          {toast}
+        </div>
+      )}
     </div>
   )
 }
