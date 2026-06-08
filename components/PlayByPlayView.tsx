@@ -171,6 +171,7 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
   const [flaggedVetoes, setFlaggedVetoes] = useState<string[]>([])
   const [foodOptions, setFoodOptions] = useState<Stop[]>([])
   const [foodIndex, setFoodIndex] = useState(0)
+  const [foodExhausted, setFoodExhausted] = useState(false) // true when no more distinct food options can be found
   const [removalConfirm, setRemovalConfirm] = useState<'before' | 'after' | 'evening' | null>(null)
   // Once an add-on is removed, its "Play On" button is greyed out — one choice, take it or leave it.
   const [dismissed, setDismissed] = useState<Set<'before' | 'after' | 'evening'>>(new Set())
@@ -251,11 +252,13 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
         setFoodOptions(current)
       }
     }
+    if (current.length < 10) setFoodExhausted(true) // couldn't find a full 10
   }
 
   // Initial Half Time load: quick parallel batch (instant cycling), then fill to 10 distinct in the background.
   const generateFoodOptions = async () => {
     setLoading('food')
+    setFoodExhausted(false)
     try {
       const results = await Promise.all(Array.from({ length: 6 }).map(() => fetchOneFood([winnerStop])))
       const seen = new Set<string>()
@@ -358,15 +361,30 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
     setRemovalConfirm(null)
   }
 
-  // Instant Half Time swap — advance to the next DISTINCT option (no wrap, so a card
-  // never comes back in the same session). Top up if we're getting near the end.
-  const swapFood = () => {
+  // Half Time swap — advance to the next DISTINCT option (no wrap, so a card never
+  // comes back this session). Instant when buffered; if you're ahead of the buffer it
+  // fetches one on demand (button shows "…" rather than disappearing).
+  const swapFood = async () => {
     if (foodOptions.length === 0) return
     const next = foodIndex + 1
     if (next < foodOptions.length) {
       setFoodIndex(next)
       setHalfTime(foodOptions[next])
-      if (foodOptions.length < 10 && next >= foodOptions.length - 2) void topUpFood(foodOptions)
+      if (foodOptions.length < 10 && !foodExhausted && next >= foodOptions.length - 2) void topUpFood(foodOptions)
+      return
+    }
+    // At the edge of the buffer — fetch a fresh distinct one now
+    if (foodOptions.length >= 10 || foodExhausted || swappingFood) return
+    setSwappingFood(true)
+    const stop = await fetchOneFood([winnerStop, ...foodOptions])
+    setSwappingFood(false)
+    if (stop && !foodOptions.some(s => s.name.toLowerCase() === stop.name.toLowerCase())) {
+      const updated = [...foodOptions, stop]
+      setFoodOptions(updated)
+      setFoodIndex(updated.length - 1)
+      setHalfTime(stop)
+    } else {
+      setFoodExhausted(true)
     }
   }
 
@@ -412,7 +430,7 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
 
       {/* Generated add-ons */}
       {before && <StopCard stop={before} stopType="before" onFlag={handleFlag} onSwap={() => handleRemove('before')} accent="#3D9E8F" />}
-      {halfTime && <StopCard stop={halfTime} stopType="food" onFlag={handleFlag} onSwap={foodIndex < foodOptions.length - 1 ? swapFood : undefined} swapLoading={false} accent="#3D9E8F" />}
+      {halfTime && <StopCard stop={halfTime} stopType="food" onFlag={handleFlag} onSwap={((foodIndex < foodOptions.length - 1) || (foodOptions.length < 10 && !foodExhausted)) ? swapFood : undefined} swapLoading={swappingFood} accent="#3D9E8F" />}
       {after && <StopCard stop={after} stopType="after" onFlag={handleFlag} onSwap={() => handleRemove('after')} accent="#3D9E8F" />}
       {evening && <StopCard stop={evening} stopType="evening" onFlag={handleFlag} onSwap={() => handleRemove('evening')} accent="#1C1917" />}
 
