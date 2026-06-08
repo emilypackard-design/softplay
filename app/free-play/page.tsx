@@ -151,8 +151,8 @@ function SwipeCard({ card, onAction, disabled }: {
 
       {/* Action buttons */}
       <div style={{ display: 'flex', gap: 0, justifyContent: 'space-between', marginTop: 28, paddingBottom: 8, position: 'relative' }}>
-        {/* No Thanks button */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+        {/* Skip button */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, order: 4 }}>
           <button
             onClick={handleNoThanks}
             onMouseDown={() => !disabled && setPressedButton('noThanks')}
@@ -177,13 +177,13 @@ function SwipeCard({ card, onAction, disabled }: {
               transition: 'transform 0.08s ease'
             }}
           >
-            <span style={{ fontSize: 22 }}>👎</span>
+            <span style={{ fontSize: 22, color: '#E07055', fontWeight: 700 }}>✕</span>
           </button>
-          <span style={{ fontFamily: 'var(--font-heading)', fontSize: 8, fontWeight: 800, color: '#1C1917', letterSpacing: '0.3px', textTransform: 'uppercase', textAlign: 'center', width: 56, lineHeight: 1.2 }}>No Thanks</span>
+          <span style={{ fontFamily: 'var(--font-heading)', fontSize: 8, fontWeight: 800, color: '#1C1917', letterSpacing: '0.3px', textTransform: 'uppercase', textAlign: 'center', width: 56, lineHeight: 1.2 }}>Skip</span>
         </div>
 
         {/* Flag button with popup */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, position: 'relative' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, position: 'relative', order: 3 }}>
           <button
             onClick={handleFlag}
             onMouseDown={() => !disabled && setPressedButton('flag')}
@@ -232,7 +232,7 @@ function SwipeCard({ card, onAction, disabled }: {
         </div>
 
         {/* Save for Later button */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, order: 1 }}>
           <button
             onClick={handlePin}
             onMouseDown={() => !disabled && setPressedButton('pin')}
@@ -263,7 +263,7 @@ function SwipeCard({ card, onAction, disabled }: {
         </div>
 
         {/* Save as Fave button */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, order: 2 }}>
           <button
             onClick={handleHeart}
             onMouseDown={() => !disabled && setPressedButton('heart')}
