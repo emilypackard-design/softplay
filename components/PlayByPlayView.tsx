@@ -30,15 +30,13 @@ function StopCard({ stop, onFlag, onSwap, accent, swapLoading, stopType, carouse
       {/* Top-right: flag only (the Swap/Remove action lives at the bottom-right) */}
       {onFlag && (
         <div style={{ position: 'absolute', top: 14, right: 14, display: 'flex', gap: 6 }}>
-          {onFlag && (
-            <button
-              onClick={() => setShowFlagMenu(v => !v)}
-              title="Flag an issue"
-              style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, opacity: 0.4, lineHeight: 1 }}
-            >
-              🚩
-            </button>
-          )}
+          <button
+            onClick={() => setShowFlagMenu(v => !v)}
+            title="Flag an issue"
+            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, opacity: 0.4, lineHeight: 1 }}
+          >
+            🚩
+          </button>
           {showFlagMenu && (
             <div style={{ position: 'absolute', right: 0, top: 28, background: '#FFFFFF', borderRadius: 16, boxShadow: '0 8px 24px rgba(28,25,23,0.15)', padding: '8px 0', zIndex: 10, minWidth: 200 }}>
               {[
