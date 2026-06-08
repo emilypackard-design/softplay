@@ -15,6 +15,38 @@
 
 **Infra (carried over):**
 - **Restore GitHub→Vercel auto-deploy** (currently deploying via `npx vercel --prod --yes`; auto-deploy webhook still not firing — convenience, not a blocker).
+- **Custom domain `mysoftplay.app`** is now added to the Vercel project (DNS on Cloudflare, auto-configured, grey-cloud/DNS-only, propagating ~10-20 min). Domain attaches to the PROJECT → no reconfiguration needed when Supabase is added in V1.5. `softplay-five.vercel.app` still works.
+- **V1.5 reminder — migrate testers:** the 2 current testers stay on `softplay-five.vercel.app` (their Playground saves live in that origin's localStorage). Once Supabase (cloud storage) lands, move everyone to `mysoftplay.app`. localStorage is per-origin, so saves do NOT carry across the two URLs until cloud sync exists.
+
+---
+
+## Session 4 (2026-06-08) — Screen-by-screen copy/design review + domain
+
+### Pinwheel (PinwheelIcon component)
+- Added **`spinDuration`** prop (seconds/rotation) and **`stem`** prop (false = wheel only, square viewBox).
+- **Home page** pinwheel: now spins **slowly** (`spinning spinDuration={9}`) — gentle motion, not a "loading" read.
+- **Playbook welcome** pinwheel: **static** (no spin), stemmed, centered.
+- **Colors:** kept ORIGINAL blade colors (amber `#C9963A`, teal `#3D9E8F`, coral `#E07055`, yellow `#F5C842`) — a proposed amber/yellow/ink update was tried then reverted (specs were outdated). Stem stays amber `#C9963A`.
+
+### Playbook welcome ("second page")
+- New copy: H1 "Ready to plan your day?", then two **equal-weight** body lines (both 16px `#5C4E3D`): "Every production starts with a cast and crew." / "Your Playbill will remember who you are and what you like so you never have to start from scratch." → button "Build my Playbill".
+- Text **centered** (tried left-aligned, reverted — looked worse). Back button "← Back" (bold ink) anchored top-left.
+
+### Cast Members (crew step)
+- 🎭 now sits in a **frosted circle badge**: 64×64, `background: rgba(255,255,255,0.7)`, `border-radius: 50%`, centered, `font-size: 30`, `box-shadow: 0 2px 12px rgba(28,25,23,0.08)`.
+
+### Likes chips (FUN_CHIPS)
+- Removed **"Art galleries"** (was duplicated in the dislikes list).
+- Added **"Visual arts"** (sentence case to match convention, 🖼️ icon).
+- **Alphabetized** the full list (also fixed "Live shows" which was out of order).
+
+### Playground header rollout (carried from Session 3, completed)
+- Full-width cream **softplay | Playground** bar on main + city + play-by-play pages.
+- City page: more breathing room above the city name (header padding 80→76 with the bar), emerald gradient extended to `100% 420px`; main page matched (420px).
+- Removed redundant "← Home" on main Playground page; removed "Plan a [city] day" footer button.
+
+### Free Play actions — standardized
+- Now **Pin · Heart · Flag · Skip** (was "No Thanks 👎 · Flag · Pin · Heart"). 👎 replaced with coral **✕ Skip**.
 
 ---
 
