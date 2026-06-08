@@ -662,7 +662,7 @@ export default function PlayPlanPage() {
         {step === 'welcome' && (
           <div className="fade-up" style={{ textAlign: 'center', width: '100%' }}>
             <Link href="/" style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: '#8C7B6B', textDecoration: 'underline', display: 'block', marginBottom: 16 }}>← Back to home</Link>
-            <div style={{ marginBottom: 24 }}><PinwheelIcon size={56} spinning /></div>
+            <div style={{ marginBottom: 24 }}><PinwheelIcon size={56} /></div>
             <h1 style={{ ...S.h1, fontSize: 28, marginBottom: 16 }}>Plan your day.</h1>
             <p style={{ fontFamily: 'var(--font-body)', fontSize: 16, color: '#5C4E3D', lineHeight: 1.65, marginBottom: 36 }}>
               Before planning your next adventure,<br />choose your cast and crew.
@@ -683,7 +683,7 @@ export default function PlayPlanPage() {
           <div className="fade-up" style={{ width: '100%' }}>
             <button onClick={() => setStep('welcome')} style={{ background: 'none', border: 'none', fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: '#1C1917', cursor: 'pointer', marginBottom: 16, padding: 0 }}>← Back</button>
             <div style={{ textAlign: 'center', marginBottom: 28 }}>
-              <div style={{ fontSize: 40, marginBottom: 8 }}>🎭</div>
+              <div style={{ width: 64, height: 64, background: 'rgba(255,255,255,0.7)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 30, boxShadow: '0 2px 12px rgba(28,25,23,0.08)', margin: '0 auto 8px' }}>🎭</div>
               <h1 style={S.h1}>Cast Members</h1>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: '#8C7B6B', marginTop: 6, lineHeight: 1.6 }}>
                 The regulars. You can change the cast and crew for future productions.

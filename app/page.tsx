@@ -43,7 +43,7 @@ export default function Home() {
 
       {/* Brand */}
       <div className="brand-section" style={{ textAlign: 'center', marginBottom: 48 }}>
-        <div className="brand-icon" style={{ marginBottom: 20 }}><PinwheelIcon size={72} /></div>
+        <div className="brand-icon" style={{ marginBottom: 20 }}><PinwheelIcon size={72} spinning spinDuration={9} /></div>
         <h1 className="brand-title" style={{
           fontFamily: 'var(--font-wordmark)',
           fontSize: 54,

@@ -4,9 +4,10 @@
 interface Props {
   size?: number
   spinning?: boolean
+  spinDuration?: number // seconds per rotation — higher = slower
 }
 
-export default function PinwheelIcon({ size = 48, spinning = false }: Props) {
+export default function PinwheelIcon({ size = 48, spinning = false, spinDuration = 1 }: Props) {
   const totalHeight = Math.round(size * 1.35)
 
   const blades = [
@@ -29,7 +30,7 @@ export default function PinwheelIcon({ size = 48, spinning = false }: Props) {
       {/* Spinning wheel group */}
       <g style={{
         transformOrigin: '50px 50px',
-        animation: spinning ? 'spin-pinwheel 1s linear infinite' : 'none',
+        animation: spinning ? `spin-pinwheel ${spinDuration}s linear infinite` : 'none',
       }}>
         {blades.map((blade, i) => (
           <path
