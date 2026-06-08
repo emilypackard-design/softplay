@@ -243,16 +243,24 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
   // knows the prior ones and never repeats. Updates state as each new one arrives.
   const topUpFood = async (startList: Stop[]) => {
     let current = startList
-    let attempts = 0
-    while (current.length < 10 && attempts < 16) {
-      attempts++
-      const stop = await fetchOneFood([winnerStop, ...current])
-      if (stop && !current.some(s => s.name.toLowerCase() === stop.name.toLowerCase())) {
-        current = [...current, stop]
-        setFoodOptions(current)
+    let staleWaves = 0
+    // Fetch in PARALLEL WAVES (each wave knows the current list) so the buffer fills
+    // in a few seconds instead of one-at-a-time. Stop when full or a wave adds nothing.
+    while (current.length < 10 && staleWaves < 3) {
+      const need = 10 - current.length
+      const wave = await Promise.all(
+        Array.from({ length: Math.max(need, 4) }).map(() => fetchOneFood([winnerStop, ...current]))
+      )
+      const before = current.length
+      for (const stop of wave) {
+        if (stop && !current.some(s => s.name.toLowerCase() === stop.name.toLowerCase())) {
+          current = [...current, stop]
+        }
       }
+      setFoodOptions(current)
+      staleWaves = current.length === before ? staleWaves + 1 : 0
     }
-    if (current.length < 10) setFoodExhausted(true) // couldn't find a full 10
+    if (current.length < 10) setFoodExhausted(true) // location can't yield a full 10
   }
 
   // Initial Half Time load: quick parallel batch (instant cycling), then fill to 10 distinct in the background.
@@ -390,13 +398,12 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
 
   return (
     <div>
-      {/* Header */}
+      {/* Header — title + icon only (the description lives on the card below, no repeat) */}
       <div style={{ textAlign: 'center', marginBottom: 24 }}>
         <div style={{ fontSize: 38, marginBottom: 8 }}>{chosenOption.emoji}</div>
-        <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 24, fontWeight: 800, color: '#1C1917', margin: '0 0 6px' }}>
+        <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 24, fontWeight: 800, color: '#1C1917', margin: 0 }}>
           {winnerStop.name}
         </h2>
-        <p style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: '#8C7B6B', margin: 0 }}>{chosenOption.pitch}</p>
       </div>
 
       {/* Crew summary — only show if user explicitly set crew or session notes */}
@@ -478,7 +485,6 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
           <button onClick={() => {
             const itinerary = [
               `${chosenOption.emoji} ${chosenOption.name}`,
-              chosenOption.pitch,
               '',
               '📍 Main Event',
               `${winnerStop.name}`,
