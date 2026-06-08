@@ -13,10 +13,10 @@ export default function PinwheelIcon({ size = 48, spinning = false, spinDuration
   const viewBox = stem ? '0 0 100 135' : '0 0 100 100'
 
   const blades = [
-    { color: '#C9963A', stroke: 'none' },        // amber
+    { color: '#E8A020', stroke: 'none' },        // amber
     { color: '#3D9E8F', stroke: 'none' },         // teal
     { color: '#E07055', stroke: 'none' },         // coral
-    { color: '#F5C842', stroke: 'rgba(28,25,23,0.2)' }, // yellow — stroke so it reads on yellow bg
+    { color: '#FFE566', stroke: 'rgba(28,25,23,0.2)' }, // yellow — stroke so it reads on yellow bg
   ]
 
   return (
