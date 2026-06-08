@@ -18,10 +18,11 @@ const sameStop = (a: string, b: string) => {
 
 // ── Single stop card (winner or add-on) ───────────────────────────
 
-function StopCard({ stop, onFlag, onSwap, accent, swapLoading, stopType, carouselIndex, carouselTotal, onPrevCarousel, onNextCarousel }: {
+function StopCard({ stop, onFlag, onSwap, onRemove, accent, swapLoading, stopType, carouselIndex, carouselTotal, onPrevCarousel, onNextCarousel }: {
   stop: Stop
   onFlag?: (stop: Stop, type?: 'food' | 'before' | 'after' | 'evening') => void
   onSwap?: () => void
+  onRemove?: () => void
   accent?: string
   swapLoading?: boolean
   stopType?: 'food' | 'before' | 'after' | 'evening'
@@ -111,15 +112,24 @@ function StopCard({ stop, onFlag, onSwap, accent, swapLoading, stopType, carouse
         </div>
       </div>
 
-      {/* Bottom-right action pill — Swap for Half Time, Remove for other add-ons.
-          Kept off the title row so long names never collide with it. */}
-      {onSwap && (
-        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 12 }}>
-          <button onClick={onSwap} disabled={swapLoading}
-            title={stopType === 'food' ? 'Swap for another option' : 'Remove from itinerary'}
-            style={{ background: '#FFF0EC', border: 'none', borderRadius: 12, padding: '7px 14px', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: '#E07055', cursor: swapLoading ? 'not-allowed' : 'pointer', opacity: swapLoading ? 0.5 : 1 }}>
-            {swapLoading ? '…' : (stopType === 'food' ? '✕ Swap' : '✕ Remove')}
-          </button>
+      {/* Bottom-right action pills — kept off the title row so long names never collide.
+          Half Time gets "↻ Swap" (cycle) + "✕ Remove"; other add-ons just "✕ Remove". */}
+      {(onSwap || onRemove) && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 12 }}>
+          {onSwap && (
+            <button onClick={onSwap} disabled={swapLoading}
+              title="Swap for another option"
+              style={{ background: '#E5EFE3', border: 'none', borderRadius: 12, padding: '7px 14px', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: '#3D9E8F', cursor: swapLoading ? 'not-allowed' : 'pointer', opacity: swapLoading ? 0.5 : 1 }}>
+              {swapLoading ? '…' : '↻ Swap'}
+            </button>
+          )}
+          {onRemove && (
+            <button onClick={onRemove}
+              title="Remove from itinerary"
+              style={{ background: '#FFF0EC', border: 'none', borderRadius: 12, padding: '7px 14px', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: '#E07055', cursor: 'pointer' }}>
+              ✕ Remove
+            </button>
+          )}
         </div>
       )}
     </div>
@@ -173,9 +183,9 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
   const [foodOptions, setFoodOptions] = useState<Stop[]>([])
   const [foodIndex, setFoodIndex] = useState(0)
   const [foodExhausted, setFoodExhausted] = useState(false) // true when no more distinct food options can be found
-  const [removalConfirm, setRemovalConfirm] = useState<'before' | 'after' | 'evening' | null>(null)
+  const [removalConfirm, setRemovalConfirm] = useState<'before' | 'after' | 'evening' | 'food' | null>(null)
   // Once an add-on is removed, its "Play On" button is greyed out — one choice, take it or leave it.
-  const [dismissed, setDismissed] = useState<Set<'before' | 'after' | 'evening'>>(new Set())
+  const [dismissed, setDismissed] = useState<Set<'before' | 'after' | 'evening' | 'food'>>(new Set())
   const [notes, setNotes] = useState<string>('')
   // Swaps per stop type (food gets 10, others get 3) — flags don't count
   const [swapsRemaining, setSwapsRemaining] = useState({
@@ -355,15 +365,21 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
     }
   }
 
-  const handleRemove = (type: 'before' | 'after' | 'evening') => {
+  const handleRemove = (type: 'before' | 'after' | 'evening' | 'food') => {
     // Show confirmation popup
     setRemovalConfirm(type)
   }
 
-  const confirmRemoval = (type: 'before' | 'after' | 'evening') => {
+  const confirmRemoval = (type: 'before' | 'after' | 'evening' | 'food') => {
     if (type === 'before') setBefore(null)
     if (type === 'after') setAfter(null)
     if (type === 'evening') setEvening(null)
+    if (type === 'food') {
+      setHalfTime(null)
+      setFoodOptions([])
+      setFoodIndex(0)
+      setFoodExhausted(false)
+    }
     setDismissed(prev => new Set([...prev, type]))
     setRemovalConfirm(null)
   }
@@ -435,10 +451,10 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
       <StopCard stop={winnerStop} accent="#F2C94C" />
 
       {/* Generated add-ons */}
-      {before && <StopCard stop={before} stopType="before" onFlag={handleFlag} onSwap={() => handleRemove('before')} accent="#3D9E8F" />}
-      {halfTime && <StopCard stop={halfTime} stopType="food" onFlag={handleFlag} onSwap={((foodIndex < foodOptions.length - 1) || (foodOptions.length < 10 && !foodExhausted)) ? swapFood : undefined} swapLoading={swappingFood} accent="#3D9E8F" />}
-      {after && <StopCard stop={after} stopType="after" onFlag={handleFlag} onSwap={() => handleRemove('after')} accent="#3D9E8F" />}
-      {evening && <StopCard stop={evening} stopType="evening" onFlag={handleFlag} onSwap={() => handleRemove('evening')} accent="#1C1917" />}
+      {before && <StopCard stop={before} stopType="before" onFlag={handleFlag} onRemove={() => handleRemove('before')} accent="#3D9E8F" />}
+      {halfTime && <StopCard stop={halfTime} stopType="food" onFlag={handleFlag} onSwap={((foodIndex < foodOptions.length - 1) || (foodOptions.length < 10 && !foodExhausted)) ? swapFood : undefined} onRemove={() => handleRemove('food')} swapLoading={swappingFood} accent="#3D9E8F" />}
+      {after && <StopCard stop={after} stopType="after" onFlag={handleFlag} onRemove={() => handleRemove('after')} accent="#3D9E8F" />}
+      {evening && <StopCard stop={evening} stopType="evening" onFlag={handleFlag} onRemove={() => handleRemove('evening')} accent="#1C1917" />}
 
       {/* Play On section */}
       {((!before && showBefore) || (!after && showAfter) || !evening) && (
@@ -447,7 +463,7 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
           <p style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: '#8C7B6B', marginBottom: 14 }}>Build your day — tap to add</p>
 
           {showBefore && <AddOnButton emoji="🌅" label="Add something before" onClick={() => generateAddOn('before')} loading={loading === 'before'} done={!!before} disabled={dismissed.has('before')} />}
-          {!halfTime && <AddOnButton emoji="🍽️" label="Half Time — find a food stop" onClick={generateFoodOptions} loading={loading === 'food'} done={!!halfTime} />}
+          {!halfTime && <AddOnButton emoji="🍽️" label="Half Time — find a food stop" onClick={generateFoodOptions} loading={loading === 'food'} done={!!halfTime} disabled={dismissed.has('food')} />}
           {showAfter && <AddOnButton emoji="🌆" label="Add something after" onClick={() => generateAddOn('after')} loading={loading === 'after'} done={!!after} disabled={dismissed.has('after')} />}
           <AddOnButton emoji="🌙" label="The play's the thing — add an evening" onClick={() => generateAddOn('evening')} loading={loading === 'evening'} done={!!evening} disabled={dismissed.has('evening')} />
 
@@ -547,7 +563,7 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
               Remove from itinerary?
             </h3>
             <p style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: '#8C7B6B', margin: '0 0 24px', lineHeight: 1.5 }}>
-              This {removalConfirm} activity will be removed from your day.
+              {removalConfirm === 'food' ? 'Half Time' : `This ${removalConfirm}`} will be removed from your day.
             </p>
             <div style={{ display: 'flex', gap: 12 }}>
               <button onClick={() => setRemovalConfirm(null)}
