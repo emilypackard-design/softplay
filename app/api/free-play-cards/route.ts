@@ -20,7 +20,11 @@ ${playbill.greatDay ? `- Days that work: ${playbill.greatDay}` : ''}
 
     const preferencesConstraint = preferences ? `User preferences: ${preferences}` : ''
 
+    const todayStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
+
     const prompt = `You are a knowledgeable local friend suggesting things to do in ${city} for ${crewDesc}.
+
+Today's date is ${todayStr}. Take the season and typical weather at ${city} into account — suggest things that fit this time of year (e.g. no outdoor swimming in winter, no ski trips in summer; lean into seasonal options like markets, festivals, autumn foliage, beaches, or holiday events when they fit). The location's hemisphere determines which season it is.
 
 ${playbillContext}
 

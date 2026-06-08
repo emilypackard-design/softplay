@@ -58,7 +58,11 @@ ${playbill.cityAndPractical.split('|')[1] ? `- Frequent destinations: ${playbill
 
 TODAY'S ACTUAL CREW (may differ from family profile): ${actualSessionCrew}`
 
+    const todayStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
+
     const prompt = `You are a knowledgeable local friend helping plan a family day out. You know the local area well. You are warm, specific, and you never suggest tourist traps or generic options.
+
+Today's date is ${todayStr}. Take the season and typical weather at ${playStructure.city} into account — suggest things that fit this time of year (e.g. no outdoor swimming in winter, no ski trips in summer; lean into seasonal options like markets, festivals, autumn foliage, beaches, or holiday events when they fit). The location's hemisphere determines which season it is.
 
 ${familyContext}
 

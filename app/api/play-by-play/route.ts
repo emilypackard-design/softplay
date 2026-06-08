@@ -20,7 +20,11 @@ Starting from: ${playStructure.city}
 ${playbill.cityAndPractical.split('|')[0] ? `Home city: ${playbill.cityAndPractical.split('|')[0]}` : ''}
 ${playbill.cityAndPractical.split('|')[1] ? `Frequent destinations: ${playbill.cityAndPractical.split('|')[1]}` : ''}`
 
+    const todayStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
+
     const prompt = `You are a knowledgeable local friend giving practical details about a family day out destination.
+
+Today's date is ${todayStr}. Take the season and typical weather at ${playStructure.city} into account when picking the Half Time food stop and any seasonal tips. The location's hemisphere determines which season it is.
 
 The family has chosen: ${chosenOption.emoji} ${chosenOption.name} — "${chosenOption.pitch}"
 

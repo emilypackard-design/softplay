@@ -27,7 +27,11 @@ export async function POST(req: NextRequest) {
       ? `Food preferences — loves: ${playbill.foodLoveChips?.join(', ') || 'flexible'}. Avoids: ${playbill.foodAvoidChips?.join(', ') || 'nothing specific'}.`
       : ''
 
+    const todayStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
+
     const prompt = `You are a knowledgeable local friend adding one stop to a family day out.
+
+Today's date is ${todayStr}. Take the season and typical weather at ${playStructure.city} into account — the add-on should fit this time of year. The location's hemisphere determines which season it is.
 
 Main event: ${winner.emoji} ${winner.name} — "${winner.pitch}"
 Location: ${playStructure.city}
