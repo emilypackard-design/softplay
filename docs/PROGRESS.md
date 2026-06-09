@@ -2,16 +2,14 @@
 
 ## ⏭️ NEXT SESSION — Handoff (pending decisions + tests)
 
-> ⏸️ **WHERE WE LEFT OFF (computer died mid-session):** Last action was deploying the **Playground card "land" highlight at 700ms** (the fade/slide + green-ring pulse when a card is hearted to move between Save for Later ↔ Family Faves). **Emily still needs to eyeball the 700ms speed** on mobile and confirm it feels right (timeline tried: 300ms too subtle → 500ms → 700ms now). All code is committed + deployed to `mysoftplay.app`.
-> Also just done on the Playground city page: bigger section labels (9px→12px), stronger divider line, header copy trimmed to 2 lines ("Tap 'Play this card' to build a day around it." / "✕ removes a card from your Playground."), heart tooltips neutralized to "Move to…", and the ✕ delete now shows a "🗑️ Removed from Playground" toast (no Undo, by choice).
-
-> 🔔 **REMINDER for Emily:** the Playground copy change is now DONE. (If there's another, tell Claude.)
-
 > 📁 **Project moved out of OneDrive.** Repo now lives at **`C:\Users\Emily\dev\softplay`** (stopped the sync prompts + build locks). Deploy as always: `npx vercel --prod --yes` from there. Live at `mysoftplay.app`.
 
-**Decisions still open for Emily:**
-- **Playground card action alignment** — Playground city cards (saved items: Heart/Pin toggle, Flag, ✕ delete, "Play this card") aren't a 1:1 match with the Pin·Heart·Flag·Swap set used elsewhere (Playground has no "swap"; it has delete + play). Decide whether/how to align their order, or leave as-is since the context differs.
-- **City-name deduplication** (e.g., "Greystones" entered two ways) — still deferred; needs a reconciliation UI.
+**Recently RESOLVED (✅):**
+- **Playground card-action alignment** — decided to LEAVE Playground cards as-is (heart toggle moves between Save for Later ↔ Family Faves; no separate Pin button needed). Context differs from Playbook/Free Play, so they shouldn't match. Closed.
+- **City-name deduplication** — done via a SAFE **prefix-merge** (`lib/cityGroups.ts`): "Greystones Ireland"→"Greystones", "Brattleboro VT"→"Brattleboro"; different qualifiers stay separate ("Cambridge England" vs "MA", "Manchester NH" vs "VT"). Groups for display only — underlying save data is untouched (full drag-and-drop reconciliation still a V2 nicety). Closed.
+- **Before/After dupes** — Before/After now forced distinct (prompt + client-side dedup retry using `sameStop`), and steered toward ACTIVITIES not full meals (light food only as an exception).
+- **Land highlight** — locked at **700ms** (300ms felt too subtle); green-ring pulse + slide on card move. Good.
+- **Circle/rectangle button borders** — matching-color outlines added across Play On pills, Playbook options, Playground city circles, and Free Play action circles.
 
 **Still to test (full pass):**
 - Playbook end-to-end after the back-button cleanup (no missing/duplicate backs; crew + play-structure backs read bold/colored).
