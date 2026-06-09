@@ -159,6 +159,7 @@ export default function CityDetailPage() {
           <h1 style={S.title}>{city}</h1>
           <hr style={S.divider} />
           <p style={S.meta}>Tap 'Play this card' to build a day around it.</p>
+          <p style={{ ...S.meta, marginTop: 6, fontSize: 11 }}>The ✕ removes a card from your Playground.</p>
         </div>
       </div>
 
