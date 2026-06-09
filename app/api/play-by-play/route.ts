@@ -66,14 +66,27 @@ IMPORTANT: Return ONLY a single valid JSON object (no markdown, no extra text be
   }
 }`
 
-    const message = await client.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 768,
-      messages: [{ role: 'user', content: prompt }],
-    })
+    // Retry a couple of times — an occasional response gets truncated/malformed and won't parse.
+    let data: { stop?: unknown } | null = null
+    let lastErr = ''
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const message = await client.messages.create({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1536,
+        messages: [{ role: 'user', content: prompt }],
+      })
+      const text = message.content[0].type === 'text' ? message.content[0].text : ''
+      try {
+        const parsed = robustParseJSON(text) as { stop?: unknown }
+        if (parsed && parsed.stop) { data = parsed; break }
+      } catch (e) {
+        lastErr = e instanceof Error ? e.message : 'parse error'
+      }
+    }
 
-    const text = message.content[0].type === 'text' ? message.content[0].text : ''
-    const data = robustParseJSON(text)
+    if (!data || !data.stop) {
+      return NextResponse.json({ error: lastErr || 'Could not parse the plan — please try again.' }, { status: 500 })
+    }
 
     return NextResponse.json(data)
   } catch (error: unknown) {
