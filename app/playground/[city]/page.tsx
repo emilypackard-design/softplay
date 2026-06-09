@@ -203,7 +203,7 @@ export default function CityDetailPage() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
                     {/* Heart button */}
                     <button onClick={() => handleHeartToggle(save)}
-                      style={{ width: 42, height: 42, borderRadius: '50%', background: '#6E6560', border: 'none', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
+                      style={{ width: 42, height: 42, borderRadius: '50%', background: '#6E6560', border: '1px solid #6E6560', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
                       title="Move to Save for Later"
                     >
                       ❤️
@@ -211,7 +211,7 @@ export default function CityDetailPage() {
 
                     {/* Flag button */}
                     <button onClick={() => handleFlag(save.id)}
-                      style={{ width: 42, height: 42, borderRadius: '50%', background: flagPopupId === save.id ? '#F5C842' : (flaggedIds.has(save.id) ? '#F5C842' : '#FEF3CC'), border: 'none', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, position: 'relative' }}
+                      style={{ width: 42, height: 42, borderRadius: '50%', background: flagPopupId === save.id ? '#F5C842' : (flaggedIds.has(save.id) ? '#F5C842' : '#FEF3CC'), border: '1px solid #C9963A', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, position: 'relative' }}
                       title={flaggedIds.has(save.id) ? "Unflag this card" : "Flag this card"}
                     >
                       🚩
@@ -293,7 +293,7 @@ export default function CityDetailPage() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
                     {/* Heart button */}
                     <button onClick={() => handleHeartToggle(save)}
-                      style={{ width: 42, height: 42, borderRadius: '50%', background: '#FFF0EC', border: 'none', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
+                      style={{ width: 42, height: 42, borderRadius: '50%', background: '#FFF0EC', border: '1px solid #6E6560', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
                       title="Move to Family Faves"
                     >
                       ❤️
@@ -301,7 +301,7 @@ export default function CityDetailPage() {
 
                     {/* Flag button */}
                     <button onClick={() => handleFlag(save.id)}
-                      style={{ width: 42, height: 42, borderRadius: '50%', background: flagPopupId === save.id ? '#F5C842' : (flaggedIds.has(save.id) ? '#F5C842' : '#FEF3CC'), border: 'none', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, position: 'relative' }}
+                      style={{ width: 42, height: 42, borderRadius: '50%', background: flagPopupId === save.id ? '#F5C842' : (flaggedIds.has(save.id) ? '#F5C842' : '#FEF3CC'), border: '1px solid #C9963A', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, position: 'relative' }}
                       title={flaggedIds.has(save.id) ? "Unflag this card" : "Flag this card"}
                     >
                       🚩
