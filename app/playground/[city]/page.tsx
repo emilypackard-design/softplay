@@ -74,7 +74,7 @@ export default function CityDetailPage() {
     setToast(movingToHeart ? '❤️ Saved to Family Faves' : '📌 Moved to Save for Later')
     setJustMovedId(save.id)
     window.setTimeout(() => setToast(null), 1800)
-    window.setTimeout(() => setJustMovedId(prev => (prev === save.id ? null : prev)), 400)
+    window.setTimeout(() => setJustMovedId(prev => (prev === save.id ? null : prev)), 700)
   }
 
   const handleDelete = (id: string) => {
@@ -113,8 +113,8 @@ export default function CityDetailPage() {
     meta: { fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 700, color: 'rgba(28,25,23,0.75)', margin: 0 },
     main: { flex: 1, padding: '20px', maxWidth: 480, margin: '0 auto', width: '100%', overflowY: 'auto' as const },
     section: { marginBottom: 24 },
-    sectionLabel: { fontFamily: 'var(--font-heading)', fontSize: 9, fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase' as const, color: 'rgba(28,25,23,0.65)', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 },
-    line: { flex: 1, height: '1px', background: 'rgba(28,25,23,0.1)' },
+    sectionLabel: { fontFamily: 'var(--font-heading)', fontSize: 12, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase' as const, color: 'rgba(28,25,23,0.75)', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 },
+    line: { flex: 1, height: '1.5px', background: 'rgba(28,25,23,0.22)' },
     card: { borderRadius: 14, padding: '13px 14px', marginBottom: 12, background: '#FFFFFF' },
     cardContent: { display: 'flex', alignItems: 'center', gap: 11, marginBottom: 12 },
     heartCard: { background: '#FFFAF8', border: '1.5px solid rgba(224,112,85,0.15)' },
@@ -135,7 +135,7 @@ export default function CityDetailPage() {
     <div style={S.screen}>
       <style>{`
         @keyframes pg-toast-in { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
-        @keyframes pg-card-land { from { transform: translateY(-8px); opacity: 0.35; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes pg-card-land { 0% { transform: translateY(-12px); opacity: 0.3; box-shadow: 0 0 0 3px rgba(61,107,65,0.55); } 100% { transform: translateY(0); opacity: 1; box-shadow: 0 0 0 0 rgba(61,107,65,0); } }
       `}</style>
       <header style={S.topBar}>
         <Link href="/" style={S.wordmark}>softplay</Link>
@@ -163,7 +163,7 @@ export default function CityDetailPage() {
           <h1 style={S.title}>{city}</h1>
           <hr style={S.divider} />
           <p style={S.meta}>Tap 'Play this card' to build a day around it.</p>
-          <p style={{ ...S.meta, marginTop: 6, fontSize: 11 }}>The ✕ removes a card from your Playground.</p>
+          <p style={{ ...S.meta, marginTop: 6 }}>✕ removes a card from your Playground.</p>
         </div>
       </div>
 
@@ -175,7 +175,7 @@ export default function CityDetailPage() {
               <div style={S.line} />
             </div>
             {hearts.map(save => !flaggedIds.has(save.id) && (
-              <div key={save.id} style={{ borderRadius: 14, padding: 0, marginBottom: 12, background: '#FFFFFF', overflow: 'hidden', animation: justMovedId === save.id ? 'pg-card-land 0.3s ease-out' : undefined }}>
+              <div key={save.id} style={{ borderRadius: 14, padding: 0, marginBottom: 12, background: '#FFFFFF', overflow: 'hidden', animation: justMovedId === save.id ? 'pg-card-land 0.5s ease-out' : undefined }}>
                 {/* Accent line */}
                 <div style={{ height: 4, background: 'linear-gradient(90deg, #E07055, #E8A0A8)' }} />
 
@@ -265,7 +265,7 @@ export default function CityDetailPage() {
               <div style={S.line} />
             </div>
             {pins.map(save => !flaggedIds.has(save.id) && (
-              <div key={save.id} style={{ borderRadius: 14, padding: 0, marginBottom: 12, background: '#FFFFFF', overflow: 'hidden', animation: justMovedId === save.id ? 'pg-card-land 0.3s ease-out' : undefined }}>
+              <div key={save.id} style={{ borderRadius: 14, padding: 0, marginBottom: 12, background: '#FFFFFF', overflow: 'hidden', animation: justMovedId === save.id ? 'pg-card-land 0.5s ease-out' : undefined }}>
                 {/* Accent line */}
                 <div style={{ height: 4, background: 'linear-gradient(90deg, #8FB88A, #3D9E8F)' }} />
 
