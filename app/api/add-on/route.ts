@@ -34,8 +34,10 @@ export async function POST(req: NextRequest) {
 Today's date is ${todayStr}. Take the season and typical weather at ${playStructure.city} into account — the add-on should fit this time of year. The location's hemisphere determines which season it is.
 
 Main event: ${winner.emoji} ${winner.name} — "${winner.pitch}"
-Location: ${playStructure.city}
+Filed under: ${playStructure.city}
 ${foodContext}
+
+GEOGRAPHY (important): "Filed under" is just the folder the user saved this idea in — the main event itself may actually be in a DIFFERENT town. Work out the main event's real location from its name and description, and keep this add-on a short, sensible hop from the MAIN EVENT — not from the folder town. The day should cluster around where the main event actually is, never bounce back and forth between towns an hour apart.
 ${playbill.cityAndPractical ? `Context: ${playbill.cityAndPractical}` : ''}
 Already in the plan: ${existingStops.map(s => s.name).join(', ') || 'nothing yet'}
 Never suggest: ${vetoes.join(', ') || 'nothing vetoed'}
