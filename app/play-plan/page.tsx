@@ -434,7 +434,8 @@ export default function PlayPlanPage() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
       trackSeen([data.option.name])
-      setWheelOptions(prev => prev.map(o => o.id === option.id ? data.option : o))
+      // Keep the slot's original (unique) id so swapped-in cards never collide on id
+      setWheelOptions(prev => prev.map(o => o.id === option.id ? { ...data.option, id: option.id } : o))
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Could not get a replacement.')
     } finally {
@@ -504,7 +505,8 @@ export default function PlayPlanPage() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Swap failed')
       trackSeen([data.option.name])
-      setWheelOptions(prev => prev.map(o => o.id === option.id ? data.option : o))
+      // Keep the slot's original (unique) id so swapped-in cards never collide on id
+      setWheelOptions(prev => prev.map(o => o.id === option.id ? { ...data.option, id: option.id } : o))
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Swap failed. Try again.')
       setSwapsRemaining(s => s + 1)
