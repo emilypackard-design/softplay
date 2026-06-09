@@ -163,7 +163,10 @@ export default function CityDetailPage() {
           <h1 style={S.title}>{city}</h1>
           <hr style={S.divider} />
           <p style={S.meta}>Tap 'Play this card' to build a day around it.</p>
-          <p style={{ ...S.meta, marginTop: 6 }}>✕ removes a card from your Playground.</p>
+          <p style={{ ...S.meta, marginTop: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 18, height: 18, borderRadius: '50%', background: '#FFF0EC', border: '1px solid #E07055', color: '#E07055', fontSize: 10, lineHeight: 1, flexShrink: 0 }}>✕</span>
+            <span>removes a card from your Playground.</span>
+          </p>
         </div>
       </div>
 
@@ -239,7 +242,7 @@ export default function CityDetailPage() {
 
                     {/* Remove button */}
                     <button onClick={() => handleDelete(save.id)}
-                      style={{ width: 42, height: 42, borderRadius: '50%', background: '#FFF0EC', border: 'none', fontSize: 18, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: '#E07055' }}
+                      style={{ width: 42, height: 42, borderRadius: '50%', background: '#FFF0EC', border: '1px solid #E07055', fontSize: 18, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: '#E07055' }}
                       title="Remove card"
                     >
                       ✕
@@ -329,7 +332,7 @@ export default function CityDetailPage() {
 
                     {/* Remove button */}
                     <button onClick={() => handleDelete(save.id)}
-                      style={{ width: 42, height: 42, borderRadius: '50%', background: '#FFF0EC', border: 'none', fontSize: 18, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: '#E07055' }}
+                      style={{ width: 42, height: 42, borderRadius: '50%', background: '#FFF0EC', border: '1px solid #E07055', fontSize: 18, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: '#E07055' }}
                       title="Remove card"
                     >
                       ✕
