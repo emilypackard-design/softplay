@@ -81,6 +81,10 @@ export default function CityDetailPage() {
 
     setHearts(hearts.filter(s => s.id !== id))
     setPins(pins.filter(s => s.id !== id))
+
+    // Feedback so the delete isn't silent (important on mobile, where tooltips don't show)
+    setToast('🗑️ Removed from Playground')
+    window.setTimeout(() => setToast(null), 1800)
   }
 
   const handleBuildDay = (save: PlaygroundSave) => {
@@ -154,8 +158,7 @@ export default function CityDetailPage() {
         <div style={{ textAlign: 'center' }}>
           <h1 style={S.title}>{city}</h1>
           <hr style={S.divider} />
-          <p style={S.meta}>Tap 'Play this card' on any save to create your full itinerary.</p>
-          <p style={{ ...S.meta, marginTop: 6, fontSize: 11 }}>The ✕ removes a suggestion from your Playground.</p>
+          <p style={S.meta}>Tap 'Play this card' to build a day around it.</p>
         </div>
       </div>
 
@@ -193,7 +196,7 @@ export default function CityDetailPage() {
                     {/* Heart button */}
                     <button onClick={() => handleHeartToggle(save)}
                       style={{ width: 42, height: 42, borderRadius: '50%', background: '#6E6560', border: 'none', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
-                      title="Downgrade to Save for Later"
+                      title="Move to Save for Later"
                     >
                       ❤️
                     </button>
@@ -283,7 +286,7 @@ export default function CityDetailPage() {
                     {/* Heart button */}
                     <button onClick={() => handleHeartToggle(save)}
                       style={{ width: 42, height: 42, borderRadius: '50%', background: '#FFF0EC', border: 'none', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
-                      title="Upgrade to Saved as Fave"
+                      title="Move to Family Faves"
                     >
                       ❤️
                     </button>
