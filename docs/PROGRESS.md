@@ -2,7 +2,10 @@
 
 ## ⏭️ NEXT SESSION — Handoff (pending decisions + tests)
 
-> 🔔 **REMINDER for Emily:** you have **one more Playground copy change** to make — tell Claude the details at the start of next session.
+> ⏸️ **WHERE WE LEFT OFF (computer died mid-session):** Last action was deploying the **Playground card "land" highlight at 700ms** (the fade/slide + green-ring pulse when a card is hearted to move between Save for Later ↔ Family Faves). **Emily still needs to eyeball the 700ms speed** on mobile and confirm it feels right (timeline tried: 300ms too subtle → 500ms → 700ms now). All code is committed + deployed to `mysoftplay.app`.
+> Also just done on the Playground city page: bigger section labels (9px→12px), stronger divider line, header copy trimmed to 2 lines ("Tap 'Play this card' to build a day around it." / "✕ removes a card from your Playground."), heart tooltips neutralized to "Move to…", and the ✕ delete now shows a "🗑️ Removed from Playground" toast (no Undo, by choice).
+
+> 🔔 **REMINDER for Emily:** the Playground copy change is now DONE. (If there's another, tell Claude.)
 
 > 📁 **Project moved out of OneDrive.** Repo now lives at **`C:\Users\Emily\dev\softplay`** (stopped the sync prompts + build locks). Deploy as always: `npx vercel --prod --yes` from there. Live at `mysoftplay.app`.
 
