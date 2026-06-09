@@ -74,7 +74,7 @@ export default function CityDetailPage() {
     setToast(movingToHeart ? '❤️ Saved to Family Faves' : '📌 Moved to Save for Later')
     setJustMovedId(save.id)
     window.setTimeout(() => setToast(null), 1800)
-    window.setTimeout(() => setJustMovedId(prev => (prev === save.id ? null : prev)), 700)
+    window.setTimeout(() => setJustMovedId(prev => (prev === save.id ? null : prev)), 900)
   }
 
   const handleDelete = (id: string) => {
@@ -175,7 +175,7 @@ export default function CityDetailPage() {
               <div style={S.line} />
             </div>
             {hearts.map(save => !flaggedIds.has(save.id) && (
-              <div key={save.id} style={{ borderRadius: 14, padding: 0, marginBottom: 12, background: '#FFFFFF', overflow: 'hidden', animation: justMovedId === save.id ? 'pg-card-land 0.5s ease-out' : undefined }}>
+              <div key={save.id} style={{ borderRadius: 14, padding: 0, marginBottom: 12, background: '#FFFFFF', overflow: 'hidden', animation: justMovedId === save.id ? 'pg-card-land 0.7s ease-out' : undefined }}>
                 {/* Accent line */}
                 <div style={{ height: 4, background: 'linear-gradient(90deg, #E07055, #E8A0A8)' }} />
 
@@ -265,7 +265,7 @@ export default function CityDetailPage() {
               <div style={S.line} />
             </div>
             {pins.map(save => !flaggedIds.has(save.id) && (
-              <div key={save.id} style={{ borderRadius: 14, padding: 0, marginBottom: 12, background: '#FFFFFF', overflow: 'hidden', animation: justMovedId === save.id ? 'pg-card-land 0.5s ease-out' : undefined }}>
+              <div key={save.id} style={{ borderRadius: 14, padding: 0, marginBottom: 12, background: '#FFFFFF', overflow: 'hidden', animation: justMovedId === save.id ? 'pg-card-land 0.7s ease-out' : undefined }}>
                 {/* Accent line */}
                 <div style={{ height: 4, background: 'linear-gradient(90deg, #8FB88A, #3D9E8F)' }} />
 
