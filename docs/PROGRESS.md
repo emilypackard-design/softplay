@@ -1,6 +1,12 @@
 # softplay — Development Progress Log
 
-## ⏭️ NEXT SESSION — Handoff (pending decisions + tests)
+## ⏭️ NEXT SESSION — START HERE: V1.5 Supabase (persistent memory)
+
+> ▶️ **Next session = build V1.5 persistent memory.** Full plan in **`docs/V1.5-MEMORY.md`**. Two decisions to make first: (1) **auth model** — Claude recommends email magic link; (2) **Free Play personalization** — feed the Playbill in, keep it anonymous, or a toggle.
+> ⚡ **Known quick-win bug to fix as part of this:** `lastPlaybill` is read but **never saved** — so "remember your Playbill" does nothing today. Persisting it (localStorage first, then Supabase) is Step 0.
+> Emily reviewed Playbook/Playground/Free Play this session — all good. Geography fix + city dedup confirmed working.
+
+## ⏭️ Handoff (pending tests / infra)
 
 > 📁 **Project moved out of OneDrive.** Repo now lives at **`C:\Users\Emily\dev\softplay`** (stopped the sync prompts + build locks). Deploy as always: `npx vercel --prod --yes` from there. Live at `mysoftplay.app`.
 
