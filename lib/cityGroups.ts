@@ -4,8 +4,17 @@
 // Different qualifiers stay separate: "Cambridge England" vs "Cambridge MA" do NOT merge
 // (neither is a prefix of the other). Full reconciliation (drag-and-drop) is a V2 item.
 
-// Normalise: lowercase, drop punctuation (commas/periods), collapse spaces.
-const norm = (s: string) => s.toLowerCase().replace(/[.,/]/g, ' ').replace(/\s+/g, ' ').trim()
+// Normalise so two visually-identical names match even with stray invisible characters:
+// lowercase, strip zero-width chars, turn punctuation + any whitespace (incl. non-breaking
+// space) into single spaces, then trim.
+const norm = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/[​‌‍﻿]/g, '') // zero-width chars
+    .replace(/[.,/]/g, ' ') // common punctuation → space
+    .replace(/[\s ]+/g, ' ') // whitespace incl. non-breaking → single space
+    .trim()
+
 // true when `a` is a word-prefix of `b` (same, or b starts with "a ")
 const isWordPrefix = (a: string, b: string) => b === a || b.startsWith(a + ' ')
 
@@ -20,8 +29,9 @@ export function canonicalCityMap(cityNames: string[]): Record<string, string> {
     for (const other of unique) {
       const on = normOf.get(other)!
       if (!isWordPrefix(on, nn)) continue
-      // Prefer the shortest normalized base; for ties (same normalized form, e.g. comma vs
-      // no comma) pick a deterministic representative so they all land in one group.
+      // Prefer the shortest normalized base; for ties (same normalized form, e.g. an
+      // invisible-char or comma difference) pick a deterministic representative so they
+      // all land in one group.
       if (on.length < baseNorm.length || (on.length === baseNorm.length && other < baseName)) {
         baseName = other
         baseNorm = on
