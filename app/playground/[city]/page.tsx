@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import type { PlaygroundSave } from '@/types'
+import { canonicalCityMap } from '@/lib/cityGroups'
 
 const PLAYGROUND_KEY = 'softplay_playground'
 
@@ -26,7 +27,9 @@ export default function CityDetailPage() {
     const data = typeof window !== 'undefined' ? localStorage.getItem(PLAYGROUND_KEY) : null
     const saves: PlaygroundSave[] = data ? JSON.parse(data) : []
 
-    const citySaves = saves.filter(s => s.city.toLowerCase() === city.toLowerCase())
+    // Include all prefix-variants that fold into this city (e.g. "Greystones Ireland" under "Greystones")
+    const canonMap = canonicalCityMap(saves.map(s => s.city))
+    const citySaves = saves.filter(s => (canonMap[s.city] ?? s.city).toLowerCase() === city.toLowerCase())
     setHearts(citySaves.filter(s => s.type === 'heart').sort((a, b) => b.savedAt - a.savedAt))
     setPins(citySaves.filter(s => s.type === 'pin').sort((a, b) => b.savedAt - a.savedAt))
     setMounted(true)
@@ -163,10 +166,6 @@ export default function CityDetailPage() {
           <h1 style={S.title}>{city}</h1>
           <hr style={S.divider} />
           <p style={S.meta}>Tap 'Play this card' to build a day around it.</p>
-          <p style={{ ...S.meta, marginTop: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-            <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 18, height: 18, borderRadius: '50%', background: '#FFF0EC', border: '1px solid #E07055', color: '#E07055', fontSize: 10, lineHeight: 1, flexShrink: 0 }}>✕</span>
-            <span>removes a card from your Playground.</span>
-          </p>
         </div>
       </div>
 

@@ -18,8 +18,8 @@ export async function POST(req: NextRequest) {
 
     const typeLabel = {
       food: 'a food stop (Half Time) — café, restaurant, or food experience near the main venue',
-      before: 'an activity to do BEFORE the main event — a warm-up, something nearby, not too long',
-      after: 'an activity to do AFTER the main event — a gentle wind-down, nearby, suits the mood',
+      before: 'an ACTIVITY to do BEFORE the main event — a warm-up, something nearby, not too long. Generally NOT a meal (Half Time covers food). Only suggest a food spot here if it is a light/snack experience (ice cream stand, cheese shop, bakery, coffee) or the user specifically asked for somewhere to chill — never a full sit-down meal.',
+      after: 'an ACTIVITY to do AFTER the main event — a gentle wind-down, nearby, suits the mood. Generally NOT a meal (Half Time covers food). Only suggest a food spot here if it is a light/snack experience (ice cream stand, cheese shop, bakery, coffee) or the user specifically asked for it — never a full sit-down meal.',
       evening: 'an evening activity to cap the day — a concert, film, theatre show (Broadway or local), live music, or night sports event. Something with a start time, something to look forward to. This is the night portion of the day.',
     }[type]
 
@@ -39,6 +39,8 @@ ${foodContext}
 ${playbill.cityAndPractical ? `Context: ${playbill.cityAndPractical}` : ''}
 Already in the plan: ${existingStops.map(s => s.name).join(', ') || 'nothing yet'}
 Never suggest: ${vetoes.join(', ') || 'nothing vetoed'}
+
+CRITICAL: your suggestion must be a DIFFERENT place from everything already in the plan — before, after, and the main event must each be distinct venues.
 
 Suggest ${typeLabel}.
 

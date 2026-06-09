@@ -322,16 +322,27 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
   const generateAddOn = async (type: 'food' | 'before' | 'after' | 'evening') => {
     setLoading(type)
     try {
-      const res = await fetch('/api/add-on', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ playbill, playStructure, winner: chosenOption, type, existingStops: allStops, vetoes: [...vetoes, ...flaggedVetoes] }),
-      })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error)
-      if (type === 'food') setHalfTime(data.stop)
-      if (type === 'before') setBefore(data.stop)
-      if (type === 'after') setAfter(data.stop)
-      if (type === 'evening') setEvening(data.stop)
+      const existingNames = allStops.map(s => s.name)
+      let stop: Stop | null = null
+      const extraVetoes: string[] = []
+      // Retry once if the result duplicates something already in the plan (e.g. same place for before & after)
+      for (let attempt = 0; attempt < 2; attempt++) {
+        const res = await fetch('/api/add-on', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ playbill, playStructure, winner: chosenOption, type, existingStops: allStops, vetoes: [...vetoes, ...flaggedVetoes, ...extraVetoes] }),
+        })
+        const data = await res.json()
+        if (!res.ok) throw new Error(data.error)
+        stop = data.stop
+        if (!stop || !existingNames.some(n => sameStop(n, stop!.name))) break
+        extraVetoes.push(stop.name)
+      }
+      if (stop) {
+        if (type === 'food') setHalfTime(stop)
+        if (type === 'before') setBefore(stop)
+        if (type === 'after') setAfter(stop)
+        if (type === 'evening') setEvening(stop)
+      }
     } catch (e) {
       console.error(e)
     } finally {

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import PinwheelIcon from '@/components/PinwheelIcon'
 import type { PlaygroundSave } from '@/types'
+import { canonicalCityMap } from '@/lib/cityGroups'
 
 const PLAYGROUND_KEY = 'softplay_playground'
 
@@ -25,12 +26,14 @@ export default function PlaygroundPage() {
     const data = typeof window !== 'undefined' ? localStorage.getItem(PLAYGROUND_KEY) : null
     const saves: PlaygroundSave[] = data ? JSON.parse(data) : []
 
-    // Group by city (case-insensitive)
+    // Group by city, folding prefix-variants together (e.g. "Greystones Ireland" → "Greystones")
+    const canonMap = canonicalCityMap(saves.map(s => s.city))
     const grouped = new Map<string, { original: string; saves: PlaygroundSave[] }>()
     saves.forEach(save => {
-      const normalized = save.city.toLowerCase()
-      if (!grouped.has(normalized)) grouped.set(normalized, { original: save.city, saves: [] })
-      grouped.get(normalized)!.saves.push(save)
+      const canon = canonMap[save.city] ?? save.city
+      const key = canon.toLowerCase()
+      if (!grouped.has(key)) grouped.set(key, { original: canon, saves: [] })
+      grouped.get(key)!.saves.push(save)
     })
 
     // Sort cities: home first, then by count descending
