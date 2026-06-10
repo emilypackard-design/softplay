@@ -308,6 +308,22 @@ export default function PlayPlanPage() {
     }
   })
 
+  // Persist the Playbill so it's remembered next visit (Step 0 of V1.5 memory —
+  // same data shape later syncs to Supabase). Skip the untouched default so we
+  // don't overwrite a saved Playbill with an empty one before hydration settles.
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const isPristineDefault =
+      playbill.kids.length === 0 && playbill.adults === 2 &&
+      playbill.funChips.length === 0 && playbill.notFunChips.length === 0 &&
+      playbill.foodLoveChips.length === 0 && playbill.foodAvoidChips.length === 0 &&
+      !playbill.funNote && !playbill.notFunNote && !playbill.foodNote &&
+      !playbill.greatDay && !playbill.cityAndPractical
+    if (!isPristineDefault) {
+      localStorage.setItem('lastPlaybill', JSON.stringify(playbill))
+    }
+  }, [playbill])
+
   const [playStructure, setPlayStructure] = useState<PlayStructureData>({
     city: '', sessionAdults: 2, sessionKids: [],
     mood: 'middle-ground', duration: 'half-day',
