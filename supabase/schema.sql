@@ -31,8 +31,10 @@ create table if not exists public.saves (
   created_at timestamptz not null default now()
 );
 create index if not exists saves_user_idx on public.saves (user_id);
+-- NOTE: must be a FULL unique index (not partial) so upserts can target it.
+-- (Postgres allows multiple NULL client_ids under a unique index, so this is safe.)
 create unique index if not exists saves_user_client_idx
-  on public.saves (user_id, client_id) where client_id is not null;
+  on public.saves (user_id, client_id);
 
 -- 4) Row-Level Security: ON for everything, owner-only policies
 alter table public.profiles enable row level security;

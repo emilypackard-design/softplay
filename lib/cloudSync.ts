@@ -64,16 +64,17 @@ export async function pushMirror(supabase: SupabaseClient, userId: string): Prom
   // Playbill
   const playbill = readLocalPlaybill()
   if (playbill) {
-    await supabase.from('playbills').upsert(
+    const { error } = await supabase.from('playbills').upsert(
       { user_id: userId, data: playbill, updated_at: new Date().toISOString() },
       { onConflict: 'user_id' },
     )
+    if (error) console.warn('playbill push failed:', error.message)
   }
 
   // Saves: upsert everything local, then remove cloud rows that no longer exist locally
   const local = readLocalSaves()
   if (local.length > 0) {
-    await supabase.from('saves').upsert(
+    const { error } = await supabase.from('saves').upsert(
       local.map(s => ({
         user_id: userId,
         client_id: s.id,
@@ -86,6 +87,7 @@ export async function pushMirror(supabase: SupabaseClient, userId: string): Prom
       })),
       { onConflict: 'user_id,client_id' },
     )
+    if (error) console.warn('saves push failed:', error.message)
   }
   const localIds = new Set(local.map(s => s.id))
   const { data: cloudSaves } = await supabase.from('saves').select('id, client_id').eq('user_id', userId)
