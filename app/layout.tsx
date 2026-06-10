@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import "./globals.css"
+import SyncProvider from "@/components/SyncProvider"
 
 export const metadata: Metadata = {
   title: "softplay — less planning, more playing",
@@ -10,7 +11,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" style={{ height: '100%' }}>
-      <body style={{ minHeight: '100%' }}>{children}</body>
+      <body style={{ minHeight: '100%' }}>
+        <SyncProvider />
+        {children}
+      </body>
     </html>
   )
 }

@@ -392,10 +392,18 @@ export default function FreePlayPage() {
         preferences
       ].filter(p => p.trim()).join('. ')
 
+      // Personalize with the saved Playbill when one exists (V1.5 decision):
+      // food avoids, dislikes etc. flow into Free Play suggestions too.
+      let savedPlaybill = null
+      try {
+        const raw = typeof window !== 'undefined' ? localStorage.getItem('lastPlaybill') : null
+        if (raw) savedPlaybill = JSON.parse(raw)
+      } catch { /* ignore — stay anonymous */ }
+
       const res = await fetch('/api/free-play-cards', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ city, adults, kids, seen, vetoes, playbill: null, preferences: preferencesWithChips }),
+        body: JSON.stringify({ city, adults, kids, seen, vetoes, playbill: savedPlaybill, preferences: preferencesWithChips }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)

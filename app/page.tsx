@@ -200,6 +200,9 @@ export default function Home() {
             <span style={{ fontFamily: 'var(--font-wordmark)', fontStyle: 'italic', fontSize: 19, fontWeight: 300, color: '#1C1917' }}>Playground</span>
           </div>
         </Link>
+        <Link href="/account" style={{ marginTop: 18, fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: '#8C7B6B', textDecoration: 'none' }}>
+          Sign in to sync your saves →
+        </Link>
       </div>
     </main>
     </>
