@@ -4,12 +4,14 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { getSupabase } from '@/lib/supabase'
 
-// Sign in with an email magic link. While signed in, your Playbill and
+// Sign in with a 6-digit email code (OTP). While signed in, your Playbill and
 // Playground saves sync to the cloud and follow you across devices.
 export default function AccountPage() {
   const [email, setEmail] = useState('')
-  const [sent, setSent] = useState(false)
+  const [codeSent, setCodeSent] = useState(false)
+  const [code, setCode] = useState('')
   const [sending, setSending] = useState(false)
+  const [verifying, setVerifying] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [userEmail, setUserEmail] = useState<string | null>(null)
   const [mounted, setMounted] = useState(false)
@@ -27,25 +29,51 @@ export default function AccountPage() {
     return () => sub.subscription.unsubscribe()
   }, [])
 
-  const sendLink = async () => {
+  const sendCode = async () => {
     const supabase = getSupabase()
     if (!supabase || !email.trim()) return
     setSending(true)
     setError(null)
+    // No emailRedirectTo → Supabase sends a 6-digit OTP code instead of a magic link
     const { error: err } = await supabase.auth.signInWithOtp({
       email: email.trim(),
-      options: { emailRedirectTo: typeof window !== 'undefined' ? window.location.origin + '/account' : undefined },
     })
     setSending(false)
-    if (err) setError(err.message)
-    else setSent(true)
+    if (err) {
+      // Soften the rate-limit message — the raw Supabase text is alarming
+      if (err.message.toLowerCase().includes('security purposes') || err.message.toLowerCase().includes('after')) {
+        setError('Please wait a moment before requesting another code.')
+      } else {
+        setError(err.message)
+      }
+    } else {
+      setCodeSent(true)
+    }
+  }
+
+  const verifyCode = async () => {
+    const supabase = getSupabase()
+    if (!supabase || !code.trim()) return
+    setVerifying(true)
+    setError(null)
+    const { error: err } = await supabase.auth.verifyOtp({
+      email: email.trim(),
+      token: code.trim(),
+      type: 'email',
+    })
+    setVerifying(false)
+    if (err) {
+      setError('That code didn\'t work — check your email and try again.')
+    }
+    // On success, onAuthStateChange fires and sets userEmail automatically
   }
 
   const signOut = async () => {
     const supabase = getSupabase()
     if (!supabase) return
     await supabase.auth.signOut()
-    setSent(false)
+    setCodeSent(false)
+    setCode('')
     setEmail('')
   }
 
@@ -74,14 +102,33 @@ export default function AccountPage() {
                 Sign out
               </button>
             </>
-          ) : sent ? (
+          ) : codeSent ? (
             <>
               <div style={{ fontSize: 40, marginBottom: 12 }}>📬</div>
               <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 22, fontWeight: 800, color: '#1C1917', margin: '0 0 10px' }}>Check your email</h1>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: '#5C4E3D', lineHeight: 1.6, margin: '0 0 24px' }}>
-                We sent a sign-in link to <strong>{email}</strong>. Tap it on this device and you&apos;re in — no password needed.
+                We sent a 6-digit code to <strong>{email}</strong>. Enter it below to sign in.
               </p>
-              <button onClick={() => setSent(false)}
+              <input
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                maxLength={6}
+                value={code}
+                onChange={e => setCode(e.target.value.replace(/\D/g, ''))}
+                onKeyDown={e => { if (e.key === 'Enter') void verifyCode() }}
+                placeholder="000000"
+                autoFocus
+                style={{ width: '100%', boxSizing: 'border-box', padding: '18px 16px', fontFamily: 'var(--font-heading)', fontSize: 28, fontWeight: 800, letterSpacing: '0.3em', textAlign: 'center', border: '1.5px solid #E8DCC8', borderRadius: 14, background: '#FFFFFF', color: '#1C1917', marginBottom: 12 }}
+              />
+              {error && (
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: '#8C7B6B', margin: '0 0 12px' }}>{error}</p>
+              )}
+              <button onClick={() => void verifyCode()} disabled={verifying || code.length < 6}
+                style={{ width: '100%', background: '#F5C842', color: '#1C1917', fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 15, padding: '14px 20px', borderRadius: 26, border: 'none', cursor: verifying || code.length < 6 ? 'not-allowed' : 'pointer', opacity: verifying || code.length < 6 ? 0.6 : 1, boxShadow: '0 4px 18px rgba(242,201,76,0.4)', marginBottom: 16 }}>
+                {verifying ? 'Checking…' : 'Sign in →'}
+              </button>
+              <button onClick={() => { setCodeSent(false); setCode(''); setError(null) }}
                 style={{ background: 'none', border: 'none', fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 600, color: '#3D9E8F', cursor: 'pointer', textDecoration: 'underline' }}>
                 Use a different email
               </button>
@@ -91,22 +138,22 @@ export default function AccountPage() {
               <div style={{ fontSize: 40, marginBottom: 12 }}>🔑</div>
               <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 22, fontWeight: 800, color: '#1C1917', margin: '0 0 10px' }}>Sign in to softplay</h1>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: '#5C4E3D', lineHeight: 1.6, margin: '0 0 24px' }}>
-                Your Playbill and Playground saves will be remembered and follow you across devices. No password — we email you a sign-in link.
+                Your Playbill and Playground saves will be remembered and follow you across devices. No password needed — we&apos;ll email you a code.
               </p>
               <input
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                onKeyDown={e => { if (e.key === 'Enter') void sendLink() }}
+                onKeyDown={e => { if (e.key === 'Enter') void sendCode() }}
                 placeholder="you@example.com"
                 style={{ width: '100%', boxSizing: 'border-box', padding: '14px 16px', fontFamily: 'var(--font-body)', fontSize: 15, border: '1.5px solid #E8DCC8', borderRadius: 14, background: '#FFFFFF', color: '#1C1917', marginBottom: 12 }}
               />
               {error && (
-                <p style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: '#C2543A', margin: '0 0 12px' }}>⚠️ {error}</p>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: '#8C7B6B', margin: '0 0 12px' }}>{error}</p>
               )}
-              <button onClick={() => void sendLink()} disabled={sending || !email.trim()}
+              <button onClick={() => void sendCode()} disabled={sending || !email.trim()}
                 style={{ width: '100%', background: '#F5C842', color: '#1C1917', fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 15, padding: '14px 20px', borderRadius: 26, border: 'none', cursor: sending || !email.trim() ? 'not-allowed' : 'pointer', opacity: sending || !email.trim() ? 0.6 : 1, boxShadow: '0 4px 18px rgba(242,201,76,0.4)' }}>
-                {sending ? 'Sending…' : 'Email me a sign-in link'}
+                {sending ? 'Sending…' : 'Send me a code'}
               </button>
             </>
           )}

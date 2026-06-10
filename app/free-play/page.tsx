@@ -638,11 +638,12 @@ export default function FreePlayPage() {
             {/* Anything else text field */}
             <div style={{ ...S.card, padding: '14px 16px' }}>
               <label style={{ fontFamily: 'var(--font-heading)', fontSize: 12, fontWeight: 700, color: '#1C1917', display: 'block', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Anything else</label>
-              <input
+              <textarea
                 value={preferences}
                 onChange={e => setPreferences(e.target.value)}
-                placeholder="Energy/mood? Time constraints?"
-                style={{ width: '100%', border: '1.5px solid #E8DCC8', borderRadius: 12, padding: '12px 14px', fontSize: 14, fontFamily: 'var(--font-body)', outline: 'none', boxSizing: 'border-box', background: '#FFFFFF', color: '#1C1917' }}
+                placeholder="Energy/mood? Time constraints? Override your usual preferences — e.g. 'no hikes today'"
+                rows={3}
+                style={{ width: '100%', border: '1.5px solid #E8DCC8', borderRadius: 12, padding: '12px 14px', fontSize: 14, fontFamily: 'var(--font-body)', outline: 'none', boxSizing: 'border-box', background: '#FFFFFF', color: '#1C1917', resize: 'none', lineHeight: 1.5 }}
               />
             </div>
 

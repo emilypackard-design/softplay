@@ -18,7 +18,9 @@ ${playbill.foodAvoidChips?.length > 0 ? `- Food avoids: ${playbill.foodAvoidChip
 ${playbill.greatDay ? `- Days that work: ${playbill.greatDay}` : ''}
 `.trim() : ''
 
-    const preferencesConstraint = preferences ? `User preferences: ${preferences}` : ''
+    const preferencesConstraint = preferences
+      ? `Session request (HIGHEST PRIORITY): "${preferences}" — this overrides the Playbill for today. If it contradicts a stored preference (e.g. "no hikes today" overrides a stated love of hiking), follow the session request, not the stored one.`
+      : ''
 
     const todayStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
 
