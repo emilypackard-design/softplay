@@ -10,6 +10,10 @@
 
 > 📁 **Project moved out of OneDrive.** Repo now lives at **`C:\Users\Emily\dev\softplay`** (stopped the sync prompts + build locks). Deploy as always: `npx vercel --prod --yes` from there. Live at `mysoftplay.app`.
 
+**📌 PINNED (during V1.5 setup — fix after memory testing):**
+- **Half Time near-duplicates again** — e.g. "Flour Bakery + Cafe (Seaport)" repeated with slightly different title. Likely cause: `sameStop()` in PlayByPlayView doesn't normalize `+` or accented chars (é), so "Flour Bakery & Café" vs "Flour Bakery + Cafe (Seaport)" don't match. Fix: strip `+`, fold accents (é→e) in `normName`.
+- **Consider widening the Half Time geography** — the "cluster near the main event" instruction may be too tight, shrinking the pool and causing repeats. Allow a wider radius for food options.
+
 **Recently RESOLVED (✅):**
 - **Playground card-action alignment** — decided to LEAVE Playground cards as-is (heart toggle moves between Save for Later ↔ Family Faves; no separate Pin button needed). Context differs from Playbook/Free Play, so they shouldn't match. Closed.
 - **City-name deduplication** — done via a SAFE **prefix-merge** (`lib/cityGroups.ts`): "Greystones Ireland"→"Greystones", "Brattleboro VT"→"Brattleboro"; different qualifiers stay separate ("Cambridge England" vs "MA", "Manchester NH" vs "VT"). Groups for display only — underlying save data is untouched (full drag-and-drop reconciliation still a V2 nicety). Closed.
