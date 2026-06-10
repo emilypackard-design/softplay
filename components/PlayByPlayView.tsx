@@ -4,17 +4,7 @@ import { useState, useEffect } from 'react'
 import type { Stop, WheelOption, PlayStructureData, PlaybillData } from '@/types'
 import PinwheelIcon from '@/components/PinwheelIcon'
 
-// Treat two stops as the SAME place even when the name differs slightly
-// (e.g. "Curtis's BBQ" vs "Curtis's BBQ Stand"). Normalise + prefix/equality check.
-const normName = (s: string) => s.toLowerCase().replace(/['’.,&()-]/g, '').replace(/\s+/g, ' ').trim()
-const sameStop = (a: string, b: string) => {
-  const na = normName(a), nb = normName(b)
-  if (!na || !nb) return false
-  if (na === nb) return true
-  const [shorter, longer] = na.length <= nb.length ? [na, nb] : [nb, na]
-  // one name is the other plus a trailing word ("... bbq" vs "... bbq stand")
-  return longer.startsWith(shorter + ' ')
-}
+import { sameStop } from '@/lib/stopNames'
 
 // ── Single stop card (winner or add-on) ───────────────────────────
 

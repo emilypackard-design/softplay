@@ -6,6 +6,7 @@ import type { PlaybillData, PlayStructureData, WheelOption, Stop } from '@/types
 import Wheel from '@/components/Wheel'
 import PlayByPlayView from '@/components/PlayByPlayView'
 import PinwheelIcon from '@/components/PinwheelIcon'
+import { sameStop } from '@/lib/stopNames'
 
 type Step =
   | 'welcome' | 'crew' | 'fun-chips' | 'not-fun-chips' | 'food' | 'great-day' | 'practical'
@@ -586,8 +587,9 @@ export default function PlayPlanPage() {
             const hearts = saves.filter((s: any) => s.type === 'heart' && s.city.toLowerCase() === playStructure.city.toLowerCase())
             // Wildcard: Always show if hearts exist (v1.0 — no randomness yet. Re-add Math.random() < 0.4 in v1.5+ for surprise bonus)
             if (hearts.length > 0) {
-              const finalistNames = new Set(wheelOptions.map(o => o.name))
-              const wildcardCandidates = hearts.filter((h: any) => !finalistNames.has(h.title))
+              // Fuzzy compare so "Arnold Arboretum" isn't offered as a wildcard when
+              // "Arnold Arboretum of Harvard University" is already on the wheel
+              const wildcardCandidates = hearts.filter((h: any) => !wheelOptions.some(o => sameStop(o.name, h.title)))
               if (wildcardCandidates.length > 0) {
                 // Pick most recently hearted
                 const wildcardHeart = wildcardCandidates[0]

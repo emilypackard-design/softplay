@@ -37,7 +37,7 @@ Main event: ${winner.emoji} ${winner.name} — "${winner.pitch}"
 Filed under: ${playStructure.city}
 ${foodContext}
 
-GEOGRAPHY (important): "Filed under" is just the folder the user saved this idea in — the main event itself may actually be in a DIFFERENT town. Work out the main event's real location from its name and description, and keep this add-on a short, sensible hop from the MAIN EVENT — not from the folder town. The day should cluster around where the main event actually is, never bounce back and forth between towns an hour apart.
+GEOGRAPHY (important): "Filed under" is just the folder the user saved this idea in — the main event itself may actually be in a DIFFERENT town. Work out the main event's real location from its name and description, and anchor this add-on to the MAIN EVENT — not the folder town. The day should never bounce between towns an hour apart.${type === 'food' ? ' For food stops, anywhere within a ~15-20 minute hop of the main event is fair game — vary the neighbourhood and direction rather than clustering on the same block, so repeated requests yield genuinely different spots.' : ''}
 ${playbill.cityAndPractical ? `Context: ${playbill.cityAndPractical}` : ''}
 Already in the plan: ${existingStops.map(s => s.name).join(', ') || 'nothing yet'}
 Never suggest: ${vetoes.join(', ') || 'nothing vetoed'}

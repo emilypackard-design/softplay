@@ -382,8 +382,10 @@ export default function FreePlayPage() {
 
   // No auto-load — just use the initial 6 cards
 
-  const loadMoreCards = async (appendLimit?: number) => {
-    setLoadingCards(true)
+  // background = fetch quietly without disabling the deck (used for flag
+  // replacements, so the user keeps swiping at full speed while it loads)
+  const loadMoreCards = async (appendLimit?: number, background = false) => {
+    if (!background) setLoadingCards(true)
     setError(null)
     try {
       // Combine selected chips with preferences
@@ -415,9 +417,9 @@ export default function FreePlayPage() {
       setCards(prev => [...prev, ...freshCards])
       setSeen(prev => [...prev, ...data.cards.map((c: Card) => c.name)])
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : 'Could not load cards')
+      if (!background) setError(e instanceof Error ? e.message : 'Could not load cards')
     } finally {
-      setLoadingCards(false)
+      if (!background) setLoadingCards(false)
     }
   }
 
@@ -468,10 +470,11 @@ export default function FreePlayPage() {
       setVetoes(prev => [...prev, currentCard.name])
       setCurrentIndex(i => i + 1)
     } else if (action === 'flag') {
-      // Flag: veto it, move on, and add ONE free replacement card (universal flag rule)
+      // Flag: veto it, move on, and add ONE free replacement card (universal flag rule).
+      // Background fetch — the deck stays fully interactive while it loads.
       setVetoes(prev => [...prev, currentCard.name])
       setCurrentIndex(i => i + 1)
-      loadMoreCards(1)
+      void loadMoreCards(1, true)
     }
   }
 
