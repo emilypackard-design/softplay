@@ -1,6 +1,15 @@
 # softplay — Development Progress Log
 
-## ⏭️ NEXT SESSION — START HERE: V1.5 Supabase (persistent memory)
+## ⏭️ NEXT SESSION — START HERE
+
+> **State:** V1.5 memory SHIPPED + verified (magic-link auth, cloud sync, personalized Free Play). Auto-deploy restored (`git push` = production deploy). Emily testing on mobile.
+> **Next tasks, in order:**
+> 1. **Custom email sender (Resend or similar)** — REQUIRED before inviting the 10-20 new testers (built-in Supabase sender = ~2-4 magic links/hour, will choke). ~30 min job: Resend account, domain verification, plug SMTP into Supabase Auth settings.
+> 2. **Migrate the 2 existing testers:** they sign in on softplay-five.vercel.app FIRST (uploads their saves), then sign in on mysoftplay.app (saves follow). Stagger sign-ins (rate limit). Then they live on mysoftplay.app.
+> 3. **Mobile-test feedback** from Emily's session (screenshots incoming).
+> 4. **Stripe: POST-beta, not concurrent** (decided 2026-06-08). Rationale: integration is a contained 1-2 session job, but the pricing model should be shaped by beta feedback first. Use beta to choose model (subscription / one-time / family plan), then wire Stripe as the beta→launch bridge.
+
+## (prior) V1.5 Supabase (persistent memory)
 
 > ▶️ **Next session = build V1.5 persistent memory.** Full plan in **`docs/V1.5-MEMORY.md`**. Two decisions to make first: (1) **auth model** — Claude recommends email magic link; (2) **Free Play personalization** — feed the Playbill in, keep it anonymous, or a toggle.
 > ⚡ **Known quick-win bug to fix as part of this:** `lastPlaybill` is read but **never saved** — so "remember your Playbill" does nothing today. Persisting it (localStorage first, then Supabase) is Step 0.
