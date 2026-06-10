@@ -11,6 +11,8 @@
 > 📁 **Project moved out of OneDrive.** Repo now lives at **`C:\Users\Emily\dev\softplay`** (stopped the sync prompts + build locks). Deploy as always: `npx vercel --prod --yes` from there. Live at `mysoftplay.app`.
 
 **📌 PINNED (during V1.5 setup — fix after memory testing):**
+- **Free Play slow from ~3rd card** — likely cause: flagging triggers a full card-generation API call for its one replacement (`loadMoreCards(1)` generates 6, keeps 1) AND the whole deck disables (`disabled={loadingCards}`) while it runs; Playbill personalization also made each generation a bit slower. Fix: don't disable interactions during background replacement fetch; consider a lighter single-card request.
+- **Wildcard duplicate** — "Arnold Arboretum" (saved heart, offered as wild card) vs "Arnold Arboretum of Harvard University" (already on wheel). The wildcard candidate filter uses EXACT title match (`finalistNames.has(h.title)` in play-plan). Fix: use the fuzzy `sameStop`-style prefix compare there too.
 - **Half Time near-duplicates again** — e.g. "Flour Bakery + Cafe (Seaport)" repeated with slightly different title. Likely cause: `sameStop()` in PlayByPlayView doesn't normalize `+` or accented chars (é), so "Flour Bakery & Café" vs "Flour Bakery + Cafe (Seaport)" don't match. Fix: strip `+`, fold accents (é→e) in `normName`.
 - **Consider widening the Half Time geography** — the "cluster near the main event" instruction may be too tight, shrinking the pool and causing repeats. Allow a wider radius for food options.
 
