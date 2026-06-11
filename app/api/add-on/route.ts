@@ -65,11 +65,25 @@ Return ONLY valid JSON:
   "addOnType": "${type}"
 }`
 
-    const message = await client.messages.create({
-      model: 'claude-sonnet-4-5',
-      max_tokens: 512,
-      messages: [{ role: 'user', content: prompt }],
-    })
+    let message
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        message = await client.messages.create({
+          model: 'claude-sonnet-4-5',
+          max_tokens: 512,
+          messages: [{ role: 'user', content: prompt }],
+        })
+        break
+      } catch (err: unknown) {
+        const isRateLimit = err instanceof Error && (err.message.includes('429') || err.message.includes('overloaded'))
+        if (isRateLimit && attempt < 2) {
+          await new Promise(r => setTimeout(r, 1500 * (attempt + 1)))
+        } else {
+          throw err
+        }
+      }
+    }
+    if (!message) throw new Error('No response from Claude after retries')
 
     const text = message.content[0].type === 'text' ? message.content[0].text : ''
     const stop = robustParseJSON(text)
