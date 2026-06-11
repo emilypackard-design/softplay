@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><em>softplay</em> - because great Saturdays don't plan themselves</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* Pulled directly from app screenshots */
+    /* Locked brand palette — docs/DESIGN.md */
+    --bg: #FEFBF3;           /* warm white */
+    --yellow: #F5C842;       /* Playbook, planning, committing */
+    --yellow-light: #FEF9E8;
+    --teal: #3D9E8F;         /* Free Play, exploring, discovery */
+    --sage: #8FB88A;         /* Playground, your collection */
+    --coral: #E07055;        /* veto, pointer, accents */
+    --rust: #E07055;         /* alias — coral replaces rust */
+    --ink: #1C1917;
+    --brown: #5A4F48;        /* wordmark warm brown */
+    --mid: #5A4F48;
+    --light: rgba(28,25,23,0.5);
+    --card-bg: #ffffff;
+    --sand: #EDE7D9;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 56px 40px 80px;
+  }
+
+  /* ── Header ── */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 56px;
+    padding-bottom: 28px;
+    border-bottom: 1.5px solid var(--sand);
+  }
+
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 2.2rem;
+    font-weight: 300;
+    color: var(--brown);
+    letter-spacing: -0.01em;
+  }
+
+  .header-right {
+    text-align: right;
+  }
+
+  .sub-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 4px;
+  }
+
+  .tagline {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 0.95rem;
+    color: rgba(28,25,23,0.5);
+    line-height: 1.4;
+  }
+
+  .url {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--light);
+    text-transform: uppercase;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    margin-bottom: 60px;
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    max-width: 580px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--teal);
+  }
+
+  .hero p {
+    font-size: 1.05rem;
+    font-weight: 300;
+    max-width: 600px;
+    color: var(--mid);
+    line-height: 1.75;
+  }
+
+  /* ── Section label ── */
+  .section-label {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 20px;
+  }
+
+  /* ── Two pathway cards ── */
+  .pathways {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 52px;
+  }
+
+  .pathway {
+    border-radius: 16px;
+    padding: 28px 26px;
+  }
+
+  .pathway.playbook {
+    background: linear-gradient(180deg, #F5C842 0%, #FEF9E8 100%);
+    color: var(--ink);
+  }
+
+  .pathway.freeplay {
+    background: linear-gradient(135deg, #FEFBF3 0%, #C8E6E1 100%);
+    color: var(--ink);
+  }
+
+  .pathway.playground {
+    background: linear-gradient(180deg, #8FB88A 0%, #FEF9E8 100%);
+    color: var(--ink);
+  }
+
+  .pathway-eyebrow {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    opacity: 0.7;
+  }
+
+  .pathway h2 {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.7rem;
+    font-weight: 400;
+    margin-bottom: 12px;
+    line-height: 1.1;
+  }
+
+  .pathway p {
+    font-size: 0.85rem;
+    font-weight: 300;
+    line-height: 1.65;
+    opacity: 0.85;
+  }
+
+  /* ── Playbook flow steps ── */
+  .flow {
+    margin-bottom: 52px;
+  }
+
+  .flow-steps {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .flow-step {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 16px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--sand);
+    align-items: start;
+  }
+
+  .flow-step:first-child { border-top: 1px solid var(--sand); }
+
+  .step-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--yellow);
+    color: var(--ink);
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .flow-step h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 0.98rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+
+  .flow-step p {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--mid);
+    line-height: 1.6;
+  }
+
+  .app-quote {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--teal);
+    letter-spacing: 0.04em;
+    margin-top: 4px;
+  }
+
+  /* ── Wheel feature ── */
+  .wheel-block {
+    background: var(--ink);
+    color: #FEFBF3;
+    border-radius: 16px;
+    padding: 36px 40px;
+    margin-bottom: 52px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 32px;
+    align-items: center;
+  }
+
+  .wheel-block h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+    line-height: 1.1;
+  }
+
+  .wheel-block h2 em {
+    font-style: italic;
+    color: var(--yellow);
+  }
+
+  .wheel-block .no-takebacks {
+    font-size: 0.85rem;
+    font-style: italic;
+    opacity: 0.6;
+    margin-bottom: 14px;
+  }
+
+  .wheel-block p {
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.7;
+    opacity: 0.85;
+  }
+
+  .wheel-graphic {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 6px solid #1C1917;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .wheel-q1 { background: var(--yellow); }
+  .wheel-q2 { background: #C8E6E1; }
+  .wheel-q3 { background: var(--rust); }
+  .wheel-q4 { background: var(--teal); }
+
+  /* ── Pricing ── */
+  .pricing {
+    background: #2E776C;
+    color: #FEFBF3;
+    border-radius: 16px;
+    padding: 36px 40px;
+    margin-bottom: 52px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .price-num {
+    font-family: 'Fraunces', serif;
+    font-size: 3.2rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .price-note {
+    font-size: 0.78rem;
+    font-weight: 300;
+    opacity: 0.75;
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  .pricing-right p {
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.75;
+    opacity: 0.92;
+    margin-bottom: 14px;
+  }
+
+  .founding-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+  }
+
+  /* ── Roadmap ── */
+  .roadmap {
+    margin-bottom: 52px;
+  }
+
+  .roadmap-items {
+    margin-top: 20px;
+  }
+
+  .roadmap-item {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 20px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--sand);
+  }
+
+  .roadmap-item:first-child { border-top: 1px solid var(--sand); }
+
+  .phase {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--rust);
+    padding-top: 3px;
+  }
+
+  .roadmap-item h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
+  .roadmap-item p {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--mid);
+    line-height: 1.65;
+  }
+
+  /* ── Privacy ── */
+  .privacy-block {
+    background: var(--sand);
+    border-radius: 12px;
+    padding: 26px 30px;
+    margin-bottom: 52px;
+  }
+
+  .privacy-block h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .privacy-block p {
+    font-size: 0.88rem;
+    font-weight: 300;
+    line-height: 1.72;
+    color: var(--mid);
+  }
+
+  /* ── Soft Landings ── */
+  .soft-landings {
+    border-left: 3px solid var(--teal);
+    padding-left: 22px;
+    margin-bottom: 52px;
+  }
+
+  .soft-landings .section-label {
+    color: var(--teal);
+  }
+
+  .soft-landings h2 {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+
+  .soft-landings p {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--mid);
+    line-height: 1.72;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    padding-top: 28px;
+    border-top: 1.5px solid var(--sand);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--light);
+    font-weight: 300;
+  }
+
+  .footer .logo-sm {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--ink);
+  }
+
+
+  /* ── 6-step card grid ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  .step-wrap { display: flex; flex-direction: column; gap: 9px; }
+
+  .sp-card {
+    background: #ffffff;
+    border-radius: 18px;
+    overflow: hidden;
+    height: 172px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sp-card-winner { border: 2px solid var(--yellow); }
+  .sp-card-c1 { border: 2px solid var(--yellow); }
+  .sp-card-c2 { border: 2px solid var(--teal); }
+  .sp-card-c3 { border: 2px solid var(--rust); }
+  .sp-card-c4 { border: 2px solid var(--rust); }
+  .sp-card-c6 { border: 2px solid var(--teal); }
+
+  .step-meta { display: flex; align-items: center; gap: 8px; padding: 0 4px; }
+  .step-badge {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--yellow); color: var(--ink);
+    font-size: 10px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .step-label { font-size: 0.78rem; font-weight: 500; color: var(--ink); line-height: 1.2; }
+
+  /* Card 1 */
+  .c1-inner { padding: 12px 11px 10px; display: flex; flex-direction: column; gap: 5px; height: 100%; }
+  .c1-spark { text-align: center; font-size: 18px; }
+  .c1-q { font-size: 10px; font-weight: 700; color: var(--ink); text-align: center; line-height: 1.3; }
+  .c1-sub { font-size: 8.5px; color: var(--light); text-align: center; }
+  .chips { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin-top: 2px; }
+  .chip { background: #fff; border: 1px solid var(--sand); border-radius: 20px; font-size: 8.5px; padding: 3px 7px; color: var(--mid); }
+  .chip-sel { border-color: var(--yellow); background: #FEF9E8; }
+
+  /* Card 2 */
+  .c2-mood-label { font-size: 9.5px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+  .c2-inner { padding: 10px; display: flex; flex-direction: column; gap: 6px; height: 100%; }
+  .c2-row { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .c2-opt { background: #fff; border: 1px solid var(--sand); border-radius: 10px; padding: 5px 7px; }
+  .c2-sel { border-color: var(--yellow); border-width: 1.5px; }
+  .c2-title { font-size: 8.5px; font-weight: 600; color: var(--ink); }
+  .c2-sub { font-size: 7.5px; color: var(--light); }
+  .c2-field { background: #fff; border: 1px solid var(--sand); border-radius: 10px; padding: 5px 8px; font-size: 8px; color: var(--light); font-style: italic; }
+
+  /* Card 3 */
+  .c3-inner { padding: 10px 11px; display: flex; flex-direction: column; gap: 5px; height: 100%; }
+  .c3-head { font-size: 10px; font-weight: 700; color: var(--ink); }
+  .c3-swap { font-size: 8px; color: var(--rust); }
+  .sug-card { background: #fff; border: 1px solid var(--sand); border-radius: 10px; padding: 6px 8px; display: flex; flex-direction: column; gap: 4px; }
+  .sug-title { font-size: 8.5px; font-weight: 600; color: var(--ink); }
+  .sug-btns { display: flex; gap: 4px; flex-wrap: wrap; }
+  .sbtn { font-size: 7.5px; padding: 2px 6px; border-radius: 12px; font-weight: 500; border: none; font-family: 'Plus Jakarta Sans', sans-serif; }
+  .sbtn-teal { background: var(--teal); color: #fff; }
+  .sbtn-pink { background: #FAEAEC; color: #C4686F; }
+  .sbtn-sal { background: #fde8e0; color: var(--rust); }
+
+  /* Card 4 */
+  .c4-inner { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 10px; padding: 12px; }
+  .mini-wheel {
+    width: 86px; height: 86px; border-radius: 50%;
+    border: 4px solid var(--ink);
+    display: grid; grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+  }
+  .wq { display: flex; align-items: center; justify-content: center; font-size: 13px; }
+  .wq1 { background: #FEFBF3; }
+  .wq2 { background: var(--yellow); }
+  .wq3 { background: var(--rust); }
+  .wq4 { background: var(--teal); }
+  .spin-btn-sm {
+    background: var(--ink); color: var(--yellow);
+    font-size: 9px; font-weight: 700;
+    padding: 5px 16px; border-radius: 20px;
+    letter-spacing: 0.08em; font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  /* Card 5 */
+  .c5-inner { padding: 10px 11px; display: flex; flex-direction: column; gap: 5px; height: 100%; }
+  .c5-icon-row { display: flex; align-items: flex-start; gap: 7px; }
+  .c5-icon { font-size: 17px; flex-shrink: 0; margin-top: 1px; }
+  .c5-title { font-size: 9px; font-weight: 700; color: var(--ink); line-height: 1.3; }
+  .c5-addr { font-size: 7.5px; color: var(--light); margin-top: 1px; }
+  .c5-pills { display: flex; gap: 4px; flex-wrap: wrap; }
+  .c5-pill { background: var(--sand); border-radius: 20px; font-size: 7.5px; padding: 2px 7px; color: var(--mid); }
+  .c5-tip { font-size: 7.5px; color: var(--mid); line-height: 1.45; margin-top: 1px; }
+
+  /* Card 6 */
+  .c6-inner { padding: 10px 11px; display: flex; flex-direction: column; gap: 5px; height: 100%; }
+  .c6-head { font-size: 11px; font-weight: 700; color: var(--ink); }
+  .c6-sub { font-size: 8px; color: var(--light); margin-bottom: 2px; }
+  .addon { background: #fff; border: 1px solid var(--sand); border-radius: 10px; padding: 5px 9px; font-size: 8.5px; font-weight: 500; color: var(--ink); }
+
+  @media (max-width: 600px) {
+    .cards-grid { grid-template-columns: 1fr; }
+    .sp-card { height: auto; min-height: 140px; }
+  }
+
+  @media (max-width: 600px) {
+    .page { padding: 36px 20px 60px; }
+    .header { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .header-right { text-align: left; }
+    .hero h1 { font-size: 2.2rem; }
+    .pathways { grid-template-columns: 1fr; }
+    .wheel-block { grid-template-columns: 1fr; }
+    .wheel-graphic { display: none; }
+    .pricing { grid-template-columns: 1fr; }
+    .footer { flex-direction: column; gap: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo"><em>softplay</em></div>
+    <div class="header-right">
+      <p class="sub-label">Fun decision maker</p>
+      <p class="tagline">Because great Saturdays<br>don't plan themselves.</p>
+      <span class="url"><em>softplay</em>.app</span>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Stop staring at the weekend.<br><em>Go somewhere.</em></h1>
+    <p><em>softplay</em> is a planning app that takes the friction out of getting out the door. Answer a few questions about your crew and what you want from the day. The app handles the rest. Works for families, couples, and solo players. No ads. No falling down a rabbit hole of endless reviews. Go play.</p>
+  </section>
+
+  <!-- Three pathways -->
+  <div class="section-label">Three ways in</div>
+  <div class="pathways">
+    <div class="pathway playbook">
+      <p class="pathway-eyebrow">The full experience</p>
+      <h2>Playbook</h2>
+      <p>Build a profile for your crew. Set today's parameters. Get four suggestion cards, swap up to two, spin to decide, and build your day from there.</p>
+    </div>
+    <div class="pathway freeplay">
+      <p class="pathway-eyebrow">Quick idea generation</p>
+      <h2>Free Play</h2>
+      <p>Start with a location you want to explore. Flip through suggestion cards. Save your faves for later.</p>
+    </div>
+    <div class="pathway playground">
+      <p class="pathway-eyebrow">Your saved ideas</p>
+      <h2>Playground</h2>
+      <p>Browse your saved ideas, organized automatically by location. Part wish list, part plan. When something catches your eye, play it into a full day.</p>
+    </div>
+  </div>
+
+  <!-- How it works - 6 step cards -->
+  <div class="flow">
+    <div class="section-label">How Playbook works</div>
+    <div class="cards-grid">
+
+      <div class="step-wrap">
+        <div class="step-meta"><div class="step-badge">1</div><div class="step-label">Set up your profile</div></div>
+        <div class="sp-card sp-card-c1">
+          <div class="c1-inner">
+            <div class="c1-spark">✨</div>
+            <div class="c1-q">What sounds like a good day?</div>
+            <div class="c1-sub">Pick as many as you like.</div>
+            <div class="chips">
+              <div class="chip chip-sel">🏕️ Adventure</div>
+              <div class="chip">🏖️ Beach</div>
+              <div class="chip chip-sel">🍜 Food</div>
+              <div class="chip">🏛️ History</div>
+              <div class="chip chip-sel">🥾 Hiking</div>
+              <div class="chip">🎭 Shows</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-wrap">
+        <div class="step-meta"><div class="step-badge">2</div><div class="step-label">Tell it about today</div></div>
+        <div class="sp-card sp-card-c2">
+          <div class="c2-inner">
+            <div class="c2-mood-label" style="text-align:center;">Now, today's plan.</div>
+            <div class="c2-row">
+              <div class="c2-opt"><div class="c2-title">🏘️ Stay local</div><div class="c2-sub">~15 min</div></div>
+              <div class="c2-opt c2-sel"><div class="c2-title">🚌 30 minutes</div><div class="c2-sub">A bit further</div></div>
+              <div class="c2-opt"><div class="c2-title">🚗 1 hour</div><div class="c2-sub">Worth the drive</div></div>
+              <div class="c2-opt"><div class="c2-title">🗺️ Further</div><div class="c2-sub">If it's worth it</div></div>
+            </div>
+            <div class="c2-field">Screenplay: Little Women…</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-wrap">
+        <div class="step-meta"><div class="step-badge">3</div><div class="step-label">Four suggestion cards</div></div>
+        <div class="sp-card sp-card-c3">
+          <div class="c3-inner">
+            <div class="c3-head">Your options are ready.</div>
+            <div class="c3-swap">Not feeling one? <strong>1 swap left</strong></div>
+            <div class="sug-card">
+              <div class="sug-title">📖 Orchard House, Concord</div>
+              <div class="sug-btns">
+                <span class="sbtn sbtn-teal">✦ Saved</span>
+                <span class="sbtn sbtn-pink">♥ Fave</span>
+                <span class="sbtn sbtn-sal">× Swap</span>
+              </div>
+            </div>
+            <div class="sug-card">
+              <div class="sug-title">🏛️ Isabella Stewart Gardner</div>
+              <div class="sug-btns">
+                <span class="sbtn sbtn-pink">♥ Fave</span>
+                <span class="sbtn sbtn-sal">× Swap</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-wrap">
+        <div class="step-meta"><div class="step-badge">4</div><div class="step-label">Fate decides</div></div>
+        <div class="sp-card sp-card-c4">
+          <div class="c4-inner">
+            <div class="mini-wheel">
+              <div class="wq wq1">🌿</div>
+              <div class="wq wq2">📖</div>
+              <div class="wq wq3">🎨</div>
+              <div class="wq wq4">🏛️</div>
+            </div>
+            <div class="spin-btn-sm">SPIN</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-wrap">
+        <div class="step-meta"><div class="step-badge">5</div><div class="step-label">The winning card</div></div>
+        <div class="sp-card sp-card-winner sp-card-c1">
+          <div class="c5-inner">
+            <div class="c5-icon-row">
+              <div class="c5-icon">🌿</div>
+              <div>
+                <div class="c5-title">Sleepy Hollow Cemetery &amp; Authors Ridge</div>
+                <div class="c5-addr">Bedford Street, Concord, MA</div>
+              </div>
+            </div>
+            <div class="c5-pills">
+              <div class="c5-pill">Dawn to dusk</div>
+              <div class="c5-pill">Free</div>
+            </div>
+            <div class="c5-tip">💡 Louisa May Alcott's grave is always covered in pennies and pencils - a brilliant Little Women photo moment.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-wrap">
+        <div class="step-meta"><div class="step-badge">6</div><div class="step-label">Build an itinerary</div></div>
+        <div class="sp-card sp-card-c6">
+          <div class="c6-inner">
+            <div class="c6-head">Play On</div>
+            <div class="c6-sub">Build your day - tap to add</div>
+            <div class="addon">🌅 Add something before</div>
+            <div class="addon">🍽️ Half Time - find a food stop</div>
+            <div class="addon">🌆 Add something after</div>
+            <div class="addon">🌙 The play's the thing - add an evening</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <p style="text-align:center; font-family:'Fraunces', serif; font-style:italic; font-size:0.95rem; color:var(--mid); margin-top:28px; margin-bottom:52px;">The app learns your preferences the more you play.</p>
+
+  <!-- Wheel callout -->
+  <div class="wheel-block">
+    <div>
+      <h2><em>Fate decides.</em></h2>
+      <p class="no-takebacks">No take-backs.</p>
+      <p>The wheel isn't a gimmick, it's a decision tool. When you can't choose or need a fair compromise, spin. Works for couples, families, friends, or anyone who has been debating the same options for twenty minutes.</p>
+    </div>
+    <div class="wheel-graphic">
+      <div class="wheel-q1"></div>
+      <div class="wheel-q2"></div>
+      <div class="wheel-q3"></div>
+      <div class="wheel-q4"></div>
+    </div>
+  </div>
+
+  <!-- Pricing -->
+  <div class="pricing">
+    <div>
+      <div class="mini-wheel" style="width:72px;height:72px;border-radius:50%;border:4px solid #FEFBF3;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;flex-shrink:0;">
+        <div style="background:#FEFBF3;display:flex;align-items:center;justify-content:center;font-size:11px;">🌿</div>
+        <div style="background:#F5C842;display:flex;align-items:center;justify-content:center;font-size:11px;">📖</div>
+        <div style="background:#E07055;display:flex;align-items:center;justify-content:center;font-size:11px;">🎨</div>
+        <div style="background:#3D9E8F;display:flex;align-items:center;justify-content:center;font-size:11px;">🏛️</div>
+      </div>
+    </div>
+    <div class="pricing-right">
+      <p><strong>Beta testers:</strong> we’d love your say in how <em>softplay</em> is priced. One-time fee? Monthly subscription? You tell us. Whatever we decide together, you’ll have free lifetime access.</p>
+    </div>
+  </div>
+
+  <!-- Roadmap -->
+  <section class="roadmap">
+    <div class="section-label">Where we're going</div>
+    <div class="roadmap-items">
+      <div class="roadmap-item">
+        <span class="phase">Now</span>
+        <div>
+          <h3>Core planning app</h3>
+          <p><em>softplay</em> is more than a search or a chatbot. It's a planning companion that offers suggestions through an interface that makes the experience feel less like research and more like play. It's familiar enough to feel like you, surprising enough to get you out of a rut.</p>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <span class="phase">Coming</span>
+        <div>
+          <h3>Calendar + community</h3>
+          <p>Date-sensitive events, local happenings, and early community features. Plus playlist sync to get you in the mood, and calendar sync to get you organized.</p>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <span class="phase">The dream</span>
+        <div>
+          <h3>Helping you find your place</h3>
+          <p><em>softplay</em> started as a tool to beat decision fatigue, but the dream is bigger: a travel companion who surprises you with suggestions and gets smarter with every play. When you land somewhere new, you see the spots locals actually love, plus flagged issues like closures before they cost you a Saturday. Real one-time events, shows, and meetups recommended by other families, not by an algorithm. Your Playbill will still remember your crew. The dream is a community that knows everywhere.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Privacy -->
+  <div class="privacy-block">
+    <h2>No ads. No sponsored results. No data selling. Full stop.</h2>
+    <p><em>softplay</em> makes money from players, not from data. Your data stays yours. We don't run ads and we don't sell to third parties. No fine print.</p>
+  </div>
+
+
+
+  <footer class="footer">
+    <span class="logo-sm"><em>softplay</em></span>
+    <span>Built for days out. No sponsored results. No funny business.</span>
+  </footer>
+
+</div>
+</body>
+</html>

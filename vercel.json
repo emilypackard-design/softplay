@@ -1,0 +1,3 @@
+{
+  "rewrites": [{ "source": "/beta", "destination": "/beta.html" }]
+}
