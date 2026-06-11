@@ -254,14 +254,14 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
       const wave = await Promise.all(
         Array.from({ length: Math.max(need, 4) }).map(() => fetchOneFood([...nonFoodContext, ...current]))
       )
-      const before = current.length
+      const prevLength = current.length
       for (const stop of wave) {
         if (stop && !current.some(s => sameStop(s.name, stop.name))) {
           current = [...current, stop]
         }
       }
       setFoodOptions(current)
-      staleWaves = current.length === before ? staleWaves + 1 : 0
+      staleWaves = current.length === prevLength ? staleWaves + 1 : 0
     }
     if (current.length < 10) setFoodExhausted(true) // location can't yield a full 10
   }
