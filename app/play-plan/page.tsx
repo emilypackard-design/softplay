@@ -355,6 +355,12 @@ export default function PlayPlanPage() {
   const [showResetConfirm, setShowResetConfirm] = useState(false)
   const [copyFeedback, setCopyFeedback] = useState(false)
 
+  // True when the saved Playbill has real content — used to show the skip button
+  const playbillIsSaved =
+    playbill.funChips.length > 0 || playbill.notFunChips.length > 0 ||
+    playbill.foodLoveChips.length > 0 || playbill.foodAvoidChips.length > 0 ||
+    !!playbill.funNote || !!playbill.greatDay || !!playbill.cityAndPractical
+
   const getPreviousStep = () => {
     const currentIndex = STEP_ORDER.indexOf(step)
     if (currentIndex > 0) {
@@ -757,6 +763,14 @@ export default function PlayPlanPage() {
             </div>
 
             <button onClick={() => setStep('fun-chips')} style={S.btnPrimary}>Next →</button>
+            {playbillIsSaved && (
+              <button onClick={() => {
+                setPlayStructure(p => ({ ...p, sessionAdults: playbill.adults, sessionKids: playbill.kids }))
+                setStep('play-structure')
+              }} style={{ ...S.btnSkip, marginTop: 10 }}>
+                Playbill saved — skip to today's plan →
+              </button>
+            )}
           </div>
         )}
 
