@@ -428,8 +428,14 @@ export default function PlayPlanPage() {
   }
 
   const handleFlagOption = (option: WheelOption) => {
-    // Show flag popup
-    setFlagPopupOption(option)
+    if (flaggedOptions.has(option.id)) {
+      // Already flagged — tap again to unflag (remove from vetoes so it's back in play)
+      setFlaggedOptions(prev => { const next = new Set(prev); next.delete(option.id); return next })
+      setOptionVetoes(prev => prev.filter(v => v !== option.name))
+    } else {
+      // First tap — show reason popup
+      setFlagPopupOption(option)
+    }
   }
 
   const handleFlagReason = async (option: WheelOption, reason: string) => {
