@@ -501,56 +501,44 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
             </div>
           </div>
 
-          {/* Share button — copy full itinerary to clipboard */}
-          <button onClick={() => {
+          {/* Build itinerary text — shared by both Email and Copy */}
+          {(() => {
             const itinerary = [
               `${chosenOption.emoji} ${chosenOption.name}`,
               '',
               '📍 Main Event',
-              `${winnerStop.name}`,
-              winnerStop.address || 'See directions in Maps',
+              winnerStop.name,
+              winnerStop.address || '',
               ...(winnerStop.hours ? [`⏰ ${winnerStop.hours}`] : []),
-              ...(winnerStop.tip ? ['' , `💡 ${winnerStop.tip}`] : []),
+              ...(winnerStop.tip ? ['', `💡 ${winnerStop.tip}`] : []),
               '',
-              ...(before ? [
-                '🌅 Before',
-                `${before.name}`,
-                before.address || '',
-                ...(before.hours ? [`⏰ ${before.hours}`] : []),
-              ] : []),
-              '',
-              ...(halfTime ? [
-                '🍽️ Half Time',
-                `${halfTime.name}`,
-                halfTime.address || '',
-                ...(halfTime.hours ? [`⏰ ${halfTime.hours}`] : []),
-              ] : []),
-              '',
-              ...(after ? [
-                '🌆 After',
-                `${after.name}`,
-                after.address || '',
-                ...(after.hours ? [`⏰ ${after.hours}`] : []),
-              ] : []),
-              '',
-              ...(evening ? [
-                '🌙 Evening',
-                `${evening.name}`,
-                evening.address || '',
-                ...(evening.hours ? [`⏰ ${evening.hours}`] : []),
-              ] : []),
-              '',
-              ...(notes ? ['📋 Notes', notes] : []),
-              '',
-              'softplay.app',
+              ...(before ? ['🌅 Before', before.name, before.address || '', ...(before.hours ? [`⏰ ${before.hours}`] : []), ''] : []),
+              ...(halfTime ? ['🍽️ Half Time', halfTime.name, halfTime.address || '', ...(halfTime.hours ? [`⏰ ${halfTime.hours}`] : []), ''] : []),
+              ...(after ? ['🌆 After', after.name, after.address || '', ...(after.hours ? [`⏰ ${after.hours}`] : []), ''] : []),
+              ...(evening ? ['🌙 Evening', evening.name, evening.address || '', ...(evening.hours ? [`⏰ ${evening.hours}`] : []), ''] : []),
+              ...(notes ? ['📋 Notes', notes, ''] : []),
+              'mysoftplay.app',
             ].filter(line => line !== undefined).join('\n')
 
-            navigator.clipboard.writeText(itinerary)
-            onCopyPlan()
-          }}
-            style={{ width: '100%', background: '#F5C842', color: '#1C1917', fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 16, padding: '15px 20px', borderRadius: 26, border: 'none', cursor: 'pointer', marginBottom: 12, boxShadow: '0 4px 18px rgba(242,201,76,0.4)' }}>
-            {showCopyFeedback ? '✓ Copied to clipboard' : 'Copy plan →'}
-          </button>
+            const subject = encodeURIComponent(`softplay plan — ${winnerStop.name}`)
+            const body = encodeURIComponent(itinerary)
+
+            return (
+              <>
+                {/* Email plan — primary yellow button */}
+                <a href={`mailto:?subject=${subject}&body=${body}`}
+                  style={{ display: 'block', width: '100%', background: '#F5C842', color: '#1C1917', fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 16, padding: '15px 20px', borderRadius: 26, border: 'none', cursor: 'pointer', marginBottom: 12, boxShadow: '0 4px 18px rgba(242,201,76,0.4)', textAlign: 'center', textDecoration: 'none', boxSizing: 'border-box' as const }}>
+                  📧 Email plan to myself
+                </a>
+
+                {/* Copy to clipboard — outlined secondary */}
+                <button onClick={() => { navigator.clipboard.writeText(itinerary); onCopyPlan() }}
+                  style={{ width: '100%', background: '#FFFFFF', color: '#1C1917', fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 15, padding: '14px 20px', borderRadius: 26, border: '1.5px solid #E8DCC8', cursor: 'pointer', marginBottom: 12 }}>
+                  {showCopyFeedback ? '✓ Copied' : 'Copy to clipboard'}
+                </button>
+              </>
+            )
+          })()}
 
           {/* Plan another day button */}
           <button onClick={onPlanAnotherDay}
