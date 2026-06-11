@@ -249,8 +249,10 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
     // in a few seconds instead of one-at-a-time. Stop when full or a wave adds nothing.
     while (current.length < 10 && staleWaves < 3) {
       const need = 10 - current.length
+      // Include non-food stops already in the plan so food never duplicates Before/After/Evening
+      const nonFoodContext = [winnerStop, ...(before ? [before] : []), ...(after ? [after] : []), ...(evening ? [evening] : [])]
       const wave = await Promise.all(
-        Array.from({ length: Math.max(need, 4) }).map(() => fetchOneFood([winnerStop, ...current]))
+        Array.from({ length: Math.max(need, 4) }).map(() => fetchOneFood([...nonFoodContext, ...current]))
       )
       const before = current.length
       for (const stop of wave) {
@@ -269,7 +271,9 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
     setLoading('food')
     setFoodExhausted(false)
     try {
-      const results = await Promise.all(Array.from({ length: 6 }).map(() => fetchOneFood([winnerStop])))
+      // Pass all stops already in the plan so food never duplicates Before/After/Evening
+      const nonFoodContext = [winnerStop, ...(before ? [before] : []), ...(after ? [after] : []), ...(evening ? [evening] : [])]
+      const results = await Promise.all(Array.from({ length: 6 }).map(() => fetchOneFood(nonFoodContext)))
       const options: Stop[] = []
       for (const stop of results) {
         if (stop && !options.some(o => sameStop(o.name, stop.name))) {
