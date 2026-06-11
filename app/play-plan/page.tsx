@@ -459,6 +459,8 @@ export default function PlayPlanPage() {
       trackSeen([data.option.name])
       // Keep the slot's original (unique) id so swapped-in cards never collide on id
       setWheelOptions(prev => prev.map(o => o.id === option.id ? { ...data.option, id: option.id } : o))
+      // Clear flagged state for this slot — the replacement card is fresh
+      setFlaggedOptions(prev => { const next = new Set(prev); next.delete(option.id); return next })
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Could not get a replacement.')
     } finally {
