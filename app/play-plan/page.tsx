@@ -465,8 +465,20 @@ export default function PlayPlanPage() {
       trackSeen([data.option.name])
       // Keep the slot's original (unique) id so swapped-in cards never collide on id
       setWheelOptions(prev => prev.map(o => o.id === option.id ? { ...data.option, id: option.id } : o))
-      // Clear flagged state for this slot — the replacement card is fresh
+      // Clear all UI state for this slot — replacement card always starts fresh
       setFlaggedOptions(prev => { const next = new Set(prev); next.delete(option.id); return next })
+      setHeartedOptions(prev => { const next = new Set(prev); next.delete(option.id); return next })
+      setPinnedOptions(prev => { const next = new Set(prev); next.delete(option.id); return next })
+      // Re-check playground: only pre-fill saved state if new card genuinely matches
+      if (typeof window !== 'undefined') {
+        try {
+          const saves = JSON.parse(localStorage.getItem('softplay_playground') || '[]')
+          const pinNames = new Set(saves.filter((s: any) => s.type === 'pin').map((s: any) => s.title))
+          const heartNames = new Set(saves.filter((s: any) => s.type === 'heart').map((s: any) => s.title))
+          if (pinNames.has(data.option.name)) setPinnedOptions(prev => new Set([...prev, option.id]))
+          if (heartNames.has(data.option.name)) setHeartedOptions(prev => new Set([...prev, option.id]))
+        } catch { /* ignore */ }
+      }
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Could not get a replacement.')
     } finally {
@@ -538,6 +550,20 @@ export default function PlayPlanPage() {
       trackSeen([data.option.name])
       // Keep the slot's original (unique) id so swapped-in cards never collide on id
       setWheelOptions(prev => prev.map(o => o.id === option.id ? { ...data.option, id: option.id } : o))
+      // Clear all UI state for this slot — replacement card always starts fresh
+      setFlaggedOptions(prev => { const next = new Set(prev); next.delete(option.id); return next })
+      setHeartedOptions(prev => { const next = new Set(prev); next.delete(option.id); return next })
+      setPinnedOptions(prev => { const next = new Set(prev); next.delete(option.id); return next })
+      // Re-check playground: only pre-fill saved state if new card genuinely matches
+      if (typeof window !== 'undefined') {
+        try {
+          const saves = JSON.parse(localStorage.getItem('softplay_playground') || '[]')
+          const pinNames = new Set(saves.filter((s: any) => s.type === 'pin').map((s: any) => s.title))
+          const heartNames = new Set(saves.filter((s: any) => s.type === 'heart').map((s: any) => s.title))
+          if (pinNames.has(data.option.name)) setPinnedOptions(prev => new Set([...prev, option.id]))
+          if (heartNames.has(data.option.name)) setHeartedOptions(prev => new Set([...prev, option.id]))
+        } catch { /* ignore */ }
+      }
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Swap failed. Try again.')
       setSwapsRemaining(s => s + 1)
