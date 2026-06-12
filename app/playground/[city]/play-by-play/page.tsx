@@ -155,7 +155,7 @@ export default function PlaygroundPlayByPlayPage() {
         </div>
       </div>
 
-      <div style={{ flex: 1, padding: '20px', maxWidth: 480, margin: '0 auto', width: '100%', overflowY: 'auto' }}>
+      <div style={{ padding: '20px', maxWidth: 480, margin: '0 auto', width: '100%' }}>
         <PlayByPlayView
           winnerStop={winnerStop}
           chosenOption={chosenOption}
