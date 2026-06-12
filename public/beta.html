@@ -763,12 +763,19 @@
   <!-- Pricing -->
   <div class="pricing">
     <div>
-      <div class="mini-wheel" style="width:72px;height:72px;border-radius:50%;border:4px solid #FEFBF3;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;flex-shrink:0;">
-        <div style="background:#FEFBF3;display:flex;align-items:center;justify-content:center;font-size:11px;">🌿</div>
-        <div style="background:#F5C842;display:flex;align-items:center;justify-content:center;font-size:11px;">📖</div>
-        <div style="background:#E07055;display:flex;align-items:center;justify-content:center;font-size:11px;">🎨</div>
-        <div style="background:#3D9E8F;display:flex;align-items:center;justify-content:center;font-size:11px;">🏛️</div>
-      </div>
+      <svg width="72" height="72" viewBox="0 0 100 100" style="display:block;flex-shrink:0;" xmlns="http://www.w3.org/2000/svg">
+        <!-- amber blade -->
+        <path d="M50,50 L50,16 Q70,16 74,36 Q74,47 50,50 Z" fill="#C9963A"/>
+        <!-- teal blade -->
+        <path d="M50,50 L50,16 Q70,16 74,36 Q74,47 50,50 Z" fill="#3D9E8F" transform="rotate(90 50 50)"/>
+        <!-- coral blade -->
+        <path d="M50,50 L50,16 Q70,16 74,36 Q74,47 50,50 Z" fill="#E07055" transform="rotate(180 50 50)"/>
+        <!-- yellow blade -->
+        <path d="M50,50 L50,16 Q70,16 74,36 Q74,47 50,50 Z" fill="#F5C842" stroke="rgba(28,25,23,0.2)" stroke-width="1.5" transform="rotate(270 50 50)"/>
+        <!-- centre pin -->
+        <circle cx="50" cy="50" r="7" fill="#1C1917"/>
+        <circle cx="50" cy="50" r="3.5" fill="#FEFBF3"/>
+      </svg>
     </div>
     <div class="pricing-right">
       <p><strong>Beta testers:</strong> we’d love your say in how <em>softplay</em> is priced. One-time fee? Monthly subscription? You tell us. Whatever we decide together, you’ll have free lifetime access.</p>
