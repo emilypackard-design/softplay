@@ -177,6 +177,8 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
   // Once an add-on is removed, its "Play On" button is greyed out — one choice, take it or leave it.
   const [dismissed, setDismissed] = useState<Set<'before' | 'after' | 'evening' | 'food'>>(new Set())
   const [notes, setNotes] = useState<string>('')
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => { setIsMobile(window.innerWidth < 768) }, [])
   // Swaps per stop type (food gets 10, others get 3) — flags don't count
   const [swapsRemaining, setSwapsRemaining] = useState({
     food: 10,
@@ -525,15 +527,17 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
 
             return (
               <>
-                {/* Email plan — primary yellow button */}
-                <a href={`mailto:?subject=${subject}&body=${body}`}
-                  style={{ display: 'block', width: '100%', background: '#F5C842', color: '#1C1917', fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 16, padding: '15px 20px', borderRadius: 26, border: 'none', cursor: 'pointer', marginBottom: 12, boxShadow: '0 4px 18px rgba(242,201,76,0.4)', textAlign: 'center', textDecoration: 'none', boxSizing: 'border-box' as const }}>
-                  📧 Email plan to myself
-                </a>
+                {/* Email plan — mobile only (mailto: is unreliable on desktop without a native mail client) */}
+                {isMobile && (
+                  <a href={`mailto:?subject=${subject}&body=${body}`}
+                    style={{ display: 'block', width: '100%', background: '#F5C842', color: '#1C1917', fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 16, padding: '15px 20px', borderRadius: 26, border: 'none', cursor: 'pointer', marginBottom: 12, boxShadow: '0 4px 18px rgba(242,201,76,0.4)', textAlign: 'center', textDecoration: 'none', boxSizing: 'border-box' as const }}>
+                    📧 Email plan to myself
+                  </a>
+                )}
 
-                {/* Copy to clipboard — outlined secondary */}
+                {/* Copy to clipboard — primary on desktop, secondary on mobile */}
                 <button onClick={() => { navigator.clipboard.writeText(itinerary); onCopyPlan() }}
-                  style={{ width: '100%', background: '#FFFFFF', color: '#1C1917', fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 15, padding: '14px 20px', borderRadius: 26, border: '1.5px solid #E8DCC8', cursor: 'pointer', marginBottom: 12 }}>
+                  style={{ width: '100%', background: isMobile ? '#FFFFFF' : '#F5C842', color: '#1C1917', fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: isMobile ? 15 : 16, padding: '14px 20px', borderRadius: 26, border: isMobile ? '1.5px solid #E8DCC8' : 'none', cursor: 'pointer', marginBottom: 12, boxShadow: isMobile ? 'none' : '0 4px 18px rgba(242,201,76,0.4)' }}>
                   {showCopyFeedback ? '✓ Copied' : 'Copy to clipboard'}
                 </button>
               </>
