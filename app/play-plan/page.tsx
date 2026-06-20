@@ -1196,6 +1196,9 @@ export default function PlayPlanPage() {
             >
               Lock in my options →
             </button>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: '#8C7B6B', textAlign: 'center', marginTop: 10, lineHeight: 1.5 }}>
+              📌 Tap <strong>Save for Later</strong> on any card above to keep it in your Playground — even if the wheel doesn&apos;t pick it.
+            </p>
           </div>
         )}
 
