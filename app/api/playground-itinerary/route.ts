@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
 The family wants to visit: ${title} in ${city}
 
-Give the full practical details for this specific venue. Real address, real hours, honest price, a genuinely useful local tip, and what to bring or wear (Props).
+Give the full practical details for this specific venue. Real address, real hours, honest price, a genuinely useful local tip, and what to bring or wear (Props). HOURS: if the place isn't open daily year-round (a market, seasonal farm, recurring event, etc.), state the days and season it runs — e.g. "Saturdays 8am–1pm, May–Oct" — not just clock hours.
 
 ALSO suggest a food stop (café, restaurant, food experience) nearby that would be a natural "Half Time" break. Not a chain, not a generic place — something specific and good.
 

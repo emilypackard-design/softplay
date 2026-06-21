@@ -50,6 +50,8 @@ ${type === 'food' ? `The food stop is a highlight — not an afterthought. Speci
 
 Write the tip in plain, varied language. Describe what's specifically good about this place in concrete terms (a dish, the atmosphere, a detail). Do NOT lean on generic superlatives like "legendary", "famous", "iconic", "renowned", or "must-try" — vary your wording so a list of these never sounds repetitive.
 
+HOURS: if the place isn't open daily year-round (a market, seasonal farm, recurring event, etc.), state the days and season it runs in the hours field — e.g. "Saturdays 8am–1pm, May–Oct" — not just clock hours.
+
 Return ONLY valid JSON:
 {
   "id": "addon-${type}",

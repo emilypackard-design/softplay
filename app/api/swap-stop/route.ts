@@ -47,6 +47,8 @@ ${playStructure.lowerCarbon ? 'Lower carbon: favour lower-impact activity choice
 Suggest ONE alternative stop that fits the same slot in the plan. It must be a different type of place from what was vetoed.
 ${stopToSwap.isHalfTime ? 'This must be a food stop (café, restaurant, etc.).' : 'This must be an activity or attraction.'}
 
+HOURS: if the place isn't open daily year-round (a market, seasonal farm, recurring event, etc.), state the days and season it runs in the hours field — e.g. "Saturdays 8am–1pm, May–Oct" — not just clock hours.
+
 Return ONLY valid JSON with no other text:
 {
   "stop": {
