@@ -9,6 +9,14 @@
 > 3. **Mobile-test feedback** from Emily's session (screenshots incoming).
 > 4. **Stripe: POST-beta, not concurrent** (decided 2026-06-08). Use beta feedback to choose pricing model first.
 
+## ✅ Session (2026-06-21) — Playground "Play this card" regenerates date-aware
+
+- **Problem found:** replaying a saved Playground card just re-showed the frozen saved pitch (stale date framing like "June 21st… in full bloom right now… today") with blank address/hours. The `playground-itinerary` route existed but was never wired up, and had no date awareness.
+- **Fix:** Playground "Play this card" now calls `playground-itinerary` (made date-aware + pitch-aware) to regenerate fresh detail for TODAY: strips stale date framing, fills in real address/hours, and adds a **seasonal heads-up** when the saved activity doesn't suit the current date (e.g. an outdoor ice rink replayed in June → "Heads up — it's mid-June, the rink won't be open today… here's what works year-round"). Route trimmed to a single stop (food still chosen via Play On) to keep it lean.
+- Uses the page's existing "Building your day…" spinner. Graceful fallback to the saved pitch if regeneration fails.
+- **Verified locally** (seeded an off-season card, played it, confirmed framing stripped + seasonal warning + address/hours filled, no console errors).
+- **CONVENTION (now in CLAUDE.md):** the "Play On" experience must feel identical from BOTH pathways — any change to that screen/component/routes applies to both. The user keeps the stale pitch on the saved card in the Playground LIST (fine as a memory of why it was saved); regeneration only happens on play.
+
 ## ✅ Session (2026-06-21) — Date/event logic overhaul (Play Structure)
 
 Deep iteration on how the app handles date-specific and recurring events. All changes in `generate-options`, `swap-option`, plus the four detail routes. **All server-side prompt logic — needs live testing.**

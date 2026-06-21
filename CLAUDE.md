@@ -22,6 +22,7 @@ A fun decision maker app for families (or anyone) planning activities and outing
 - **Three distinct pathways** — Different entry points for different moods (structured vs. spontaneous)
 - **Pin vs. Heart distinction** — "Save for Later" (📌) vs. "Save as Favorite" (❤️) for intentional saving
 - **Fern gradient design** — Warm, natural color palette (no harsh blues/purples)
+- **"Play On" parity across pathways** — the Play On / Play by Play experience must feel IDENTICAL whether reached from Playbook or Playground. Any change to that screen (or its `PlayByPlayView` component / itinerary routes) must be applied to BOTH pathways. When you land there, you shouldn't be able to tell which path you came from. (Both now regenerate detail fresh + date-aware on arrival.)
 
 ## Current Status (V1.0)
 ✅ **Shipped Features:**

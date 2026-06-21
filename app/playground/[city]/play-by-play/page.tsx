@@ -67,9 +67,11 @@ export default function PlaygroundPlayByPlayPage() {
       sessionNotes: '',
     }
 
-    // Create winner/main stop from the playground card
-    // Leave address/hours/price blank when unknown (don't show "Check website" placeholders)
-    const mainStop: Stop = {
+    // Regenerate fresh, date-aware detail for TODAY: strips stale date framing from the
+    // saved pitch, fills in real address/hours, and adds a seasonal heads-up when the
+    // saved activity doesn't suit the current date. Mirrors the Playbook "Play On"
+    // experience so both pathways feel identical. (Food is still chosen via "Play On".)
+    const fallbackStop: Stop = {
       id: playgroundCard.id,
       name: playgroundCard.title,
       emoji: playgroundCard.emoji,
@@ -81,10 +83,27 @@ export default function PlaygroundPlayByPlayPage() {
       props: '',
       isHalfTime: false,
     }
-    setWinnerStop(mainStop)
 
-    // Don't auto-generate food — let user choose via "Play On"
-    setMounted(true)
+    let cancelled = false
+    ;(async () => {
+      try {
+        const res = await fetch('/api/playground-itinerary', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title: playgroundCard.title, city: playgroundCard.city, pitch: playgroundCard.pitch }),
+        })
+        const data = await res.json()
+        if (!res.ok || !data.stop) throw new Error(data.error || 'No detail returned')
+        // Keep the saved card's own id + emoji; take the regenerated practical detail
+        if (!cancelled) setWinnerStop({ ...data.stop, id: playgroundCard.id, emoji: playgroundCard.emoji, isHalfTime: false })
+      } catch {
+        // Graceful fallback: show the saved pitch (stale framing and all) rather than nothing
+        if (!cancelled) setWinnerStop(fallbackStop)
+      } finally {
+        if (!cancelled) setMounted(true)
+      }
+    })()
+
+    return () => { cancelled = true }
   }, [])
 
   if (!city) return <div>No city found</div>
