@@ -9,6 +9,12 @@
 > 3. **Mobile-test feedback** from Emily's session (screenshots incoming).
 > 4. **Stripe: POST-beta, not concurrent** (decided 2026-06-08). Use beta feedback to choose pricing model first.
 
+## ✅ Session (2026-06-21) — Resend custom SMTP + tester feedback notes
+
+### Beta tester feedback (2 responses so far, waiting for 10 before acting)
+- **Local/one-time events** — testers couldn't find them. Stopgap shipped: Play Structure free-form notes field now detects date-specific signals (e.g. "farmers market this Saturday") and triggers a web search in `generate-options`. Placeholder updated to hint at this capability: *"Would like to find a summer farmers market this Saturday."* Not a full events API — covers community/seasonal events but not big ticketed events (concerts, sports).
+- **Subscription pricing** — both testers pushed back. Decision: wait for more responses before choosing model (subscription vs. one-time vs. freemium). Casual feedback from others has been positive ("I'd definitely use this").
+
 ## ✅ Session (2026-06-21) — Resend custom SMTP
 
 - **Resend account created**, mysoftplay.app verified as sending domain (Ireland eu-west-1, via Cloudflare auto-configure).
