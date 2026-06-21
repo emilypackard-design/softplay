@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { robustParseJSON } from '@/lib/parseJSON'
+import { sameStop } from '@/lib/stopNames'
 import type { PlaybillData, PlayStructureData, WheelOption } from '@/types'
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
@@ -63,7 +64,7 @@ Return ONLY valid JSON:
 
       // Check that replacement is not a duplicate of other wheel options (by name OR emoji)
       if (data?.name && data?.emoji) {
-        const nameMatch = otherOptions.some(o => o.name.toLowerCase().trim() === data.name.toLowerCase().trim())
+        const nameMatch = otherOptions.some(o => sameStop(o.name, data.name))
         const emojiMatch = otherOptions.some(o => o.emoji === data.emoji)
         if (!nameMatch && !emojiMatch) {
           return NextResponse.json({ option: data })

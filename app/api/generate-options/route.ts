@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import type { PlaybillData, PlayStructureData } from '@/types'
 import { robustParseJSON } from '@/lib/parseJSON'
+import { sameStop } from '@/lib/stopNames'
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
@@ -192,7 +193,12 @@ Return ONLY valid JSON with no other text, markdown, or explanation:
         // Check if all options are different types (different names AND different emojis)
         const names = data.options.map((o: any) => o.name)
         const emojis = data.options.map((o: any) => o.emoji)
-        const uniqueNames = new Set(names).size === 4
+        // Fuzzy uniqueness: catches near-duplicates like "Mt Auburn Cemetery" vs
+        // "Mt Auburn Cemetery Watertown Walk" that an exact-string check would miss.
+        const hasNearDuplicate = names.some((n: string, i: number) =>
+          names.some((m: string, j: number) => i < j && sameStop(n, m))
+        )
+        const uniqueNames = new Set(names).size === 4 && !hasNearDuplicate
         const uniqueEmojis = new Set(emojis).size === 4
 
         if (uniqueNames && uniqueEmojis) {
