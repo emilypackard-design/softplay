@@ -63,17 +63,16 @@ TODAY'S ACTUAL CREW (may differ from family profile): ${actualSessionCrew}`
     // Web search: if sessionNotes contain a time/event signal, search for local free events
     let searchContext = ''
     if (playStructure.sessionNotes) {
-      // Step 1: cheap detection — does this note need a real-time web search?
-      const detectionMsg = await client.messages.create({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 10,
-        messages: [{
-          role: 'user',
-          content: `Does this text contain a time-specific event, named public event, or date-specific request (e.g. "farmers market this Saturday", "this weekend", a specific festival name) that would benefit from a real-time web search for local happenings? Answer only YES or NO.\n\nText: "${playStructure.sessionNotes}"`
-        }]
-      })
-      const needsSearch = detectionMsg.content[0].type === 'text' &&
-        detectionMsg.content[0].text.trim().toUpperCase().startsWith('YES')
+      // Step 1: zero-cost prefilter — does this note contain date/event language?
+      // Replaces a per-request LLM detection call so plans WITHOUT date language stay fast.
+      const noteText = playStructure.sessionNotes.toLowerCase()
+      const needsSearch =
+        // date words, seasons, relative timing, event types, named holidays
+        /\b(today|tonight|tomorrow|weekend|this week|next week|this month|next month|season|seasonal|january|february|april|june|july|august|september|october|november|december|monday|tuesday|wednesday|thursday|friday|saturday|sunday|festival|market|fair|fete|parade|fireworks|carnival|celebration|holiday|bloomsday|halloween|christmas|easter|hanukkah|diwali|new year|patrick)\b/.test(noteText)
+        // ambiguous months ("may", "march") only when a number is nearby, to avoid the modal/verb senses
+        || /\b(may|march)\b.{0,8}\d/.test(noteText)
+        || /\b\d{1,2}(st|nd|rd|th)\b/.test(noteText)   // "16th", "21st"
+        || /\b\d{1,2}\/\d{1,2}\b/.test(noteText)        // "6/16"
 
       // Step 2: web search only when the note has a time/event signal and we know the city
       if (needsSearch && playStructure.city) {
