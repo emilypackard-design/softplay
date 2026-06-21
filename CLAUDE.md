@@ -47,6 +47,9 @@ A fun decision maker app for families (or anyone) planning activities and outing
 - Shareable itinerary links
 - Family collaboration/voting
 - **Confirmation/reflection page** — before card generation (both pathways), the app reflects back its understanding ("You're a family of 4 in Dublin June 26-28, kids love food events, adults love literary festivals…") so the user can correct typos, faulty logic, or misread dates. Doubles as the date-arithmetic safety net (echoes the *resolved* date so "last weekend" errors get caught).
+  - **Feel-seen framing:** gathers everything so far into a warm reflection; interesting-but-wrong inferences ("sounds like you love water sports") are a feature — they invite correction ("actually one child can't swim yet") that sharpens the result.
+  - **Selective write-back to memory:** durable corrections ("one child can't swim", "the 8yo is scared of pirates") get promoted to the **Playbill** so they shape every future plan (with a gentle "Want me to remember this?" confirm). Ephemeral ones ("no hikes today") stay session-only — don't pollute the permanent profile. This is the natural write-back moment for family memory (ties to `lastPlaybill` persistence + Supabase profile).
+  - **GUARDRAIL — stays a decision tool, not a chatbot:** ONE screen, ONE optional correction round, then generate. Reflect → nudge → go. NOT a negotiating dialogue. If it becomes 2-3 back-and-forths it has failed softplay's core promise (ending the "what should we do?" spiral, not recreating it).
 
 ## Documentation Files
 - **CLAUDE.md** (this file) — Project briefing; read automatically at session start

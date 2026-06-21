@@ -34,8 +34,11 @@ Deep iteration on how the app handles date-specific and recurring events. All ch
 
 **Inference confirmed (no code needed):** Claude can resolve "this Saturday" / "last Saturday in June" / "June 27th" to one date because today's date is injected. Caveat: date arithmetic is an LLM weak spot — a future confirmation page (see V2) would be the reliability backstop. Decided NOT to force users to type exact dates (would push toward wrong framing for recurring events).
 
-### V2 idea captured (also in CLAUDE.md)
+### V2 idea captured (full version in CLAUDE.md)
 - **Confirmation/reflection page** before card generation (both pathways): app reflects back its understanding so the user can fix typos, faulty logic, or misread dates before any cards generate. Doubles as the date-arithmetic safety net.
+  - Feel-seen framing; interesting-but-wrong inferences invite refining corrections.
+  - Selective write-back: durable corrections → Playbill (with "remember this?" confirm); ephemeral → session-only.
+  - **GUARDRAIL:** one screen, one correction round, then generate. Stays a decision tool — not a chatbot. 2-3 back-and-forths = failure.
 
 ## ✅ Session (2026-06-21) — Resend custom SMTP + tester feedback notes
 
