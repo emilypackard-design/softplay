@@ -197,8 +197,8 @@ Return ONLY valid JSON with no other text, markdown, or explanation:
         const uniqueEmojis = new Set(emojis).size === 4
 
         if (uniqueNames && uniqueEmojis) {
-          // Valid response
-          return NextResponse.json(data)
+          // Valid response — include searchContext so swaps can pull from the same event pool
+          return NextResponse.json({ ...data, searchContext })
         }
       }
 
@@ -215,7 +215,7 @@ Return ONLY valid JSON with no other text, markdown, or explanation:
       )
     }
 
-    return NextResponse.json(data)
+    return NextResponse.json({ ...data, searchContext })
   } catch (error: unknown) {
     console.error('generate-options error:', error)
     return NextResponse.json(

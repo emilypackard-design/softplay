@@ -333,6 +333,7 @@ export default function PlayPlanPage() {
   })
 
   const [wheelOptions, setWheelOptions] = useState<WheelOption[]>([])
+  const [searchContext, setSearchContext] = useState('')
   const [swapsRemaining, setSwapsRemaining] = useState(2)
   const [countdownVisible, setCountdownVisible] = useState(0)
   const [optionVetoes, setOptionVetoes] = useState<string[]>([])
@@ -458,7 +459,7 @@ export default function PlayPlanPage() {
     try {
       const res = await fetch('/api/swap-option', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ playbill, playStructure, currentOptions: wheelOptions, vetoedOption: option, allVetoes: newVetoes }),
+        body: JSON.stringify({ playbill, playStructure, currentOptions: wheelOptions, vetoedOption: option, allVetoes: newVetoes, searchContext }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
@@ -543,7 +544,7 @@ export default function PlayPlanPage() {
     try {
       const res = await fetch('/api/swap-option', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ playbill, playStructure, currentOptions: wheelOptions, vetoedOption: option, allVetoes: newVetoes }),
+        body: JSON.stringify({ playbill, playStructure, currentOptions: wheelOptions, vetoedOption: option, allVetoes: newVetoes, searchContext }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Swap failed')
@@ -591,6 +592,7 @@ export default function PlayPlanPage() {
       }
       if (!res.ok) throw new Error(data.error || 'Something went wrong')
       setWheelOptions(data.options)
+      setSearchContext(data.searchContext || '')
       setSwapsRemaining(2)
       setOptionVetoes([])
 
