@@ -83,7 +83,7 @@ TODAY'S ACTUAL CREW (may differ from family profile): ${actualSessionCrew}`
           tools: [{ type: 'web_search_20260209' as any, name: 'web_search' }],
           messages: [{
             role: 'user',
-            content: `Search for free or low-cost public events happening in ${playStructure.city} related to: "${playStructure.sessionNotes}". Today is ${todayStr}. Only include events that are free or very low cost, publicly accessible without advance tickets, recurring or community-run, and family-friendly. Never include ticketed concerts, sports events, or events requiring advance purchase. Return a brief summary of relevant events found, or say "No relevant events found" if nothing matches.`
+            content: `Search for free or low-cost public events happening ${radiusLabel[playStructure.radius] || 'near'} of ${playStructure.city} related to: "${playStructure.sessionNotes}". Today is ${todayStr}. Keep events within that travel radius UNLESS the request itself says the user will travel further. Only include events that are free or very low cost, publicly accessible without advance tickets, recurring or community-run, and family-friendly. Never include ticketed concerts, sports events, or events requiring advance purchase. Return a brief summary of relevant events found, or say "No relevant events found" if nothing matches.`
           }]
         })
         const textBlocks = searchMsg.content.filter((b: any) => b.type === 'text')
@@ -113,11 +113,16 @@ ${playStructure.rainProof ? '- Indoors only: suggest indoor options only — ass
 ${playStructure.sessionNotes ? `- Session notes from the user (THESE OVERRIDE THE FAMILY PROFILE — treat as high priority): ${playStructure.sessionNotes}` : ''}
 ${searchContext ? `- Real-time local events found (use these to generate 1-2 of the 4 suggestions — the remaining 2-3 must be evergreen options drawn from the family profile and all other filters including indoors, radius, and budget): ${searchContext}` : ''}
 
-CRITICAL: Session notes override family profile preferences. Examples:
-- If family profile says "loves hiking" but session notes say "no hikes today", respect "no hikes"
-- If session notes say "just adults", ignore kids' preferences
-- If session notes say "no 7yo today, bringing adult friend instead", adjust crew-based suggestions
-- If session notes say "one person scared of heights", don't suggest rock climbing or cliff-edge viewpoints
+RECONCILING THE INPUTS — two rules:
+
+RULE 1 (hard vs. hard): Session notes are weighted evenly with the session settings above (mood, duration, transport, travel radius) and the family profile — they do NOT automatically override everything. A note only wins where it DIRECTLY CONTRADICTS a specific setting or preference. Where the notes are silent, every chosen setting stands exactly as set.
+- Travel radius "30 minutes" + note "willing to drive 1-2 hours for the perfect beach" → the note directly loosens the radius, so honor up to ~2 hours BY CAR. But if the note says nothing about distance, keep the radius as chosen — never use a note as license to roam.
+- Family profile "loves hiking" + note "no hikes today" → direct contradiction, respect "no hikes".
+- Note "just adults" → ignore kids' preferences. Note "one person scared of heights" → no rock climbing or cliff-edge viewpoints.
+- A note about ONE thing (e.g. food) does not override UNRELATED settings (e.g. radius). Only the contradicted setting bends.
+
+RULE 2 (hard vs. soft): A constraint (avoid / nothing / not today / scared of / "nothing too X") is a HARD BOUNDARY. A screenplay theme or mood is SOFT INSPIRATION. When a boundary meets a theme, keep the boundary and find the facet of the theme that fits WITHIN it — do not discard the theme, and never breach the boundary.
+- "Beetlejuice" + "nothing too scary" → keep the whimsical/gothic-playful/autumnal facet (surreal sculpture garden, quirky old New England town, stop-motion workshop); never a genuinely spooky or frightening option, even with a reassuring caveat.
 
 Generate exactly 4 specific, equally-good options for today. Requirements:
 - Each must be a real, named place or specific activity — never generic ("a park", "a museum")
