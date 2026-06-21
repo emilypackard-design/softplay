@@ -15,9 +15,9 @@
 - **Fix:**
   - `generate-options` now accepts a `vetoes` list, adds it to the prompt as hard exclusions, and fuzzy-filters them out of the 4 results (retries if one slips in).
   - Playbook persists permanent flags to the SAME per-city store Free Play uses (`softplay_vetoes_<city>`), so a place flagged closed is gone from BOTH pathways. Loaded on generate, merged into swaps too.
-  - **Reason matters:** "Permanently closed" + "Bad suggestion" persist; "Not today" stays session-only (should return another day).
-- **Verified:** direct call to `generate-options` with a veto list returns 4 clean options excluding the vetoed names; typecheck clean; key convention matches Free Play.
-- Note: Free Play persists ALL flag reasons (incl. "not today") — minor pre-existing inconsistency, left as-is for now.
+  - **Reason matters:** ONLY "Permanently closed" persists. "Not today" AND "Bad suggestion" are situational (e.g. no car today → would try another time) → session-only.
+- **Free Play aligned to match:** split its `vetoes` into a persisted permanent list (only "Permanently closed", shared store) + a session-only `sessionExcludes` (skip, heart-dedup, "not today", "bad suggestion"). Threaded the flag reason through `onAction`. Both pathways now behave identically and share the same per-city permanent store.
+- **Verified:** direct call to `generate-options` with a veto list returns 4 clean options excluding the vetoed names; both pages load with no console errors; typecheck clean.
 
 ## ✅ Session (2026-06-21) — Playground "Play this card" regenerates date-aware
 

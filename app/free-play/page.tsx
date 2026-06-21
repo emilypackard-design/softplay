@@ -58,7 +58,7 @@ function removeFromPlayground(id: string) {
 
 function SwipeCard({ card, onAction, disabled }: {
   card: Card
-  onAction: (action: 'pin' | 'flag' | 'never' | 'heart') => void
+  onAction: (action: 'pin' | 'flag' | 'never' | 'heart', reason?: string) => void
   disabled: boolean
 }) {
   const [pinned, setPinned] = useState(false)
@@ -88,7 +88,7 @@ function SwipeCard({ card, onAction, disabled }: {
     setFlagged(true)
     setShowFlagPopup(false)
     // Delay moving to next card so color change renders first (match pin/heart 2sec delay)
-    setTimeout(() => onAction('flag'), 2000)
+    setTimeout(() => onAction('flag', reason), 2000)
   }
 
   const handlePin = () => {
@@ -328,7 +328,8 @@ export default function FreePlayPage() {
   const [yeses, setYeses] = useState<Card[]>([])
   const [pinned, setPinned] = useState<Card[]>([])
   const [hearted, setHearted] = useState<Card[]>([])
-  const [vetoes, setVetoes] = useState<string[]>([])
+  const [vetoes, setVetoes] = useState<string[]>([])           // persisted permanent (only "Permanently closed"), shared with Playbook
+  const [sessionExcludes, setSessionExcludes] = useState<string[]>([])  // session-only: skip, heart-dedup, "not today", "bad suggestion"
   const [seen, setSeen] = useState<string[]>([])
   const [loadingCards, setLoadingCards] = useState(false)
   const [quipIndex, setQuipIndex] = useState(0)
@@ -402,15 +403,18 @@ export default function FreePlayPage() {
         if (raw) savedPlaybill = JSON.parse(raw)
       } catch { /* ignore — stay anonymous */ }
 
+      // Exclude both the permanent vetoes (persisted, shared with Playbook) and this
+      // session's situational excludes (skips, "not today", "bad suggestion", hearts).
+      const excluded = [...vetoes, ...sessionExcludes]
       const res = await fetch('/api/free-play-cards', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ city, adults, kids, seen, vetoes, playbill: savedPlaybill, preferences: preferencesWithChips }),
+        body: JSON.stringify({ city, adults, kids, seen, vetoes: excluded, playbill: savedPlaybill, preferences: preferencesWithChips }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
       // Safety net: never show a card that was previously flagged/vetoed for this city.
-      const vetoSet = new Set(vetoes.map((v: string) => v.toLowerCase()))
+      const vetoSet = new Set(excluded.map((v: string) => v.toLowerCase()))
       let freshCards = data.cards.filter((c: Card) => !vetoSet.has(c.name.toLowerCase()))
       // appendLimit: when flagging, we only want ONE replacement card (keeps the 6-card flow).
       if (appendLimit) freshCards = freshCards.slice(0, appendLimit)
@@ -429,7 +433,7 @@ export default function FreePlayPage() {
     await loadMoreCards()
   }
 
-  const handleAction = (action: 'pin' | 'flag' | 'never' | 'heart') => {
+  const handleAction = (action: 'pin' | 'flag' | 'never' | 'heart', reason?: string) => {
     if (!currentCard) return
 
     if (action === 'pin') {
@@ -463,16 +467,22 @@ export default function FreePlayPage() {
       setToast({ id: save.id, title: currentCard.name, emoji: currentCard.emoji, type: 'heart' })
       setTimeout(() => setToast(null), 3000)
       setHearted(prev => [...prev, currentCard])
-      // Never suggest this again in Free Play
-      setVetoes(prev => [...prev, currentCard.name])
+      // Don't re-show this session (it's now in the Playground; the 'seen' load covers future sessions)
+      setSessionExcludes(prev => [...prev, currentCard.name])
       setCurrentIndex(i => i + 1)
     } else if (action === 'never') {
-      setVetoes(prev => [...prev, currentCard.name])
+      // Skip is situational — exclude this session only, can resurface another day
+      setSessionExcludes(prev => [...prev, currentCard.name])
       setCurrentIndex(i => i + 1)
     } else if (action === 'flag') {
-      // Flag: veto it, move on, and add ONE free replacement card (universal flag rule).
-      // Background fetch — the deck stays fully interactive while it loads.
-      setVetoes(prev => [...prev, currentCard.name])
+      // Flag: move on + add ONE free replacement card (universal flag rule).
+      // Only "Permanently closed" persists across sessions + both pathways; other
+      // reasons ("Not today", "Bad suggestion") are situational → session-only.
+      if (reason === 'Permanently closed') {
+        setVetoes(prev => [...prev, currentCard.name])
+      } else {
+        setSessionExcludes(prev => [...prev, currentCard.name])
+      }
       setCurrentIndex(i => i + 1)
       void loadMoreCards(1, true)
     }

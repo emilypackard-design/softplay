@@ -468,8 +468,9 @@ export default function PlayPlanPage() {
     // Mark as flagged
     setFlaggedOptions(prev => new Set([...prev, option.id]))
 
-    // Permanent reasons persist across sessions + both pathways; "Not today" is session-only.
-    if (reason === 'Permanently closed' || reason === 'Bad suggestion') {
+    // Only "Permanently closed" persists across sessions + both pathways.
+    // "Not today" and "Bad suggestion" are situational (e.g. no car today) → session-only.
+    if (reason === 'Permanently closed') {
       addCityVeto(playStructure.city, option.name)
     }
 
