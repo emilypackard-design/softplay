@@ -9,6 +9,16 @@
 > 3. **Mobile-test feedback** from Emily's session (screenshots incoming).
 > 4. **Stripe: POST-beta, not concurrent** (decided 2026-06-08). Use beta feedback to choose pricing model first.
 
+## ✅ Session (2026-06-21) — Playbook flags now persist across sessions
+
+- **Bug:** flagging a Playbook option (e.g. "Permanently closed") didn't stick — `generate-options` never received a veto list, and Playbook's vetoes were session-only `useState` (Free Play already persisted per-city; Playbook didn't). So closed/rejected places kept reappearing in new sessions.
+- **Fix:**
+  - `generate-options` now accepts a `vetoes` list, adds it to the prompt as hard exclusions, and fuzzy-filters them out of the 4 results (retries if one slips in).
+  - Playbook persists permanent flags to the SAME per-city store Free Play uses (`softplay_vetoes_<city>`), so a place flagged closed is gone from BOTH pathways. Loaded on generate, merged into swaps too.
+  - **Reason matters:** "Permanently closed" + "Bad suggestion" persist; "Not today" stays session-only (should return another day).
+- **Verified:** direct call to `generate-options` with a veto list returns 4 clean options excluding the vetoed names; typecheck clean; key convention matches Free Play.
+- Note: Free Play persists ALL flag reasons (incl. "not today") — minor pre-existing inconsistency, left as-is for now.
+
 ## ✅ Session (2026-06-21) — Playground "Play this card" regenerates date-aware
 
 - **Problem found:** replaying a saved Playground card just re-showed the frozen saved pitch (stale date framing like "June 21st… in full bloom right now… today") with blank address/hours. The `playground-itinerary` route existed but was never wired up, and had no date awareness.

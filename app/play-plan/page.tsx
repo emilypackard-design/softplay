@@ -8,6 +8,22 @@ import PlayByPlayView from '@/components/PlayByPlayView'
 import PinwheelIcon from '@/components/PinwheelIcon'
 import { sameStop } from '@/lib/stopNames'
 
+// Per-city permanent veto store, SHARED with Free Play (softplay_vetoes_<city>):
+// a place flagged "permanently closed" / "bad suggestion" stays excluded across
+// sessions and across both pathways. ("Not today" is session-only — not stored.)
+const vetoKey = (c: string) => `softplay_vetoes_${c.toLowerCase()}`
+const loadCityVetoes = (c: string): string[] => {
+  if (typeof window === 'undefined' || !c) return []
+  try { return JSON.parse(localStorage.getItem(vetoKey(c)) || '[]') } catch { return [] }
+}
+const addCityVeto = (c: string, name: string) => {
+  if (typeof window === 'undefined' || !c) return
+  const cur = loadCityVetoes(c)
+  if (!cur.some(v => v.toLowerCase() === name.toLowerCase())) {
+    localStorage.setItem(vetoKey(c), JSON.stringify([...cur, name]))
+  }
+}
+
 type Step =
   | 'welcome' | 'crew' | 'fun-chips' | 'not-fun-chips' | 'food' | 'great-day' | 'practical'
   | 'play-structure' | 'generating' | 'options' | 'family-fave-swap' | 'wildcard-swap' | 'countdown' | 'wheel'
@@ -452,14 +468,20 @@ export default function PlayPlanPage() {
     // Mark as flagged
     setFlaggedOptions(prev => new Set([...prev, option.id]))
 
-    // Swap the option
+    // Permanent reasons persist across sessions + both pathways; "Not today" is session-only.
+    if (reason === 'Permanently closed' || reason === 'Bad suggestion') {
+      addCityVeto(playStructure.city, option.name)
+    }
+
+    // Swap the option — exclude session flags AND the persisted permanent vetoes
     const newVetoes = [...optionVetoes, option.name]
     setOptionVetoes(newVetoes)
+    const allVetoes = [...new Set([...loadCityVetoes(playStructure.city), ...newVetoes])]
     setSwappingOptionId(option.id)
     try {
       const res = await fetch('/api/swap-option', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ playbill, playStructure, currentOptions: wheelOptions, vetoedOption: option, allVetoes: newVetoes, searchContext }),
+        body: JSON.stringify({ playbill, playStructure, currentOptions: wheelOptions, vetoedOption: option, allVetoes, searchContext }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
@@ -541,10 +563,11 @@ export default function PlayPlanPage() {
     const newVetoes = [...optionVetoes, option.name]
     setOptionVetoes(newVetoes)
     setSwapsRemaining(s => s - 1)
+    const allVetoes = [...new Set([...loadCityVetoes(playStructure.city), ...newVetoes])]
     try {
       const res = await fetch('/api/swap-option', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ playbill, playStructure, currentOptions: wheelOptions, vetoedOption: option, allVetoes: newVetoes, searchContext }),
+        body: JSON.stringify({ playbill, playStructure, currentOptions: wheelOptions, vetoedOption: option, allVetoes, searchContext }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Swap failed')
@@ -581,7 +604,7 @@ export default function PlayPlanPage() {
     try {
       const res = await fetch('/api/generate-options', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ playbill, playStructure }),
+        body: JSON.stringify({ playbill, playStructure, vetoes: loadCityVetoes(playStructure.city) }),
       })
       const text = await res.text()
       let data

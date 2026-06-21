@@ -8,7 +8,7 @@ const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 export async function POST(req: NextRequest) {
   try {
-    const { playbill, playStructure }: { playbill: PlaybillData; playStructure: PlayStructureData } =
+    const { playbill, playStructure, vetoes = [] }: { playbill: PlaybillData; playStructure: PlayStructureData; vetoes?: string[] } =
       await req.json()
 
     const moodLabel: Record<string, string> = {
@@ -111,6 +111,7 @@ ${playStructure.screenplay ? `- Screenplay / theme: "${playStructure.screenplay}
 ${playStructure.lowerCarbon ? '- Lower carbon: favour activities with a lighter environmental footprint — e.g. kayaking over motorboating, a nature walk over a coach tour, a community workshop over a commercial attraction. The filter is about the activity itself, not transport.' : ''}
 ${playStructure.rainProof ? '- Indoors only: suggest indoor options only — assume the weather is bad today (rain, snow, cold)' : ''}
 ${playStructure.sessionNotes ? `- Session notes from the user (THESE OVERRIDE THE FAMILY PROFILE — treat as high priority): ${playStructure.sessionNotes}` : ''}
+${vetoes.length > 0 ? `- NEVER suggest these — the family flagged them as permanently closed or a bad fit (hard exclusions): ${vetoes.join(', ')}` : ''}
 ${searchContext ? `- Real-time local events found (use these to generate 1-2 of the 4 suggestions — the remaining 2-3 must be evergreen options drawn from the family profile and all other filters including indoors, radius, and budget): ${searchContext}` : ''}
 
 RECONCILING THE INPUTS — two rules:
@@ -200,8 +201,10 @@ Return ONLY valid JSON with no other text, markdown, or explanation:
         )
         const uniqueNames = new Set(names).size === 4 && !hasNearDuplicate
         const uniqueEmojis = new Set(emojis).size === 4
+        // Exclude anything the family flagged (permanently closed / bad fit), fuzzy-matched
+        const hasVetoed = names.some((n: string) => vetoes.some((v: string) => sameStop(n, v)))
 
-        if (uniqueNames && uniqueEmojis) {
+        if (uniqueNames && uniqueEmojis && !hasVetoed) {
           // Valid response — include searchContext so swaps can pull from the same event pool
           return NextResponse.json({ ...data, searchContext })
         }
