@@ -36,7 +36,7 @@ ${playStructure.sessionNotes ? `Session notes (high priority): ${playStructure.s
 
 Give the full practical details for this specific venue. Real address, real hours, honest price, a genuinely useful local tip, and what to bring or wear (Props). HOURS: if the place isn't open daily year-round (a market, seasonal farm, recurring event, etc.), state the days and season it runs — e.g. "Saturdays 8am–1pm, May–Oct" — not just clock hours. If you don't know exact clock hours, still give the season or general pattern you DO know (e.g. "Open seasonally, spring–autumn") — never leave hours blank or just "Check website". Put closure/change caveats in the tip, not the hours field.
 
-ALSO suggest a food stop (café, restaurant, food experience) nearby that would be a natural "Half Time" break. Not a chain, not a generic place — something specific and good that fits the day's mood.
+ALSO suggest a food stop (café, restaurant, food experience) nearby that would be a natural "Half Time" break. Not a chain, not a generic place — something specific and good that fits the day's mood. REALITY CHECK: the food stop must be a REAL, currently-operating place — do NOT invent a plausible-sounding name. If you're not confident a spot is real and open, choose a better-known one you are sure about.
 
 IMPORTANT: Return ONLY a single valid JSON object (no markdown, no extra text before or after) with these exact fields:
 {

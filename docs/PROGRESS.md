@@ -9,6 +9,13 @@
 > 3. **Mobile-test feedback** from Emily's session (screenshots incoming).
 > 4. **Stripe: POST-beta, not concurrent** (decided 2026-06-08). Use beta feedback to choose pricing model first.
 
+## ✅ Session (2026-06-21) — Itinerary flag fix + non-existent food
+
+- **Itinerary flagging made reason-aware** (`PlayByPlayView`): it was persisting ALL flagged stops to the shared store regardless of reason (same over-persist bug). Now only "Permanently closed" persists; "Not today"/"Bad suggestion" go to a session-only `sessionFlags` list (still excluded from replacements this session, but don't permanently kill a real venue). Matches Playbook + Free Play.
+- **Non-existent food fix:** Half Time food (and the play-by-play food stop) frequently hallucinated venues, especially in small towns where the buffer pushes for up to 10 distinct options. Added a strong REALITY CHECK to the `add-on` and `play-by-play` food prompts: only real, currently-operating places, never invent plausible names, prefer well-known spots, return fewer rather than fabricate.
+- **Verified live:** played a Greystones card → Half Time returned "The Happy Pear" (a real local spot), flag renders, no console errors, typecheck clean.
+- **V2 captured (CLAUDE.md):** refine the three flag reasons — "Not today" is ambiguous (date signal vs. can't-go); "Bad suggestion" should capture *why* to become real feedback for the learning loop.
+
 ## ✅ Session (2026-06-21) — Playbook flags now persist across sessions
 
 - **Bug:** flagging a Playbook option (e.g. "Permanently closed") didn't stick — `generate-options` never received a veto list, and Playbook's vetoes were session-only `useState` (Free Play already persisted per-city; Playbook didn't). So closed/rejected places kept reappearing in new sessions.

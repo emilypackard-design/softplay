@@ -169,7 +169,8 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
   const [evening, setEvening] = useState<Stop | null>(null)
   const [loading, setLoading] = useState<string | null>(null)
   const [swappingFood, setSwappingFood] = useState(false)
-  const [flaggedVetoes, setFlaggedVetoes] = useState<string[]>([])
+  const [flaggedVetoes, setFlaggedVetoes] = useState<string[]>([])         // persisted permanent (only "Permanently closed"), shared store
+  const [sessionFlags, setSessionFlags] = useState<string[]>([])           // session-only: "not today", "bad suggestion"
   const [foodOptions, setFoodOptions] = useState<Stop[]>([])
   const [foodIndex, setFoodIndex] = useState(0)
   const [foodExhausted, setFoodExhausted] = useState(false) // true when no more distinct food options can be found
@@ -235,7 +236,7 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
     try {
       const res = await fetch('/api/add-on', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ playbill, playStructure, winner: chosenOption, type: 'food', existingStops: existing, vetoes: [...vetoes, ...flaggedVetoes] }),
+        body: JSON.stringify({ playbill, playStructure, winner: chosenOption, type: 'food', existingStops: existing, vetoes: [...vetoes, ...flaggedVetoes, ...sessionFlags] }),
       })
       const data = await res.json()
       return res.ok && data.stop ? data.stop : null
@@ -325,7 +326,7 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
       for (let attempt = 0; attempt < 2; attempt++) {
         const res = await fetch('/api/add-on', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ playbill, playStructure, winner: chosenOption, type, existingStops: allStops, vetoes: [...vetoes, ...flaggedVetoes, ...extraVetoes] }),
+          body: JSON.stringify({ playbill, playStructure, winner: chosenOption, type, existingStops: allStops, vetoes: [...vetoes, ...flaggedVetoes, ...sessionFlags, ...extraVetoes] }),
         })
         const data = await res.json()
         if (!res.ok) throw new Error(data.error)
@@ -360,7 +361,14 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
   }
 
   const handleFlag = (stop: Stop, type?: 'food' | 'before' | 'after' | 'evening') => {
-    setFlaggedVetoes(v => [...v, stop.name])
+    // The reason is passed through stop.tip by StopCard. Only "Permanently closed"
+    // persists across sessions + both pathways; "Not today"/"Bad suggestion" are
+    // situational → session-only (so they don't permanently kill a real venue).
+    if (stop.tip === 'Permanently closed') {
+      setFlaggedVetoes(v => [...v, stop.name])
+    } else {
+      setSessionFlags(v => [...v, stop.name])
+    }
     // Half Time: flag advances instantly to the next pre-loaded option (same speed as Swap).
     if (type === 'food') {
       swapFood()

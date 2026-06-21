@@ -44,6 +44,8 @@ Never suggest: ${vetoes.join(', ') || 'nothing vetoed'}
 
 CRITICAL: your suggestion must be a DIFFERENT place from everything already in the plan — before, after, and the main event must each be distinct venues.
 
+REALITY CHECK (most important): only suggest a REAL place that genuinely exists and is currently operating at this location. Do NOT invent plausible-sounding venue names. Prefer well-established, recognisable local spots you are genuinely confident about over obscure ones. If you are not confident a place is real and open, pick a safer, better-known option instead. In a small town with few options, returning a simple, real, well-known place beats fabricating a charming-sounding one that doesn't exist — never make up a name just to give a fresh answer.
+
 Suggest ${typeLabel}.
 
 ${type === 'food' ? `The food stop is a highlight — not an afterthought. Specific local favourite, never a chain or museum cafeteria. ${playbill.foodNote ? `Note: ${playbill.foodNote}` : ''}` : ''}
