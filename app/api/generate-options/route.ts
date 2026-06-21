@@ -111,7 +111,7 @@ ${playStructure.screenplay ? `- Screenplay / theme: "${playStructure.screenplay}
 ${playStructure.lowerCarbon ? '- Lower carbon: favour activities with a lighter environmental footprint — e.g. kayaking over motorboating, a nature walk over a coach tour, a community workshop over a commercial attraction. The filter is about the activity itself, not transport.' : ''}
 ${playStructure.rainProof ? '- Indoors only: suggest indoor options only — assume the weather is bad today (rain, snow, cold)' : ''}
 ${playStructure.sessionNotes ? `- Session notes from the user (THESE OVERRIDE THE FAMILY PROFILE — treat as high priority): ${playStructure.sessionNotes}` : ''}
-${searchContext ? `- Real-time local events found for today (use these to ground suggestions where relevant — free/public/family events only): ${searchContext}` : ''}
+${searchContext ? `- Real-time local events found (use these to generate 1-2 of the 4 suggestions — the remaining 2-3 must be evergreen options drawn from the family profile and all other filters including indoors, radius, and budget): ${searchContext}` : ''}
 
 CRITICAL: Session notes override family profile preferences. Examples:
 - If family profile says "loves hiking" but session notes say "no hikes today", respect "no hikes"
