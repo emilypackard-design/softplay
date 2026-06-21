@@ -46,6 +46,7 @@ A fun decision maker app for families (or anyone) planning activities and outing
 - Playlist feature (curated music for the day)
 - Shareable itinerary links
 - Family collaboration/voting
+- **Confirmation/reflection page** — before card generation (both pathways), the app reflects back its understanding ("You're a family of 4 in Dublin June 26-28, kids love food events, adults love literary festivals…") so the user can correct typos, faulty logic, or misread dates. Doubles as the date-arithmetic safety net (echoes the *resolved* date so "last weekend" errors get caught).
 
 ## Documentation Files
 - **CLAUDE.md** (this file) — Project briefing; read automatically at session start

@@ -9,6 +9,34 @@
 > 3. **Mobile-test feedback** from Emily's session (screenshots incoming).
 > 4. **Stripe: POST-beta, not concurrent** (decided 2026-06-08). Use beta feedback to choose pricing model first.
 
+## ✅ Session (2026-06-21) — Date/event logic overhaul (Play Structure)
+
+Deep iteration on how the app handles date-specific and recurring events. All changes in `generate-options`, `swap-option`, plus the four detail routes. **All server-side prompt logic — needs live testing.**
+
+**Search step (generate-options):**
+- **Bounded by travel radius** — search query now respects the radius chip (was unbounded, could surface events 2h away on "stay local"). Loosens only if the note explicitly says the user will travel further.
+- **Freshness verification** — search must confirm the event still runs this year; excludes discontinued/cancelled/on-hiatus events (the "Strolling of the Heifers ended in 2019" failure mode). When in doubt, leave it out.
+
+**Generation step:**
+- **1-2 time-specific + 2-3 evergreen = 4 total.** Date events flavour the results, never dominate. (Note: 4 total, not 5-6 — swaps are separate.)
+- **Pattern-vs-date pitch wording.** Recurring events described by pattern ("every Saturday morning", "summer weekends"); specific dates only for true one-offs/fixed-annual (Bloomsday June 16, July 4th); NEVER "today"/"this weekend" (meaningless once saved to Playground). This replaced the idea of a separate `dateSensitive` tag — the pitch text itself carries the timing nature. No type changes, no visual marker (decided against for now).
+- **Two reconciliation rules** added to the prompt:
+  - RULE 1 (hard vs. hard): session notes weighted EVENLY with chips (radius/transport/duration) + Playbill — a note only wins on DIRECT contradiction. "30 min" + "willing to drive 1-2h for a beach" → loosen radius; but a note about food doesn't touch radius. (Fixes prior behaviour where notes blanket-overrode everything.)
+  - RULE 2 (hard vs. soft): a constraint (avoid/nothing/scared of/"nothing too X") is a HARD BOUNDARY; screenplay/mood is SOFT INSPIRATION. Theme bends to fit inside the boundary — "Beetlejuice" + "nothing too scary" → whimsical/gothic-playful, never frightening.
+
+**Swaps (swap-option):**
+- Swaps now **pull from the same pool**: swapping a time-specific card tries another unused event from the original search results first, falls back to evergreen if none remain. Required threading `searchContext` from generate-options → frontend state → swap-option.
+- swap-option also now **respects travel radius** + carries the timing pitch rules (it previously had NONE of the filters — was a stripped-down prompt).
+- Pool-matching is best-effort (Claude judges time-specificity from card name/pitch, no stored flag). Flag system backstops misfires.
+
+**Hours chip (play-by-play, add-on, playground-itinerary, swap-stop):**
+- For places not open daily year-round (markets, seasonal farms, recurring events), the `hours` field now states days + season — e.g. "Saturdays 8am–1pm, May–Oct" — not just clock hours. This is the structured recurrence signal on the *saved* card; complements the pitch's headline timing.
+
+**Inference confirmed (no code needed):** Claude can resolve "this Saturday" / "last Saturday in June" / "June 27th" to one date because today's date is injected. Caveat: date arithmetic is an LLM weak spot — a future confirmation page (see V2) would be the reliability backstop. Decided NOT to force users to type exact dates (would push toward wrong framing for recurring events).
+
+### V2 idea captured (also in CLAUDE.md)
+- **Confirmation/reflection page** before card generation (both pathways): app reflects back its understanding so the user can fix typos, faulty logic, or misread dates before any cards generate. Doubles as the date-arithmetic safety net.
+
 ## ✅ Session (2026-06-21) — Resend custom SMTP + tester feedback notes
 
 ### Beta tester feedback (2 responses so far, waiting for 10 before acting)
