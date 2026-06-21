@@ -38,7 +38,6 @@ A fun decision maker app for families (or anyone) planning activities and outing
 ## V1.5 Roadmap
 - [ ] **Supabase migration** — Move localStorage → cloud database for sync across devices
 - [ ] **Location deduplication UI** — Handle typos/duplicates ("Greystones" vs "greystones")
-- [ ] **Recipe URLs** — Add links to Budget Bytes, AllRecipes, etc.
 - [ ] **Cross-device sync** — Saves visible on any device with login
 
 ## V2 & Beyond
@@ -49,9 +48,10 @@ A fun decision maker app for families (or anyone) planning activities and outing
 - Family collaboration/voting
 
 ## Documentation Files
-- **softplay.md** (this file) — Project briefing; read at session start
+- **CLAUDE.md** (this file) — Project briefing; read automatically at session start
 - **docs/DESIGN.md** — Visual language, colors, typography, component specs
 - **docs/PROGRESS.md** — Session-by-session changelog; what was built, bugs found, blockers
+- **docs/V1.5-MEMORY.md** — Working notes for the V1.5 effort
 
 ## How to Deploy
 1. Make code changes locally
@@ -65,6 +65,6 @@ No manual steps needed — GitHub webhook tells Vercel to rebuild automatically.
 ## How We Work Together
 - Emily is not a programmer — always explain what's happening in plain English
 - Test changes locally with `npm run dev` before pushing
-- Keep documentation current (update softplay.md + docs/PROGRESS.md at session end)
+- Keep documentation current (update CLAUDE.md + docs/PROGRESS.md at session end)
 - Prefer simple solutions over clever ones
 - Ask before making large changes
