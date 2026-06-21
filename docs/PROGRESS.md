@@ -39,6 +39,7 @@ Deep iteration on how the app handles date-specific and recurring events. All ch
   - Feel-seen framing; interesting-but-wrong inferences invite refining corrections.
   - Selective write-back: durable corrections → Playbill (with "remember this?" confirm); ephemeral → session-only.
   - **GUARDRAIL:** one screen, one correction round, then generate. Stays a decision tool — not a chatbot. 2-3 back-and-forths = failure.
+  - **Tiered by familiarity:** full reflection on first Playbill build (teaches the tool, points to the Play Structure free-form box for next time); lightweight date-echo only on later sessions. User gets smarter AND faster; app learns the family.
 
 ## ✅ Session (2026-06-21) — Resend custom SMTP + tester feedback notes
 
