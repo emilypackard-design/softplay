@@ -2,12 +2,19 @@
 
 ## ⏭️ NEXT SESSION — START HERE
 
-> **State:** V1.5 memory SHIPPED + verified (magic-link auth, cloud sync, personalized Free Play). Auto-deploy restored (`git push` = production deploy). Emily testing on mobile.
+> **State:** V1.5 fully shipped. Resend custom SMTP live — ready to onboard 10+ beta testers.
 > **Next tasks, in order:**
-> 1. **Custom email sender (Resend or similar)** — REQUIRED before inviting the 10-20 new testers (built-in Supabase sender = ~2-4 magic links/hour, will choke). ~30 min job: Resend account, domain verification, plug SMTP into Supabase Auth settings.
-> 2. **Migrate the 2 existing testers:** they sign in on softplay-five.vercel.app FIRST (uploads their saves), then sign in on mysoftplay.app (saves follow). Stagger sign-ins (rate limit). Then they live on mysoftplay.app.
+> 1. **Onboard beta testers** — send mysoftplay.app link + instructions. No rate limit risk now that Resend is set up.
+> 2. **Migrate the 2 original testers:** they sign in on softplay-five.vercel.app FIRST (uploads their saves), then sign in on mysoftplay.app (saves follow). Then they live on mysoftplay.app.
 > 3. **Mobile-test feedback** from Emily's session (screenshots incoming).
-> 4. **Stripe: POST-beta, not concurrent** (decided 2026-06-08). Rationale: integration is a contained 1-2 session job, but the pricing model should be shaped by beta feedback first. Use beta to choose model (subscription / one-time / family plan), then wire Stripe as the beta→launch bridge.
+> 4. **Stripe: POST-beta, not concurrent** (decided 2026-06-08). Use beta feedback to choose pricing model first.
+
+## ✅ Session (2026-06-21) — Resend custom SMTP
+
+- **Resend account created**, mysoftplay.app verified as sending domain (Ireland eu-west-1, via Cloudflare auto-configure).
+- **Supabase SMTP configured:** host `smtp.resend.com`, port 465, sender `noreply@mysoftplay.app`, name `softplay`.
+- **Tested:** magic link sent + received from `noreply@mysoftplay.app` ✅
+- Rate limit is now gone — safe to invite 10+ testers simultaneously.
 
 ## (prior) V1.5 Supabase (persistent memory)
 
