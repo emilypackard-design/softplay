@@ -60,6 +60,42 @@ TODAY'S ACTUAL CREW (may differ from family profile): ${actualSessionCrew}`
 
     const todayStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
 
+    // Web search: if sessionNotes contain a time/event signal, search for local free events
+    let searchContext = ''
+    if (playStructure.sessionNotes) {
+      // Step 1: cheap detection — does this note need a real-time web search?
+      const detectionMsg = await client.messages.create({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 10,
+        messages: [{
+          role: 'user',
+          content: `Does this text contain a time-specific event, named public event, or date-specific request (e.g. "farmers market this Saturday", "this weekend", a specific festival name) that would benefit from a real-time web search for local happenings? Answer only YES or NO.\n\nText: "${playStructure.sessionNotes}"`
+        }]
+      })
+      const needsSearch = detectionMsg.content[0].type === 'text' &&
+        detectionMsg.content[0].text.trim().toUpperCase().startsWith('YES')
+
+      // Step 2: web search only when the note has a time/event signal and we know the city
+      if (needsSearch && playStructure.city) {
+        const searchMsg = await client.messages.create({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 600,
+          tools: [{ type: 'web_search_20260209' as any, name: 'web_search' }],
+          messages: [{
+            role: 'user',
+            content: `Search for free or low-cost public events happening in ${playStructure.city} related to: "${playStructure.sessionNotes}". Today is ${todayStr}. Only include events that are free or very low cost, publicly accessible without advance tickets, recurring or community-run, and family-friendly. Never include ticketed concerts, sports events, or events requiring advance purchase. Return a brief summary of relevant events found, or say "No relevant events found" if nothing matches.`
+          }]
+        })
+        const textBlocks = searchMsg.content.filter((b: any) => b.type === 'text')
+        if (textBlocks.length > 0) {
+          const rawSearch = textBlocks.map((b: any) => b.text).join('\n').trim()
+          if (rawSearch && !rawSearch.toLowerCase().includes('no relevant events found')) {
+            searchContext = rawSearch
+          }
+        }
+      }
+    }
+
     const prompt = `You are a knowledgeable local friend helping plan a family day out. You know the local area well. You are warm, specific, and you never suggest tourist traps or generic options.
 
 Today's date is ${todayStr}. Take the season and typical weather at ${playStructure.city} into account — suggest things that fit this time of year (e.g. no outdoor swimming in winter, no ski trips in summer; lean into seasonal options like markets, festivals, autumn foliage, beaches, or holiday events when they fit). The location's hemisphere determines which season it is.
@@ -75,6 +111,7 @@ ${playStructure.screenplay ? `- Screenplay / theme: "${playStructure.screenplay}
 ${playStructure.lowerCarbon ? '- Lower carbon: favour activities with a lighter environmental footprint — e.g. kayaking over motorboating, a nature walk over a coach tour, a community workshop over a commercial attraction. The filter is about the activity itself, not transport.' : ''}
 ${playStructure.rainProof ? '- Indoors only: suggest indoor options only — assume the weather is bad today (rain, snow, cold)' : ''}
 ${playStructure.sessionNotes ? `- Session notes from the user (THESE OVERRIDE THE FAMILY PROFILE — treat as high priority): ${playStructure.sessionNotes}` : ''}
+${searchContext ? `- Real-time local events found for today (use these to ground suggestions where relevant — free/public/family events only): ${searchContext}` : ''}
 
 CRITICAL: Session notes override family profile preferences. Examples:
 - If family profile says "loves hiking" but session notes say "no hikes today", respect "no hikes"
