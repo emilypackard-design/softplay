@@ -67,31 +67,39 @@ TODAY'S ACTUAL CREW (may differ from family profile): ${actualSessionCrew}`
       // Step 1: zero-cost prefilter — does this note contain date/event language?
       // Replaces a per-request LLM detection call so plans WITHOUT date language stay fast.
       const noteText = playStructure.sessionNotes.toLowerCase()
+      // NOTE: "today"/"tonight" deliberately excluded — today is the DEFAULT assumption,
+      // so it shouldn't trigger a web search. Only an explicitly different day/date does.
       const needsSearch =
         // date words, seasons, relative timing, event types, named holidays
-        /\b(today|tonight|tomorrow|weekend|this week|next week|this month|next month|season|seasonal|january|february|april|june|july|august|september|october|november|december|monday|tuesday|wednesday|thursday|friday|saturday|sunday|festival|market|fair|fete|parade|fireworks|carnival|celebration|holiday|bloomsday|halloween|christmas|easter|hanukkah|diwali|new year|patrick)\b/.test(noteText)
+        /\b(tomorrow|weekend|this week|next week|this month|next month|season|seasonal|january|february|april|june|july|august|september|october|november|december|monday|tuesday|wednesday|thursday|friday|saturday|sunday|festival|market|fair|fete|parade|fireworks|carnival|celebration|holiday|bloomsday|halloween|christmas|easter|hanukkah|diwali|new year|patrick)\b/.test(noteText)
         // ambiguous months ("may", "march") only when a number is nearby, to avoid the modal/verb senses
         || /\b(may|march)\b.{0,8}\d/.test(noteText)
         || /\b\d{1,2}(st|nd|rd|th)\b/.test(noteText)   // "16th", "21st"
         || /\b\d{1,2}\/\d{1,2}\b/.test(noteText)        // "6/16"
 
-      // Step 2: web search only when the note has a time/event signal and we know the city
+      // Step 2: web search only when the note has a time/event signal and we know the city.
+      // Wrapped in its own try/catch — a search failure must NEVER block card generation;
+      // it just degrades to no searchContext.
       if (needsSearch && playStructure.city) {
-        const searchMsg = await client.messages.create({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 600,
-          tools: [{ type: 'web_search_20260209' as any, name: 'web_search' }],
-          messages: [{
-            role: 'user',
-            content: `Search for free or low-cost public events happening ${radiusLabel[playStructure.radius] || 'near'} of ${playStructure.city} related to: "${playStructure.sessionNotes}". Today is ${todayStr}. Keep events within that travel radius UNLESS the request itself says the user will travel further. Only include events that are free or very low cost, publicly accessible without advance tickets, recurring or community-run, and family-friendly. Never include ticketed concerts, sports events, or events requiring advance purchase. CRITICAL — FRESHNESS: only include events you can confirm are STILL RUNNING this year. Verify each has a current/recent edition; EXCLUDE anything discontinued, cancelled, on hiatus, or with no edition found in the last year or two (e.g. a festival that ended years ago). When in doubt, leave it out. For each event, note whether it is recurring (e.g. "every Saturday", "last weekend of June") or a one-time/fixed-date event with the actual date. Return a brief summary of relevant events found, or say "No relevant events found" if nothing matches.`
-          }]
-        })
-        const textBlocks = searchMsg.content.filter((b: any) => b.type === 'text')
-        if (textBlocks.length > 0) {
-          const rawSearch = textBlocks.map((b: any) => b.text).join('\n').trim()
-          if (rawSearch && !rawSearch.toLowerCase().includes('no relevant events found')) {
-            searchContext = rawSearch
+        try {
+          const searchMsg = await client.messages.create({
+            model: 'claude-sonnet-4-6',
+            max_tokens: 600,
+            tools: [{ type: 'web_search_20260209' as any, name: 'web_search' }],
+            messages: [{
+              role: 'user',
+              content: `Search for free or low-cost public events happening ${radiusLabel[playStructure.radius] || 'near'} of ${playStructure.city} related to: "${playStructure.sessionNotes}". Today is ${todayStr}. Keep events within that travel radius UNLESS the request itself says the user will travel further. Only include events that are free or very low cost, publicly accessible without advance tickets, recurring or community-run, and family-friendly. Never include ticketed concerts, sports events, or events requiring advance purchase. CRITICAL — FRESHNESS: only include events you can confirm are STILL RUNNING this year. Verify each has a current/recent edition; EXCLUDE anything discontinued, cancelled, on hiatus, or with no edition found in the last year or two (e.g. a festival that ended years ago). When in doubt, leave it out. For each event, note whether it is recurring (e.g. "every Saturday", "last weekend of June") or a one-time/fixed-date event with the actual date. Return a brief summary of relevant events found, or say "No relevant events found" if nothing matches.`
+            }]
+          })
+          const textBlocks = searchMsg.content.filter((b: any) => b.type === 'text')
+          if (textBlocks.length > 0) {
+            const rawSearch = textBlocks.map((b: any) => b.text).join('\n').trim()
+            if (rawSearch && !rawSearch.toLowerCase().includes('no relevant events found')) {
+              searchContext = rawSearch
+            }
           }
+        } catch (searchErr) {
+          console.warn('generate-options web search failed, continuing without it:', searchErr)
         }
       }
     }
@@ -171,15 +179,23 @@ Return ONLY valid JSON with no other text, markdown, or explanation:
     let attempts = 0
     const maxAttempts = 3
 
+    let lastError: unknown = null
     while (attempts < maxAttempts) {
       attempts++
-      const message = await client.messages.create({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 2000,
-        messages: [{ role: 'user', content: prompt }],
-      })
-
-      const text = message.content[0].type === 'text' ? message.content[0].text : ''
+      let text = ''
+      try {
+        const message = await client.messages.create({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 2000,
+          messages: [{ role: 'user', content: prompt }],
+        })
+        text = message.content[0].type === 'text' ? message.content[0].text : ''
+      } catch (apiErr) {
+        // Transient API error (overloaded / rate limit / network) — log and retry the loop
+        lastError = apiErr
+        console.warn(`generate-options attempt ${attempts} API error, retrying:`, apiErr)
+        continue
+      }
 
       // Strip markdown code fences
       const cleaned = text
@@ -214,15 +230,17 @@ Return ONLY valid JSON with no other text, markdown, or explanation:
       console.warn(`generate-options attempt ${attempts}: got ${data?.options?.length || 0} options, retrying...`)
     }
 
-    // If we got here, validation failed after retries
+    // If we got here, every attempt either errored or failed validation.
     if (!data?.options || data.options.length !== 4) {
-      console.error(`generate-options failed after ${maxAttempts} attempts`)
+      console.error(`generate-options failed after ${maxAttempts} attempts`, lastError)
       return NextResponse.json(
-        { error: 'Could not generate valid options after retries' },
-        { status: 500 }
+        { error: lastError instanceof Error ? `Suggestion service is busy — please try again. (${lastError.message})` : 'Could not generate valid options — please try again.' },
+        { status: 503 }
       )
     }
 
+    // Last attempt had 4 options but didn't pass every uniqueness/veto check — return it
+    // anyway rather than erroring (a slightly-imperfect set beats a failure screen).
     return NextResponse.json({ ...data, searchContext })
   } catch (error: unknown) {
     console.error('generate-options error:', error)
