@@ -1189,6 +1189,9 @@ export default function PlayPlanPage() {
               ))}
             </div>
 
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: '#8C7B6B', textAlign: 'center', marginBottom: 14, lineHeight: 1.5 }}>
+              📌 ❤️ Saved cards go to your Playground. You won&apos;t lose them even if the wheel picks something else.
+            </p>
             <button
               onClick={() => setStep(familyFaveHeart ? 'family-fave-swap' : 'countdown')}
               disabled={!!swappingOptionId}
@@ -1196,9 +1199,6 @@ export default function PlayPlanPage() {
             >
               Lock in my options →
             </button>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: '#8C7B6B', textAlign: 'center', marginTop: 10, lineHeight: 1.5 }}>
-              📌 Tap <strong>Save for Later</strong> on any card above to keep it in your Playground — even if the wheel doesn&apos;t pick it.
-            </p>
           </div>
         )}
 
