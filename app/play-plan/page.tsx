@@ -1079,7 +1079,7 @@ export default function PlayPlanPage() {
               <textarea
                 value={playStructure.sessionNotes}
                 onChange={e => setPlayStructure(p => ({ ...p, sessionNotes: e.target.value }))}
-                placeholder="e.g. Keep it under $50 total. One teen is tired of museums. Skip anything requiring a car."
+                placeholder="e.g. Keep it under $50 total. One kid is tired of museums. Would like to find a summer farmers market this Saturday."
                 style={{ ...S.textarea, height: 80 }}
               />
             </div>
