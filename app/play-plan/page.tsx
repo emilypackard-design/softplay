@@ -1159,7 +1159,7 @@ export default function PlayPlanPage() {
                 </span>
               </p>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: '#8C7B6B', marginTop: 8, lineHeight: 1.5 }}>
-                Tap 📌 or ❤️ to save a suggestion to your Playground (where your saved ideas live). It stays there for another day, whatever the wheel picks.
+                Tap 📌 or ❤️ to save a suggestion to your Playground (where your saved ideas live).
               </p>
             </div>
 
