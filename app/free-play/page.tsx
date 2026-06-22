@@ -705,6 +705,10 @@ export default function FreePlayPage() {
               </div>
             </div>
 
+            <p style={{ width: '100%', fontFamily: 'var(--font-body)', fontSize: 13, color: '#8C7B6B', marginTop: 0, marginBottom: 16, lineHeight: 1.5, textAlign: 'center' }}>
+              Tap 📌 or ❤️ to save a card to your Playground (where your saved ideas live).
+            </p>
+
             {/* Card or loading */}
             {loadingCards && cards.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '40px 0' }}>

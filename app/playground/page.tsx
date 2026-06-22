@@ -135,7 +135,7 @@ export default function PlaygroundPage() {
         </svg>
         <h1 style={S.title}>Playground</h1>
         <hr style={S.divider} />
-        <p style={S.subtitle}>Select a location to see your saves</p>
+        <p style={S.subtitle}>Your saved ideas, kept by location. Tap one to revisit or build a day.</p>
       </div>
 
       <main style={S.main}>
