@@ -1158,6 +1158,9 @@ export default function PlayPlanPage() {
                   {swapsRemaining > 0 ? `${swapsRemaining} swap${swapsRemaining === 1 ? '' : 's'} left` : 'No swaps left'}
                 </span>
               </p>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: '#8C7B6B', marginTop: 8, lineHeight: 1.5 }}>
+                📌/❤️ save a copy to your Playground for later. The wheel keeps all four.
+              </p>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
