@@ -1364,8 +1364,11 @@ export default function PlayPlanPage() {
             {/* Finalist chips grid - exact wheel colors */}
             <div className="finalist-chips" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginBottom: 24, padding: '0 20px' }}>
               {wheelOptions.map((opt, idx) => {
-                // Same source as the wheel segments, so chip color always matches its slice.
-                const colour = SEGMENT_COLORS[idx % SEGMENT_COLORS.length]
+                // Same source + same wildcard rule as the wheel segments, so a chip's
+                // accent always matches its slice (wildcard slice is pink #E8A0A8).
+                const colour = (opt as { isWildcard?: boolean }).isWildcard
+                  ? '#E8A0A8'
+                  : SEGMENT_COLORS[idx % SEGMENT_COLORS.length]
                 return (
                   <div key={opt.id} className="finalist-chip" style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#FFFFFF', borderRadius: 12, border: '1px solid #E8DCC8', borderLeft: `4px solid ${colour}`, padding: '9px 12px', overflow: 'hidden', minWidth: 0 }}>
                     <span style={{ fontSize: 18, flexShrink: 0 }}>{opt.emoji}</span>
