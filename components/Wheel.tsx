@@ -1,42 +1,13 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import type { WheelOption } from '@/types'
+import Confetti from '@/components/Confetti'
 
 const SEGMENT_COLORS = [
   '#F5C842', '#3D9E8F', '#E07055', '#F5EFE0',
   '#6B8F6E', '#C9963A', '#B8D4C8', '#E8C49A',
 ]
-
-const CONFETTI_COLORS = ['#F5C842', '#3D9E8F', '#E07055', '#6B8F6E', '#C9963A']
-
-function Confetti({ active }: { active: boolean }) {
-  const pieces = useMemo(() =>
-    Array.from({ length: 28 }, (_, i) => ({
-      id: i,
-      left: 10 + Math.random() * 80,
-      duration: 0.9 + Math.random() * 0.7,
-      delay: Math.random() * 0.5,
-      color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
-      width: 6 + Math.random() * 6,
-      height: 8 + Math.random() * 8,
-    })), [])
-
-  if (!active) return null
-
-  return (
-    <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 999, overflow: 'hidden' }}>
-      {pieces.map(p => (
-        <div key={p.id} style={{
-          position: 'absolute', top: '35%', left: `${p.left}%`,
-          width: p.width, height: p.height,
-          background: p.color, borderRadius: 2,
-          animation: `confetti-fall ${p.duration}s ease-in ${p.delay}s both`,
-        }} />
-      ))}
-    </div>
-  )
-}
 
 export interface WheelProps {
   options: WheelOption[]
