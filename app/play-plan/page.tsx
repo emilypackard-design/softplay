@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import type { PlaybillData, PlayStructureData, WheelOption, Stop } from '@/types'
-import Wheel from '@/components/Wheel'
+import Wheel, { SEGMENT_COLORS } from '@/components/Wheel'
 import PlayByPlayView from '@/components/PlayByPlayView'
 import PinwheelIcon from '@/components/PinwheelIcon'
 import Confetti from '@/components/Confetti'
@@ -1364,19 +1364,12 @@ export default function PlayPlanPage() {
             {/* Finalist chips grid - exact wheel colors */}
             <div className="finalist-chips" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginBottom: 24, padding: '0 20px' }}>
               {wheelOptions.map((opt, idx) => {
-                // Exact wheel segment colors
-                const colours = [
-                  { bg: '#F5C842', text: '#F5C842' },      // yellow
-                  { bg: '#3D9E8F', text: '#3D9E8F' },      // teal
-                  { bg: '#E07055', text: '#E07055' },      // coral
-                  { bg: '#8FB88A', text: '#8FB88A' },      // sage
-                ]
-                const colour = colours[idx % 4]
+                // Same source as the wheel segments, so chip color always matches its slice.
+                const colour = SEGMENT_COLORS[idx % SEGMENT_COLORS.length]
                 return (
-                  <div key={opt.id} className="finalist-chip" style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 10px', background: colour.bg, borderRadius: 10, minWidth: 0 }}>
-                    <span style={{ fontSize: 12, flexShrink: 0, width: 8, height: 8, borderRadius: '50%', background: '#FFFFFF', opacity: 0.4 }} />
-                    <span style={{ fontSize: 10, fontWeight: 700, color: '#FFFFFF' }}>{opt.emoji}</span>
-                    <span style={{ fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 700, color: '#FFFFFF', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
+                  <div key={opt.id} className="finalist-chip" style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#FFFFFF', borderRadius: 12, border: '1px solid #E8DCC8', borderLeft: `4px solid ${colour}`, padding: '9px 12px', overflow: 'hidden', minWidth: 0 }}>
+                    <span style={{ fontSize: 18, flexShrink: 0 }}>{opt.emoji}</span>
+                    <span style={{ fontFamily: 'var(--font-heading)', fontSize: 13, fontWeight: 700, color: '#1C1917', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {opt.name}
                     </span>
                   </div>

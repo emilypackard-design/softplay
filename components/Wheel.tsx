@@ -4,8 +4,11 @@ import { useState } from 'react'
 import type { WheelOption } from '@/types'
 import Confetti from '@/components/Confetti'
 
-const SEGMENT_COLORS = [
-  '#F5C842', '#3D9E8F', '#E07055', '#F5EFE0',
+// Single source of truth for wheel-segment colors — the finalist chips import
+// this too, so a chip's color always matches its wheel segment. Slot 4 is sage
+// (not the old cream) so it stays legible as a chip background (white text).
+export const SEGMENT_COLORS = [
+  '#F5C842', '#3D9E8F', '#E07055', '#8FB88A',
   '#6B8F6E', '#C9963A', '#B8D4C8', '#E8C49A',
 ]
 
