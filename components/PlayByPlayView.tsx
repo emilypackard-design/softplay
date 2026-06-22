@@ -503,7 +503,7 @@ export default function PlayByPlayView({ winnerStop, chosenOption, playbill, pla
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value.slice(0, 700))}
-              placeholder="Notes to self and feedback: What worked? What would you change?"
+              placeholder="Notes for your day — what to bring, timings, who's coming, anything to remember. Add them here, then copy or email the plan to yourself below."
               style={{ width: '100%', minHeight: 100, padding: '12px 14px', fontFamily: 'var(--font-body)', fontSize: 14, border: '1.5px solid #E8DCC8', borderRadius: 12, color: '#1C1917', resize: 'vertical' }}
             />
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 6, fontFamily: 'var(--font-body)', fontSize: 12, color: '#8C7B6B' }}>
