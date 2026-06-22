@@ -1159,7 +1159,7 @@ export default function PlayPlanPage() {
                 </span>
               </p>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: '#8C7B6B', marginTop: 8, lineHeight: 1.5 }}>
-                📌/❤️ save a copy to your Playground for later. The wheel keeps all four.
+                Tap 📌 or ❤️ to save a suggestion to your Playground (where your saved ideas live). It stays there for another day, whatever the wheel picks.
               </p>
             </div>
 
@@ -1218,9 +1218,6 @@ export default function PlayPlanPage() {
               ))}
             </div>
 
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: '#8C7B6B', textAlign: 'center', marginBottom: 14, lineHeight: 1.5 }}>
-              📌 ❤️ Saved cards go to your Playground. You won&apos;t lose them even if the wheel picks something else.
-            </p>
             <button
               onClick={() => setStep(familyFaveHeart ? 'family-fave-swap' : 'countdown')}
               disabled={!!swappingOptionId}
