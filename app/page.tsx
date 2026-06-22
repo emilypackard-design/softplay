@@ -201,6 +201,7 @@ export default function Home() {
             <span style={{ fontFamily: 'var(--font-wordmark)', fontStyle: 'italic', fontSize: 19, fontWeight: 300, color: '#1C1917' }}>Playground</span>
           </div>
         </Link>
+        <span style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: 'rgba(28,25,23,0.45)', marginTop: 6 }}>where your saved ideas live</span>
         <SignInNudge />
       </div>
     </main>

@@ -42,6 +42,7 @@ A fun decision maker app for families (or anyone) planning activities and outing
 - [ ] **Cross-device sync** — Saves visible on any device with login
 
 ## V2 & Beyond
+- **Post-wheel escape hatch** — a beat after the wheel lands, before "Build my day", offering a way out to the Playground. KEY INSIGHT (Emily): the user heading to Playground here may *not* like the picked option — so the escape is "bail to Playground", NOT "save this card" (don't assume they want to keep the winner). Considered a celebratory reveal beat ("Build my day" bold + a Playground escape), which would also double as a latency mask (generate the itinerary in the background while the page settles). Open question: a persistent Playground link on every post-wheel page is even quieter, but risks accidental taps with no clear back button — needs a safe back path. (Confetti on the winner card already shipped separately.)
 - Email reminders (Sunday digest of the week's plan)
 - Randomness generator (for extra spontaneity)
 - Playlist feature (curated music for the day)

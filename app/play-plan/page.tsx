@@ -6,6 +6,7 @@ import type { PlaybillData, PlayStructureData, WheelOption, Stop } from '@/types
 import Wheel from '@/components/Wheel'
 import PlayByPlayView from '@/components/PlayByPlayView'
 import PinwheelIcon from '@/components/PinwheelIcon'
+import Confetti from '@/components/Confetti'
 import { sameStop } from '@/lib/stopNames'
 
 // Per-city permanent veto store, SHARED with Free Play (softplay_vetoes_<city>):
@@ -1393,6 +1394,7 @@ export default function PlayPlanPage() {
         {/* ── LOADING PLAN ── */}
         {step === 'loading-plan' && (
           <div style={{ textAlign: 'center' }}>
+            <Confetti />
             {/* Winner highlight */}
             <div style={{ background: '#F5EFE0', borderRadius: 24, padding: 24, marginBottom: 32 }}>
               <div style={{ fontSize: 56, marginBottom: 12 }}>{chosenOption?.emoji}</div>
