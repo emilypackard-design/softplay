@@ -59,6 +59,12 @@ softplay and **softplay-at-home** (separate project/repo) share the **pre-wheel 
   - **GUARDRAIL — stays a decision tool, not a chatbot:** ONE screen, ONE optional correction round, then generate. Reflect → nudge → go. NOT a negotiating dialogue. If it becomes 2-3 back-and-forths it has failed softplay's core promise (ending the "what should we do?" spiral, not recreating it).
   - **Tiered by familiarity (user gets smarter AND faster over time):** FULL reflection on the *first Playbill build* — warm, teaches the tool, and ends by pointing the user to the Play Structure free-form box ("Next time, pop trip dates or one-offs right here"). AFTER that, only a *lightweight echo* of the resolved date when one is detected (the arithmetic backstop) — returning users who already "get it" aren't slowed down. Dual learning curve: the user learns where to put things, the app learns the family.
 
+### Elevate the Playground (V2 theme)
+Make the Playground a living space, not just a save list — more links, more interactions, more ways in and out. Specific ideas:
+- **Save Play On add-ons for later** — in the Play On / itinerary view, let the user save the add-on suggestions (Before / Half Time / After / Evening stops) to the Playground, not just the main pick. Right now those generated stops vanish if not used today.
+- **User-seeded ("blank") cards** — let the user type a place they already love (e.g. "Stonewall Farm") into the Playground and have the app fill it out into a full card (address, hours, tip, directions) — same generation the app already does, just seeded by the user's title instead of a suggestion. Turns the Playground into somewhere you actively curate, not only a dumping ground for app picks.
+- **Edit & rearrange saves** — rename, move a save between cities/categories, reorder, and merge duplicates. (Partly foreshadowed by the city-dedup work in `lib/cityGroups.ts`, which currently only groups for *display*; this is the real drag-and-drop/reconciliation layer. Relates to the V1.5 "Location deduplication UI" roadmap item.)
+
 ## Documentation Files
 - **CLAUDE.md** (this file) — Project briefing; read automatically at session start
 - **docs/DESIGN.md** — Visual language, colors, typography, component specs
