@@ -70,6 +70,7 @@ Make the Playground a living space, not just a save list — more links, more in
 - **docs/DESIGN.md** — Visual language, colors, typography, component specs
 - **docs/PROGRESS.md** — Session-by-session changelog; what was built, bugs found, blockers
 - **docs/V1.5-MEMORY.md** — Working notes for the V1.5 effort
+- **docs/V1.5-V2-BRIEF.md** — Strategic brief: V1.5 status, V2 themes, monetization sequencing (Stripe/at-home planning)
 
 ## How to Deploy
 1. Make code changes locally
