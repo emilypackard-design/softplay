@@ -344,7 +344,6 @@ export default function FreePlayPage() {
 
   const currentCard = cards[currentIndex]
   const yesCount = yeses.length
-  const wheelReady = yesCount >= 4
 
   // Load persisted vetoes from localStorage on mount
   // Also exclude cards already saved to Playground from suggestions
@@ -486,17 +485,6 @@ export default function FreePlayPage() {
       setCurrentIndex(i => i + 1)
       void loadMoreCards(1, true)
     }
-  }
-
-  const goToWheel = () => {
-    const options: WheelOption[] = yeses.map(c => ({
-      id: c.id,
-      name: c.name,
-      emoji: c.emoji,
-      pitch: c.pitch,
-    }))
-    setWheelOptions(options)
-    setStep('wheel')
   }
 
   const handleSpinComplete = (winnerId: string) => {
