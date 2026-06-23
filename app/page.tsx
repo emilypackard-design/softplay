@@ -189,8 +189,7 @@ export default function Home() {
 
       {/* Playground link */}
       <div style={{ width: '100%', maxWidth: 440, marginTop: 28, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ width: '100%', height: 1, background: 'rgba(28,25,23,0.12)' }} />
-        <Link href="/playground" style={{ textDecoration: 'none', marginTop: 20 }}>
+        <Link href="/playground" style={{ textDecoration: 'none' }}>
           <div className="playground-link" style={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -204,7 +203,7 @@ export default function Home() {
             <span style={{ fontFamily: 'var(--font-wordmark)', fontStyle: 'italic', fontSize: 19, fontWeight: 300, color: '#1C1917' }}>Playground</span>
           </div>
         </Link>
-        <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: '#5C4E3D', marginTop: 8 }}>where your saved ideas live</span>
+        <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: '#5C4E3D', marginTop: 8 }}>Where you save and revisit ideas</span>
         <div style={{ width: '100%', height: 1, background: 'rgba(28,25,23,0.12)', marginTop: 20 }} />
         <SignInNudge />
       </div>
