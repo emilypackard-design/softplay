@@ -651,7 +651,7 @@ export default function FreePlayPage() {
               <textarea
                 value={preferences}
                 onChange={e => setPreferences(e.target.value)}
-                placeholder="Energy/mood? Time constraints? Override your usual preferences — e.g. 'no hikes today'"
+                placeholder="Anything else you're feeling or not feeling for today (e.g. 'no hikes today')"
                 rows={3}
                 style={{ width: '100%', border: '1.5px solid #E8DCC8', borderRadius: 12, padding: '12px 14px', fontSize: 14, fontFamily: 'var(--font-body)', outline: 'none', boxSizing: 'border-box', background: '#FFFFFF', color: '#1C1917', resize: 'none', lineHeight: 1.5 }}
               />
