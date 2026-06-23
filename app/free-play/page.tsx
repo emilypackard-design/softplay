@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import PinwheelIcon from '@/components/PinwheelIcon'
-import Wheel from '@/components/Wheel'
-import type { WheelOption, PlaygroundSave } from '@/types'
+import type { PlaygroundSave } from '@/types'
 
 interface Card {
   id: string
@@ -16,7 +15,7 @@ interface Card {
 
 interface Kid { age: number }
 
-type Step = 'entry' | 'cards' | 'wheel' | 'loading-plan' | 'done'
+type Step = 'entry' | 'cards'
 
 const LOADING_QUIPS = [
   'Asking the locals…',
@@ -338,9 +337,6 @@ export default function FreePlayPage() {
   // Toast state
   const [toast, setToast] = useState<{ id: string; title: string; emoji: string; type: 'pin' | 'heart' } | null>(null)
 
-  // Wheel state
-  const [wheelOptions, setWheelOptions] = useState<WheelOption[]>([])
-  const [winner, setWinner] = useState<WheelOption | null>(null)
 
   const currentCard = cards[currentIndex]
   const yesCount = yeses.length
@@ -485,11 +481,6 @@ export default function FreePlayPage() {
       setCurrentIndex(i => i + 1)
       void loadMoreCards(1, true)
     }
-  }
-
-  const handleSpinComplete = (winnerId: string) => {
-    const w = wheelOptions.find(o => o.id === winnerId)
-    if (w) setWinner(w)
   }
 
   const addKid = () => setKids(k => [...k, { age: 8 }])
