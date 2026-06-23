@@ -8,6 +8,9 @@ A fun decision maker app for families (or anyone) planning activities and outing
 - **Free Play** — Pick a location, flip through activity cards, save favorites
 - **Playground** — View and organize all saved activities by location
 
+## Relationship to softplay-at-home
+softplay and **softplay-at-home** (separate project/repo) share the **pre-wheel setup** (questions/Playbill/Play Structure) but diverge **after the pick**: main softplay builds a day around the choice, at-home lands on the card and stops. So **pre-wheel work is shareable across both** (reflection page, date logic, save-intent copy); the **save-timing tension and escape-hatch ideas are main-only**, born from the build-a-day step. (When porting an improvement, check which side of that line it sits on.)
+
 ## Tech Stack
 - **Framework:** Next.js 15 (App Router, TypeScript)
 - **API:** Claude (Anthropic SDK) for activity suggestions
