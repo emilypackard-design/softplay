@@ -204,7 +204,8 @@ export default function Home() {
             <span style={{ fontFamily: 'var(--font-wordmark)', fontStyle: 'italic', fontSize: 19, fontWeight: 300, color: '#1C1917' }}>Playground</span>
           </div>
         </Link>
-        <span style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: 'rgba(28,25,23,0.6)', marginTop: 8 }}>where your saved ideas live</span>
+        <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: '#5C4E3D', marginTop: 8 }}>where your saved ideas live</span>
+        <div style={{ width: '100%', height: 1, background: 'rgba(28,25,23,0.12)', marginTop: 20 }} />
         <SignInNudge />
       </div>
     </main>
