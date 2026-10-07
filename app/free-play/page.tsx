@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import PinwheelIcon from '@/components/PinwheelIcon'
+import UpgradePrompt from '@/components/UpgradePrompt'
+import { useEntitlement } from '@/lib/entitlement'
 import type { PlaygroundSave } from '@/types'
 
 interface Card {
@@ -313,6 +315,8 @@ function SwipeCard({ card, onAction, disabled }: {
 
 export default function FreePlayPage() {
   const [step, setStep] = useState<Step>('entry')
+  const { hasPaidAccess } = useEntitlement()
+  const [showUpgrade, setShowUpgrade] = useState(false)
 
   // Entry state
   const [city, setCity] = useState('')
@@ -430,6 +434,11 @@ export default function FreePlayPage() {
 
   const handleAction = (action: 'pin' | 'flag' | 'never' | 'heart', reason?: string) => {
     if (!currentCard) return
+
+    if ((action === 'pin' || action === 'heart') && !hasPaidAccess) {
+      setShowUpgrade(true)
+      return
+    }
 
     if (action === 'pin') {
       // Save to Playground as pin
@@ -728,6 +737,7 @@ export default function FreePlayPage() {
 
 
       </main>
+      {showUpgrade && <UpgradePrompt variant="modal" onClose={() => setShowUpgrade(false)} />}
     </div>
     </>
   )

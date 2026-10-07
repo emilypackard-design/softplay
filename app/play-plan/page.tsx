@@ -7,6 +7,8 @@ import Wheel, { SEGMENT_COLORS } from '@/components/Wheel'
 import PlayByPlayView from '@/components/PlayByPlayView'
 import PinwheelIcon from '@/components/PinwheelIcon'
 import Confetti from '@/components/Confetti'
+import UpgradePrompt from '@/components/UpgradePrompt'
+import { useEntitlement } from '@/lib/entitlement'
 import { sameStop } from '@/lib/stopNames'
 
 // Per-city permanent veto store, SHARED with Free Play (softplay_vetoes_<city>):
@@ -28,11 +30,11 @@ const addCityVeto = (c: string, name: string) => {
 type Step =
   | 'welcome' | 'crew' | 'fun-chips' | 'not-fun-chips' | 'food' | 'great-day' | 'practical'
   | 'play-structure' | 'generating' | 'options' | 'family-fave-swap' | 'wildcard-swap' | 'countdown' | 'wheel'
-  | 'loading-plan' | 'play-by-play' | 'replay'
+  | 'upgrade-prompt' | 'loading-plan' | 'play-by-play' | 'replay'
 
 const STEP_ORDER: Step[] = [
   'welcome', 'crew', 'fun-chips', 'not-fun-chips', 'food', 'great-day', 'practical',
-  'play-structure', 'generating', 'options', 'family-fave-swap', 'wildcard-swap', 'countdown', 'wheel', 'loading-plan', 'play-by-play', 'replay',
+  'play-structure', 'generating', 'options', 'family-fave-swap', 'wildcard-swap', 'countdown', 'wheel', 'upgrade-prompt', 'loading-plan', 'play-by-play', 'replay',
 ]
 
 // Mini wheel component for countdown
@@ -103,18 +105,17 @@ const FOOD_LOVE_CHIPS = [
   { id: 'street',     emoji: '🚐', label: 'Street food' },
 ]
 
+// Note: allergen chips (nuts, shellfish, gluten, dairy) were deliberately removed
+// so the app doesn't collect health/special-category data under GDPR. These are
+// taste/lifestyle preferences only — keep it that way.
 const FOOD_AVOID_CHIPS = [
   { id: 'buffets',     emoji: '🥘', label: 'Buffets' },
   { id: 'crowded',     emoji: '👥', label: 'Crowded spots' },
-  { id: 'dairy',       emoji: '🧀', label: 'Dairy' },
   { id: 'fast-food',   emoji: '🍟', label: 'Fast food' },
   { id: 'fine-dining', emoji: '🍽️', label: 'Fine dining' },
   { id: 'foodtruck',   emoji: '🚐', label: 'Food trucks' },
-  { id: 'gluten',      emoji: '🌾', label: 'Gluten' },
   { id: 'meat',        emoji: '🥩', label: 'Meat' },
-  { id: 'nuts',        emoji: '🥜', label: 'Nuts' },
   { id: 'pubs',        emoji: '🍺', label: 'Pubs' },
-  { id: 'shellfish',   emoji: '🦐', label: 'Shellfish' },
   { id: 'spicy',       emoji: '🌶️', label: 'Spicy' },
 ]
 
@@ -364,6 +365,7 @@ export default function PlayPlanPage() {
   const [wildcardInWheel, setWildcardInWheel] = useState(false)
   const [chosenOption, setChosenOption] = useState<WheelOption | null>(null)
   const [winnerStop, setWinnerStop] = useState<Stop | null>(null)
+  const { hasPaidAccess } = useEntitlement()
   const [initialFoodStop, setInitialFoodStop] = useState<Stop | undefined>()
   const [playground, setPlayground] = useState<WheelOption[]>([])
   const [vetoes, setVetoes] = useState<string[]>([])
@@ -687,6 +689,15 @@ export default function PlayPlanPage() {
     const winner = wheelOptions.find(o => o.id === winnerId)
     if (!winner) return
     setChosenOption(winner)
+
+    // Free tier: Playbook ends at the wheel's pick. Building the full day
+    // (Play On) is a paid feature — reveal the winner, but don't fetch or
+    // build the itinerary.
+    if (!hasPaidAccess) {
+      setStep('upgrade-prompt')
+      return
+    }
+
     setStep('loading-plan')
     try {
       const res = await fetch('/api/play-by-play', {
@@ -912,7 +923,7 @@ export default function PlayPlanPage() {
 
             <div style={{ marginTop: 20 }}>
               <label style={{ ...S.label, fontSize: 13, color: '#8C7B6B', fontWeight: 600 }}>
-                Allergies, things to seek out, or anything else?
+                Things to seek out, or anything else?
               </label>
               <textarea
                 value={playbill.foodNote}
@@ -1384,6 +1395,23 @@ export default function PlayPlanPage() {
             <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
               <Wheel options={wheelOptions} onSpinComplete={handleSpinComplete} wildcardInWheel={wildcardInWheel} />
             </div>
+          </div>
+        )}
+
+        {/* ── UPGRADE PROMPT (free tier: wheel pick revealed, itinerary is paid) ── */}
+        {step === 'upgrade-prompt' && (
+          <div style={{ textAlign: 'center' }}>
+            <Confetti />
+            <div style={{ background: '#F5EFE0', borderRadius: 24, padding: 24, marginBottom: 8 }}>
+              <div style={{ fontSize: 56, marginBottom: 12 }}>{chosenOption?.emoji}</div>
+              <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 28, fontWeight: 800, color: '#1C1917', margin: 0 }}>
+                {chosenOption?.name}
+              </h2>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: 15, color: '#5C4E3D', marginTop: 8, fontStyle: 'italic' }}>
+                {chosenOption?.pitch}
+              </p>
+            </div>
+            <UpgradePrompt variant="inline" />
           </div>
         )}
 

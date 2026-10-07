@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import PinwheelIcon from '@/components/PinwheelIcon'
+import UpgradePrompt from '@/components/UpgradePrompt'
+import { useEntitlement } from '@/lib/entitlement'
 import type { PlaygroundSave } from '@/types'
 import { canonicalCityMap } from '@/lib/cityGroups'
 
@@ -20,6 +22,7 @@ export default function PlaygroundPage() {
   const [totalSaves, setTotalSaves] = useState(0)
   const [homeCity, setHomeCity] = useState<string | null>(null)
   const [mounted, setMounted] = useState(false)
+  const { loading: entitlementLoading, hasPaidAccess } = useEntitlement()
 
   useEffect(() => {
     // Load on mount
@@ -55,7 +58,8 @@ export default function PlaygroundPage() {
     setMounted(true)
   }, [homeCity])
 
-  if (!mounted) return null
+  if (!mounted || entitlementLoading) return null
+  if (!hasPaidAccess) return <UpgradePrompt variant="page" />
 
   const S = {
     // Match city view: one continuous emerald #1C7E46 gradient → cream by ~240px, then stays cream.

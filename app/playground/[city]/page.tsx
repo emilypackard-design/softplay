@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
+import UpgradePrompt from '@/components/UpgradePrompt'
+import { useEntitlement } from '@/lib/entitlement'
 import type { PlaygroundSave } from '@/types'
 import { canonicalCityMap } from '@/lib/cityGroups'
 
@@ -20,6 +22,7 @@ export default function CityDetailPage() {
   const [flagPopupId, setFlagPopupId] = useState<string | null>(null)
   const [toast, setToast] = useState<string | null>(null)
   const [justMovedId, setJustMovedId] = useState<string | null>(null)
+  const { loading: entitlementLoading, hasPaidAccess } = useEntitlement()
 
   useEffect(() => {
     if (!city) return
@@ -101,7 +104,8 @@ export default function CityDetailPage() {
   }
 
 
-  if (!mounted || !city) return null
+  if (!mounted || !city || entitlementLoading) return null
+  if (!hasPaidAccess) return <UpgradePrompt variant="page" />
 
   const S = {
     // One continuous gradient anchored on emerald #1C7E46: rich green at top → cream by ~240px, then stays cream.

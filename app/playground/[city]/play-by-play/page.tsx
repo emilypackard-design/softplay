@@ -5,6 +5,8 @@ import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import PlayByPlayView from '@/components/PlayByPlayView'
 import PinwheelIcon from '@/components/PinwheelIcon'
+import UpgradePrompt from '@/components/UpgradePrompt'
+import { useEntitlement } from '@/lib/entitlement'
 import type { PlaygroundSave, Stop, WheelOption, PlaybillData, PlayStructureData } from '@/types'
 
 export default function PlaygroundPlayByPlayPage() {
@@ -19,6 +21,7 @@ export default function PlaygroundPlayByPlayPage() {
   const [mounted, setMounted] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showCopyFeedback, setShowCopyFeedback] = useState(false)
+  const { loading: entitlementLoading, hasPaidAccess } = useEntitlement()
 
   useEffect(() => {
     // Get card from sessionStorage
@@ -107,6 +110,9 @@ export default function PlaygroundPlayByPlayPage() {
   }, [])
 
   if (!city) return <div>No city found</div>
+
+  if (entitlementLoading) return null
+  if (!hasPaidAccess) return <UpgradePrompt variant="page" />
 
   if (!mounted || !card || !winnerStop || !playbill) {
     return (
