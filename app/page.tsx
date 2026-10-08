@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import PinwheelIcon from '@/components/PinwheelIcon'
 import SignInNudge from '@/components/SignInNudge'
-
+import PlaygroundLock from '@/components/PlaygroundLock'
 export default function Home() {
   return (
     <>
@@ -165,6 +165,7 @@ export default function Home() {
               lineHeight: 1.1,
             }}>
               Free Play
+              <span style={{ marginLeft: 10, padding: '2px 9px', borderRadius: 10, fontSize: 11, fontWeight: 700, fontStyle: 'normal', fontFamily: 'var(--font-heading)', letterSpacing: '0.5px', textTransform: 'uppercase', background: '#D4E8D4', color: '#3D6B41', verticalAlign: 'middle' }}>Free</span>
             </h2>
             <p style={{
               fontFamily: 'var(--font-body)',
@@ -201,6 +202,7 @@ export default function Home() {
           }}>
             <span style={{ fontSize: 24 }}>📌</span>
             <span style={{ fontFamily: 'var(--font-wordmark)', fontStyle: 'italic', fontSize: 19, fontWeight: 300, color: '#1C1917' }}>Playground</span>
+            <PlaygroundLock />
           </div>
         </Link>
         <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: '#5C4E3D', marginTop: 8 }}>Where you save and revisit ideas</span>

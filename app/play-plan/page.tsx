@@ -365,7 +365,8 @@ export default function PlayPlanPage() {
   const [wildcardInWheel, setWildcardInWheel] = useState(false)
   const [chosenOption, setChosenOption] = useState<WheelOption | null>(null)
   const [winnerStop, setWinnerStop] = useState<Stop | null>(null)
-  const { hasPaidAccess } = useEntitlement()
+  const { loading: entitlementLoading, hasPaidAccess } = useEntitlement()
+  const [showUpgrade, setShowUpgrade] = useState(false)
   const [initialFoodStop, setInitialFoodStop] = useState<Stop | undefined>()
   const [playground, setPlayground] = useState<WheelOption[]>([])
   const [vetoes, setVetoes] = useState<string[]>([])
@@ -409,6 +410,7 @@ export default function PlayPlanPage() {
     setOptionVetoes(prev => [...prev, ...names.filter(n => !prev.includes(n))])
 
   const handleSaveToPlayground = (option: WheelOption) => {
+    if (!hasPaidAccess) { setShowUpgrade(true); return }
     // Pin and Heart are mutually exclusive
     setHeartedOptions(prev => {
       const next = new Set(prev)
@@ -514,6 +516,7 @@ export default function PlayPlanPage() {
   }
 
   const handleHeartOption = (option: WheelOption) => {
+    if (!hasPaidAccess) { setShowUpgrade(true); return }
     // Pin and Heart are mutually exclusive
     setPinnedOptions(prev => {
       const next = new Set(prev)
@@ -766,13 +769,19 @@ export default function PlayPlanPage() {
               Every production starts with a cast and crew.
             </p>
             <p style={{ fontFamily: 'var(--font-body)', fontSize: 16, color: '#5C4E3D', lineHeight: 1.65, marginBottom: 28 }}>
-              Your Playbill will remember who you are and what you like so you never have to start from scratch.
+              Your Playbill will remember who you are and what you like so you never have to start from scratch.{!entitlementLoading && !hasPaidAccess && '*'}
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               <button onClick={() => setStep('crew')} style={S.btnPrimary}>
                 Build my Playbill
               </button>
             </div>
+            {!entitlementLoading && !hasPaidAccess && (
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: '#8C7B6B', lineHeight: 1.5, margin: '18px 0 0' }}>
+                *Want your Playbill saved for next time? <strong>Unlimited</strong> remembers your crew, saves favorites and builds the full day.{' '}
+                <a href="/upgrade" target="_blank" rel="noopener" style={{ color: '#3D9E8F', fontWeight: 700 }}>See Unlimited →</a>
+              </p>
+            )}
           </div>
         )}
 
@@ -1522,6 +1531,7 @@ export default function PlayPlanPage() {
           ❤️ Added to Family Favourites
         </div>
       )}
+      {showUpgrade && <UpgradePrompt variant="modal" onClose={() => setShowUpgrade(false)} />}
     </div>
     </>
   )

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { getSupabase } from '@/lib/supabase'
+import { useEntitlement } from '@/lib/entitlement'
 
 const DISMISS_KEY = 'softplay_signin_banner_dismissed'
 
@@ -10,22 +10,12 @@ const DISMISS_KEY = 'softplay_signin_banner_dismissed'
 // one-time dismissible banner. When signed in, both collapse to a quiet
 // "Syncing as <email>" line linking to the account page.
 export default function SignInNudge() {
-  const [email, setEmail] = useState<string | null>(null)
-  const [mounted, setMounted] = useState(false)
+  const { loading, email, hasPaidAccess } = useEntitlement()
+  const mounted = !loading
   const [bannerDismissed, setBannerDismissed] = useState(true)
 
   useEffect(() => {
     setBannerDismissed(localStorage.getItem(DISMISS_KEY) === '1')
-    const supabase = getSupabase()
-    if (!supabase) { setMounted(true); return }
-    supabase.auth.getSession().then(({ data }) => {
-      setEmail(data.session?.user?.email ?? null)
-      setMounted(true)
-    })
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
-      setEmail(session?.user?.email ?? null)
-    })
-    return () => sub.subscription.unsubscribe()
   }, [])
 
   const dismiss = () => {
@@ -39,6 +29,9 @@ export default function SignInNudge() {
     return (
       <Link href="/account" style={{ marginTop: 18, fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: '#8C7B6B', textDecoration: 'none' }}>
         ✓ Syncing as {email} · Account
+        <span style={{ marginLeft: 8, padding: '2px 8px', borderRadius: 10, fontSize: 11, fontWeight: 700, background: hasPaidAccess ? '#D4E8D4' : '#EFE7D6', color: hasPaidAccess ? '#3D6B41' : '#8C7B6B' }}>
+          {hasPaidAccess ? 'Unlimited' : 'Free plan'}
+        </span>
       </Link>
     )
   }
