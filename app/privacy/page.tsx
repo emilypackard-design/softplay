@@ -27,7 +27,7 @@ export default function PrivacyPage() {
 
       <main style={{ maxWidth: 720, margin: '0 auto', padding: '40px 20px 80px' }}>
         <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 28, fontWeight: 800, color: '#1C1917', margin: '0 0 6px' }}>Privacy Policy</h1>
-        <p style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: '#B0A090', margin: '0 0 8px' }}>Effective date: 20 July 2026</p>
+        <p style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: '#B0A090', margin: '0 0 8px' }}>Effective date: 14 October 2026</p>
 
         <h2 style={s.h2}>Who we are</h2>
         <p style={s.p}>softplay (&ldquo;softplay&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) is a family activity-planning app operated by <strong>Emily Packard</strong>, based in <strong>Ireland</strong>. We are the <em>data controller</em> for the personal data described in this policy.</p>
@@ -49,6 +49,7 @@ export default function PrivacyPage() {
           <li style={s.li}><strong>Food preferences</strong> — the kinds of food and eating spots your crew enjoys or would rather skip. These are taste and lifestyle preferences only. <strong>softplay does not ask for, and is not intended to store, medical or health information such as allergies.</strong></li>
           <li style={s.li}><strong>Your Playground saves</strong> — the activities and places you save and the city they belong to.</li>
           <li style={s.li}><strong>The requests you type</strong> that we send to our AI provider to generate suggestions for you.</li>
+          <li style={s.li}><strong>Purchase records</strong> — if you buy a Founding Membership, we keep your plan status, the date of purchase, and a payment-processor customer reference. <strong>Your card details are entered directly with Stripe and are never seen or stored by us.</strong></li>
         </ul>
         <p style={s.p}><strong>Automatically:</strong> softplay keeps a working copy of your Playbill, saves, and notes in your browser&apos;s local storage so the app is fast and works offline (app functionality, <strong>not</strong> advertising or tracking cookies). Like any website, our hosting provider records standard technical information (such as IP address and request times) to keep the service running and secure. We do <strong>not</strong> use third-party advertising or analytics trackers.</p>
 
@@ -64,6 +65,7 @@ export default function PrivacyPage() {
             <tbody>
               <tr><td style={s.td}>Create and run your account</td><td style={s.td}>So your plans persist and sync across devices</td><td style={s.td}>Performance of a contract (Art. 6(1)(b))</td></tr>
               <tr><td style={s.td}>Generate personalised suggestions from your Playbill</td><td style={s.td}>The core service you asked for</td><td style={s.td}>Performance of a contract (Art. 6(1)(b))</td></tr>
+              <tr><td style={s.td}>Take payment and record your membership</td><td style={s.td}>So you can buy and keep Unlimited access</td><td style={s.td}>Performance of a contract (Art. 6(1)(b)); legal obligation for payment records (Art. 6(1)(c))</td></tr>
               <tr><td style={s.td}>Send you sign-in links</td><td style={s.td}>To let you access your account</td><td style={s.td}>Performance of a contract (Art. 6(1)(b))</td></tr>
               <tr><td style={s.td}>Keep the service secure and working</td><td style={s.td}>To protect you and us</td><td style={s.td}>Our legitimate interests (Art. 6(1)(f))</td></tr>
             </tbody>
@@ -80,6 +82,7 @@ export default function PrivacyPage() {
             <tbody>
               <tr><td style={s.td}>Supabase</td><td style={s.td}>Stores your account, Playbill and saves (our database and sign-in)</td><td style={s.td}>United States</td></tr>
               <tr><td style={s.td}>Anthropic (Claude AI)</td><td style={s.td}>Turns your typed requests into activity suggestions</td><td style={s.td}>United States</td></tr>
+              <tr><td style={s.td}>Stripe</td><td style={s.td}>Processes payments for Founding Memberships (collects your card details and email on its own secure page)</td><td style={s.td}>United States / global</td></tr>
               <tr><td style={s.td}>Resend</td><td style={s.td}>Delivers your sign-in emails</td><td style={s.td}>United States</td></tr>
               <tr><td style={s.td}>Vercel</td><td style={s.td}>Hosts and serves the app</td><td style={s.td}>United States / global</td></tr>
               <tr><td style={s.td}>Cloudflare</td><td style={s.td}>Manages our domain and routes our contact email</td><td style={s.td}>Global</td></tr>

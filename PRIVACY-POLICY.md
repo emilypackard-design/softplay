@@ -10,7 +10,7 @@
 
 # Privacy Policy — softplay
 
-**Effective date:** 20 July 2026
+**Effective date:** 14 October 2026
 
 ## Who we are
 
@@ -37,6 +37,7 @@ The rest of this policy is the detail behind those promises.
 - **Food preferences** — the kinds of food and eating spots your crew enjoys or would rather skip (for example bakeries, street food, or "no fine dining"). These are taste and lifestyle preferences only. **softplay does not ask for, and is not intended to store, medical or health information such as allergies.**
 - **Your Playground saves** — the activities and places you save (as hearts or pins) and the city they belong to.
 - **The requests you type** that we send to our AI provider to generate suggestions for you (see [Who we share data with](#who-we-share-data-with)).
+- **Purchase records** — if you buy a Founding Membership, we keep your plan status, the date of purchase, and a payment-processor customer reference. **Your card details are entered directly with Stripe and are never seen or stored by us.**
 
 **Automatically:**
 - **On-device storage.** softplay keeps a working copy of your Playbill, saves, and notes in your browser's local storage so the app is fast and works offline. This is app functionality, **not** advertising or tracking cookies.
@@ -56,6 +57,7 @@ Any information about children (such as ages or interests) is entered by the adu
 |---|---|---|
 | Create and run your account | So your plans persist and sync across devices | Performance of a contract (Art. 6(1)(b)) |
 | Generate personalised suggestions from your Playbill | The core service you asked for | Performance of a contract (Art. 6(1)(b)) |
+| Take payment and record your membership | So you can buy and keep Unlimited access | Performance of a contract (Art. 6(1)(b)); legal obligation for payment records (Art. 6(1)(c)) |
 | Send you sign-in links | To let you access your account | Performance of a contract (Art. 6(1)(b)) |
 | Keep the service secure and working | To protect you and us | Our legitimate interests (Art. 6(1)(f)) |
 
@@ -67,6 +69,7 @@ We do not sell your data and we do not share it for advertising. We do use a sma
 |---|---|---|
 | **Supabase** | Stores your account, Playbill and saves (our database and sign-in) | United States |
 | **Anthropic** (Claude AI) | Turns your typed requests into activity suggestions | United States |
+| **Stripe** | Processes payments for Founding Memberships (collects your card details and email on its own secure page) | United States / global |
 | **Resend** | Delivers your sign-in emails | United States |
 | **Vercel** | Hosts and serves the app | United States / global |
 | **Cloudflare** | Manages our domain and routes our contact email | Global |

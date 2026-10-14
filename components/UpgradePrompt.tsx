@@ -79,6 +79,12 @@ export default function UpgradePrompt({ variant = 'modal', onClose }: Props) {
           {loading ? 'Loading…' : 'Become a Founding Member — $9.99 once'}
         </button>
       )}
+      {!needsSignIn && (
+        <p style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: '#B0A090', lineHeight: 1.5, margin: '10px 0 0' }}>
+          US customers only for now. One-time payment, 14-day refund. By purchasing you agree to our{' '}
+          <Link href="/terms" style={{ color: '#3D9E8F', fontWeight: 600 }}>Terms</Link>.
+        </p>
+      )}
       {error && <p style={S.error}>{error}</p>}
       {onClose && <button onClick={onClose} style={S.secondary}>Not now</button>}
     </>

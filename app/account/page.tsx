@@ -234,6 +234,7 @@ export default function AccountPage() {
               </button>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: '#B0A090', lineHeight: 1.6, margin: '14px 0 0' }}>
                 By signing in, you agree to our{' '}
+                <Link href="/terms" style={{ color: '#3D9E8F', fontWeight: 600 }}>Terms</Link> and{' '}
                 <Link href="/privacy" style={{ color: '#3D9E8F', fontWeight: 600 }}>Privacy Policy</Link>.
               </p>
             </>
