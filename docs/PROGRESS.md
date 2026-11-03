@@ -14,7 +14,7 @@
 - **Bug:** on phones, tapping the magic link landed back on the sign-in page, never signed in. Cause: Supabase's default `?code=` link (PKCE) only works in the browser that *requested* it; phone email apps open links in their own in-app browser, which lacks the stored verifier. (Also: links requested on softplay-five.vercel.app bounced to mysoftplay.app — same failure.)
 - **Fix:** `/account` now handles `?token_hash=…&type=email` via `verifyOtp` (works in any browser) and shows a friendly "link expired or already used" message instead of failing silently.
 - **Supabase dashboard (done by Emily):** Magic Link + Confirm signup templates now link to `{{ .SiteURL }}/account?token_hash={{ .TokenHash }}&type=email`.
-- **Verified:** bogus token shows the error and cleans the URL; typecheck + lint clean. Real phone sign-in still to confirm after deploy.
+- **Verified:** bogus token shows the error and cleans the URL; typecheck + lint clean. **Confirmed on Emily's phone after deploy** (Gmail → link opened in Chrome → signed in).
 
 ## ✅ Session (2026-06-21) — Itinerary flag fix + non-existent food
 
