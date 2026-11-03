@@ -9,6 +9,13 @@
 > 3. **Mobile-test feedback** from Emily's session (screenshots incoming).
 > 4. **Stripe: POST-beta, not concurrent** (decided 2026-06-08). Use beta feedback to choose pricing model first.
 
+## ✅ Session (2026-11-03) — Phone sign-in loop fix
+
+- **Bug:** on phones, tapping the magic link landed back on the sign-in page, never signed in. Cause: Supabase's default `?code=` link (PKCE) only works in the browser that *requested* it; phone email apps open links in their own in-app browser, which lacks the stored verifier. (Also: links requested on softplay-five.vercel.app bounced to mysoftplay.app — same failure.)
+- **Fix:** `/account` now handles `?token_hash=…&type=email` via `verifyOtp` (works in any browser) and shows a friendly "link expired or already used" message instead of failing silently.
+- **Supabase dashboard (done by Emily):** Magic Link + Confirm signup templates now link to `{{ .SiteURL }}/account?token_hash={{ .TokenHash }}&type=email`.
+- **Verified:** bogus token shows the error and cleans the URL; typecheck + lint clean. Real phone sign-in still to confirm after deploy.
+
 ## ✅ Session (2026-06-21) — Itinerary flag fix + non-existent food
 
 - **Itinerary flagging made reason-aware** (`PlayByPlayView`): it was persisting ALL flagged stops to the shared store regardless of reason (same over-persist bug). Now only "Permanently closed" persists; "Not today"/"Bad suggestion" go to a session-only `sessionFlags` list (still excluded from replacements this session, but don't permanently kill a real venue). Matches Playbook + Free Play.

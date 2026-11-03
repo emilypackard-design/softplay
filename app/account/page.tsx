@@ -22,6 +22,27 @@ export default function AccountPage() {
   const [redeemError, setRedeemError] = useState<string | null>(null)
   const [redeemed, setRedeemed] = useState(false)
 
+  // Finish sign-in when arriving from the email link. The email template links
+  // here with ?token_hash=…&type=email, which works in ANY browser — unlike the
+  // default ?code= link, which only works in the browser that requested it
+  // (phones often open email links in a different, in-app browser).
+  useEffect(() => {
+    const supabase = getSupabase()
+    if (!supabase) return
+    const params = new URLSearchParams(window.location.search)
+    const hashParams = new URLSearchParams(window.location.hash.slice(1))
+    const tokenHash = params.get('token_hash')
+    const linkError = params.get('error_description') || hashParams.get('error_description')
+    if (!linkError && !tokenHash) return
+    const verify = tokenHash && !linkError
+      ? supabase.auth.verifyOtp({ token_hash: tokenHash, type: 'email' }).then(({ error: err }) => !err)
+      : Promise.resolve(false)
+    void verify.then(ok => {
+      if (!ok) setError('That sign-in link has expired or was already used. Please request a new one.')
+      window.history.replaceState(null, '', window.location.pathname)
+    })
+  }, [])
+
   const sendCode = async () => {
     const supabase = getSupabase()
     if (!supabase || !email.trim()) return
