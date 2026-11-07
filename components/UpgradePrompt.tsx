@@ -72,7 +72,12 @@ export default function UpgradePrompt({ variant = 'modal', onClose }: Props) {
       {needsSignIn ? (
         <>
           <p style={S.lede}>Sign in first so we know where to attach your Founding Membership.</p>
-          <Link href="/account" style={{ ...S.cta, textDecoration: 'none', boxSizing: 'border-box' as const }}>Sign in →</Link>
+          <Link
+            href="/account"
+            onClick={() => {
+              try { localStorage.setItem('sp_next', JSON.stringify({ to: '/upgrade', t: Date.now() })) } catch { /* ignore */ }
+            }}
+            style={{ ...S.cta, textDecoration: 'none', boxSizing: 'border-box' as const }}>Sign in →</Link>
         </>
       ) : (
         <button onClick={() => void upgrade()} disabled={loading} style={{ ...S.cta, opacity: loading ? 0.6 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}>
@@ -86,6 +91,12 @@ export default function UpgradePrompt({ variant = 'modal', onClose }: Props) {
         </p>
       )}
       {error && <p style={S.error}>{error}</p>}
+      {!needsSignIn && (
+        <p style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: '#8C7B6B', margin: '12px 0 0' }}>
+          Have a code?{' '}
+          <Link href="/account" style={{ color: '#3D9E8F', fontWeight: 700 }}>Enter it on your Account page →</Link>
+        </p>
+      )}
       {onClose && <button onClick={onClose} style={S.secondary}>Not now</button>}
     </>
   )

@@ -2,6 +2,7 @@ import Link from 'next/link'
 import PinwheelIcon from '@/components/PinwheelIcon'
 import SignInNudge from '@/components/SignInNudge'
 import PlaygroundLock from '@/components/PlaygroundLock'
+import FounderOffer from '@/components/FounderOffer'
 export default function Home() {
   return (
     <>
@@ -206,6 +207,7 @@ export default function Home() {
           </div>
         </Link>
         <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: '#5C4E3D', marginTop: 8 }}>Where you save and revisit ideas</span>
+        <FounderOffer />
         <div style={{ width: '100%', height: 1, background: 'rgba(28,25,23,0.12)', marginTop: 20 }} />
         <SignInNudge />
       </div>

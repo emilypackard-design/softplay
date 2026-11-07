@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { getSupabase } from '@/lib/supabase'
 import { useEntitlement } from '@/lib/entitlement'
 
@@ -21,6 +22,22 @@ export default function AccountPage() {
   const [redeeming, setRedeeming] = useState(false)
   const [redeemError, setRedeemError] = useState<string | null>(null)
   const [redeemed, setRedeemed] = useState(false)
+  const router = useRouter()
+
+  // Someone who clicked "Sign in" from the upgrade prompt goes straight back to
+  // /upgrade to finish buying (the note is set in UpgradePrompt; only /upgrade is
+  // ever honoured, and it expires after an hour).
+  useEffect(() => {
+    if (entitlementLoading || !userEmail) return
+    try {
+      const raw = localStorage.getItem('sp_next')
+      if (!raw) return
+      localStorage.removeItem('sp_next')
+      const note = JSON.parse(raw) as { to?: string; t?: number }
+      const fresh = typeof note.t === 'number' && Date.now() - note.t < 60 * 60 * 1000
+      if (note.to === '/upgrade' && fresh && !hasPaidAccess) router.replace('/upgrade')
+    } catch { /* ignore */ }
+  }, [entitlementLoading, userEmail, hasPaidAccess, router])
 
   // Finish sign-in when arriving from the email link. The email template links
   // here with ?token_hash=…&type=email, which works in ANY browser — unlike the
@@ -172,6 +189,9 @@ export default function AccountPage() {
                 </p>
               ) : (
                 <div style={{ marginTop: 20, textAlign: 'left' }}>
+                  <Link href="/upgrade" style={{ display: 'block', textAlign: 'center', background: '#F5C842', color: '#1C1917', fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 15, padding: '14px 20px', borderRadius: 26, textDecoration: 'none', marginBottom: 20, boxShadow: '0 4px 18px rgba(242,201,76,0.4)' }}>
+                    Become a Founding Member →
+                  </Link>
                   <p style={{ fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 600, color: '#8C7B6B', margin: '0 0 8px' }}>
                     Have a code?
                   </p>

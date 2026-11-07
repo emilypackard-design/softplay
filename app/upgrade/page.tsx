@@ -52,7 +52,7 @@ export default function UpgradePage() {
             </p>
           </div>
         ) : (
-          <UpgradePrompt variant="page" />
+          <UpgradePrompt variant="inline" />
         )}
         </>}
       </main>
