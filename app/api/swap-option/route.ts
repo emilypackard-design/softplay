@@ -54,7 +54,7 @@ Return ONLY valid JSON:
     while (attempts < maxAttempts) {
       attempts++
       const message = await client.messages.create({
-        model: 'claude-sonnet-4-5',
+        model: 'claude-sonnet-4-6',
         max_tokens: 256,
         messages: [{ role: 'user', content: prompt }],
       })

@@ -73,7 +73,7 @@ Return ONLY valid JSON:
     for (let attempt = 0; attempt < 3; attempt++) {
       try {
         message = await client.messages.create({
-          model: 'claude-sonnet-4-5',
+          model: 'claude-sonnet-4-6',
           max_tokens: 512,
           messages: [{ role: 'user', content: prompt }],
         })
