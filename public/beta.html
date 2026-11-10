@@ -656,8 +656,8 @@
 
   <!-- Demo clip: shown only when /demo.mp4 exists in the public folder -->
   <section class="demo" id="demo" hidden>
-    <video id="demo-video" src="/demo.mp4" muted loop playsinline autoplay controls preload="metadata"></video>
-    <p>Fifteen seconds: a few questions, a spin, and the day is decided.</p>
+    <video id="demo-video" src="/demo.mp4" poster="/demo-poster.jpg" playsinline controls preload="none"></video>
+    <p>Tap play. Fifteen seconds: lock in the options, spin the wheel, and the day is decided.</p>
   </section>
 
   <!-- Three pathways -->
@@ -866,11 +866,14 @@
 
 </div>
 <script>
-  // Demo clip: reveal the section only if /demo.mp4 exists and loads.
+  // Demo clip: reveal the section only if /demo.mp4 exists. It never autoplays or loops;
+  // the visitor taps play.
   (function () {
-    var v = document.getElementById('demo-video');
     var s = document.getElementById('demo');
-    if (v && s) v.addEventListener('loadeddata', function () { s.hidden = false; });
+    if (!s) return;
+    fetch('/demo.mp4', { method: 'HEAD' })
+      .then(function (r) { if (r.ok) s.hidden = false; })
+      .catch(function () {});
   })();
 
   // Live Founding Membership count from the app's own database.
