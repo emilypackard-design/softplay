@@ -582,6 +582,14 @@
     .pricing { grid-template-columns: 1fr; }
     .footer { flex-direction: column; gap: 10px; }
   }
+  /* Playful pinwheel, top right (same one as the app home screen) */
+  .page { position: relative; }
+  .hero-pinwheel { position: absolute; top: 44px; right: 40px; width: 70px; height: auto; z-index: 2; pointer-events: none; overflow: visible; }
+  .hero-pinwheel .pw-wheel { transform-origin: 50px 50px; animation: pw-spin 9s linear infinite; }
+  @keyframes pw-spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .hero-pinwheel .pw-wheel { animation: none; } }
+  .header-right { margin-right: 92px; }
+  @media (max-width: 600px) { .hero-pinwheel { top: 30px; right: 22px; width: 56px; } .header-right { margin-right: 0; } }
   /* ── Founders landing additions ── */
   .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
   .btn {
@@ -609,14 +617,18 @@
   }
   .hero p strong { font-weight: 700; color: var(--ink); }
   .demo { margin: 0 0 56px; }
-  .demo video { width: 100%; max-width: 420px; display: block; margin: 0 auto; border-radius: 20px; box-shadow: 0 6px 28px rgba(28,25,23,0.16); background: #000; }
-  .demo p { text-align: center; margin-top: 12px; font-family: 'Fraunces', serif; font-style: italic; font-size: 0.9rem; color: var(--mid); }
+  .demo video { width: 100%; max-width: 420px; display: block; margin: 0; border-radius: 20px; box-shadow: 0 6px 28px rgba(28,25,23,0.16); background: #000; }
+  .demo p { text-align: left; max-width: 420px; margin-top: 12px; font-family: 'Fraunces', serif; font-style: italic; font-size: 0.9rem; color: var(--mid); }
   .offer-list { list-style: none; margin: 0 0 14px; padding: 0; }
   .offer-list li { font-size: 0.92rem; font-weight: 400; line-height: 1.6; padding: 4px 0 4px 26px; position: relative; opacity: 0.95; }
   .offer-list li::before { content: '\2713'; position: absolute; left: 0; font-weight: 700; color: var(--yellow); }
   .pricing-right .fine { font-size: 0.78rem; opacity: 0.8; margin: 12px 0 0; }
   .pricing-right .fine a { color: #FEFBF3; }
   .offer-cta { margin-top: 16px; }
+  .pricing { grid-template-columns: 1fr; gap: 0; padding: 30px 36px 34px; }
+  .offer-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 14px; }
+  .offer-head .founding-badge { flex: 0 1 auto; min-width: 0; }
+  @media (max-width: 600px) { .pricing { padding: 24px 22px 28px; } .offer-head { margin-bottom: 10px; } }
   .footer-links { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
   .footer-links a { color: var(--teal); font-weight: 600; text-decoration: none; font-size: 0.85rem; }
 </style>
@@ -631,6 +643,18 @@
 </head>
 <body>
 <div class="page">
+  <svg class="hero-pinwheel" viewBox="0 0 100 135" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <rect x="45.5" y="54" width="9" height="81" rx="4.5" fill="#C9963A"/>
+    <g class="pw-wheel">
+      <path d="M50,50 L50,16 Q70,16 74,36 Q74,47 50,50 Z" fill="#C9963A"/>
+      <path d="M50,50 L50,16 Q70,16 74,36 Q74,47 50,50 Z" fill="#3D9E8F" transform="rotate(90 50 50)"/>
+      <path d="M50,50 L50,16 Q70,16 74,36 Q74,47 50,50 Z" fill="#E07055" transform="rotate(180 50 50)"/>
+      <path d="M50,50 L50,16 Q70,16 74,36 Q74,47 50,50 Z" fill="#F5C842" stroke="rgba(28,25,23,0.2)" stroke-width="1.5" transform="rotate(270 50 50)"/>
+      <circle cx="50" cy="50" r="7" fill="#1C1917"/>
+      <circle cx="50" cy="50" r="3.5" fill="#FEFBF3"/>
+    </g>
+  </svg>
+
 
   <!-- Header -->
   <header class="header">
@@ -798,25 +822,11 @@
   </div>
   <p style="text-align:center; font-family:'Fraunces', serif; font-style:italic; font-size:0.95rem; color:var(--mid); margin-top:28px; margin-bottom:52px;">The app learns your preferences the more you play.</p>
 
-  <!-- Wheel callout -->
-  <div class="wheel-block">
-    <div>
-      <h2><em>Fate decides.</em></h2>
-      <p class="no-takebacks">No take-backs.</p>
-      <p>The wheel isn't a gimmick, it's a decision tool. When you can't choose or need a fair compromise, spin. Works for couples, families, friends, or anyone who has been debating the same options for twenty minutes.</p>
-    </div>
-    <div class="wheel-graphic">
-      <div class="wheel-q1"></div>
-      <div class="wheel-q2"></div>
-      <div class="wheel-q3"></div>
-      <div class="wheel-q4"></div>
-    </div>
-  </div>
-
   <!-- Pricing -->
   <div class="pricing">
-    <div>
-      <svg width="72" height="72" viewBox="0 0 100 100" style="display:block;flex-shrink:0;" xmlns="http://www.w3.org/2000/svg">
+    
+    <div class="pricing-right">
+      <div class="offer-head"><span class="founding-badge">Softplay Founding Membership</span><svg width="44" height="44" viewBox="0 0 100 100" style="display:block;flex-shrink:0;" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
         <!-- amber blade -->
         <path d="M50,50 L50,16 Q70,16 74,36 Q74,47 50,50 Z" fill="#C9963A"/>
         <!-- teal blade -->
@@ -828,11 +838,8 @@
         <!-- centre pin -->
         <circle cx="50" cy="50" r="7" fill="#1C1917"/>
         <circle cx="50" cy="50" r="3.5" fill="#FEFBF3"/>
-      </svg>
-    </div>
-    <div class="pricing-right">
-      <span class="founding-badge">Founding Membership</span>
-      <p style="margin-top:14px;"><span class="price-num" style="font-size:2.4rem;">$9.99</span> once, for life.</p>
+      </svg></div>
+      <p style="margin-top:4px;"><span class="price-num" style="font-size:2.4rem;">$9.99</span> once, for life.</p>
       <ul class="offer-list">
         <li>Save up to 100 favorite spots to your Playground</li>
         <li>A Playbill that remembers your crew, so there is no starting over</li>

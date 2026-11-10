@@ -273,6 +273,9 @@ export default function AccountPage() {
                 style={{ width: '100%', background: '#F5C842', color: '#1C1917', fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 15, padding: '14px 20px', borderRadius: 26, border: 'none', cursor: sending || !email.trim() ? 'not-allowed' : 'pointer', opacity: sending || !email.trim() ? 0.6 : 1, boxShadow: '0 4px 18px rgba(242,201,76,0.4)' }}>
                 {sending ? 'Sending…' : 'Email me a sign-in link'}
               </button>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: '#5C4E3D', lineHeight: 1.5, margin: '16px 0 0' }}>
+                <strong>Have a code?</strong> Sign in first. A box to enter it appears on this page afterwards.
+              </p>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: '#B0A090', lineHeight: 1.6, margin: '14px 0 0' }}>
                 By signing in, you agree to our{' '}
                 <Link href="/terms" style={{ color: '#3D9E8F', fontWeight: 600 }}>Terms</Link> and{' '}
