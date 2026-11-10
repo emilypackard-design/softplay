@@ -1,4 +1,7 @@
 {
-  "rewrites": [{ "source": "/beta", "destination": "/beta.html" }],
+  "rewrites": [
+    { "source": "/beta", "destination": "/beta.html" },
+    { "source": "/founders", "destination": "/beta.html" }
+  ],
   "crons": [{ "path": "/api/keepalive", "schedule": "0 8 * * *" }]
 }

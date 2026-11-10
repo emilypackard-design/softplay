@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>softplay — because great Saturdays don't plan themselves</title>
+<title>softplay: But what do you want to DO today?</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
@@ -582,7 +582,51 @@
     .pricing { grid-template-columns: 1fr; }
     .footer { flex-direction: column; gap: 10px; }
   }
+  /* ── Founders landing additions ── */
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+  .btn {
+    display: inline-block;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1.02rem;
+    padding: 16px 34px;
+    border-radius: 32px;
+    text-decoration: none;
+    text-align: center;
+  }
+  .btn-primary { background: var(--yellow); color: var(--ink); box-shadow: 0 3px 14px rgba(28,25,23,0.12); }
+  .btn-secondary { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); }
+  .count-pill {
+    display: inline-block;
+    margin-top: 18px;
+    background: var(--yellow-light);
+    border: 1px solid var(--sand);
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--brown);
+  }
+  .hero p strong { font-weight: 700; color: var(--ink); }
+  .demo { margin: 0 0 56px; }
+  .demo video { width: 100%; max-width: 420px; display: block; margin: 0 auto; border-radius: 20px; box-shadow: 0 6px 28px rgba(28,25,23,0.16); background: #000; }
+  .demo p { text-align: center; margin-top: 12px; font-family: 'Fraunces', serif; font-style: italic; font-size: 0.9rem; color: var(--mid); }
+  .offer-list { list-style: none; margin: 0 0 14px; padding: 0; }
+  .offer-list li { font-size: 0.92rem; font-weight: 400; line-height: 1.6; padding: 4px 0 4px 26px; position: relative; opacity: 0.95; }
+  .offer-list li::before { content: '\2713'; position: absolute; left: 0; font-weight: 700; color: var(--yellow); }
+  .pricing-right .fine { font-size: 0.78rem; opacity: 0.8; margin: 12px 0 0; }
+  .pricing-right .fine a { color: #FEFBF3; }
+  .offer-cta { margin-top: 16px; }
+  .footer-links { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  .footer-links a { color: var(--teal); font-weight: 600; text-decoration: none; font-size: 0.85rem; }
 </style>
+<meta name="description" content="But what do you want to DO today? softplay picks four real ideas for your crew and a wheel decides. Founding Membership: $9.99 once, for life. First 200 only.">
+<meta property="og:title" content="softplay: But what do you want to DO today?">
+<meta property="og:description" content="Four real ideas for your crew. One wheel to decide. Founding Membership: $9.99 once, for life. First 200 only.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mysoftplay.app/founders">
+<meta property="og:image" content="https://mysoftplay.app/opengraph-image">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
 </head>
 <body>
@@ -599,12 +643,21 @@
 
   <!-- Hero -->
   <section class="hero">
-    <h1>Stop staring at the weekend.<br><em>Go somewhere.</em></h1>
-    <p><em>softplay</em> is a planning app that takes the friction out of getting out the door. Answer a few questions about your crew and what you want from the day. The app handles the rest. Works for families, couples, and solo players. No ads. No falling down a rabbit hole of endless reviews.</p>
-    <div style="margin-top:22px;">
-      <a href="https://mysoftplay.app" style="display:inline-block;background:var(--yellow);color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:1.05rem;padding:16px 44px;border-radius:32px;text-decoration:none;box-shadow:0 3px 14px rgba(28,25,23,0.12);">Go play &rarr;</a>
-      <p style="margin-top:10px;font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:0.85rem;color:#5A4F48;">Free for beta testers. Works on any phone or laptop.</p>
+    <h1>But what do you want to <em>DO</em> today?</h1>
+    <p><em>softplay</em> takes the friction out of getting out the door. Tell it where you're starting and who's coming, whether that's family or friends, and it generates fun ideas for your crew.</p>
+    <p style="margin-top:14px;">There are two ways to play. <strong>Free Play</strong> is the fast way: flip through idea cards for any location. <strong>Playbook</strong> is the full planner: answer a few questions about your crew and your day, get four options, and let the wheel decide.</p>
+    <p style="margin-top:14px;">Found an idea you love but aren't ready to go? Founding Members can save cards to their <strong>Playground</strong> and play them later.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="/free-play">Try Free Play: no signup</a>
+      <a class="btn btn-primary" href="/upgrade">Become a Founding Member</a>
     </div>
+    <span class="count-pill" id="count-pill">Founding Memberships: first 200 only</span>
+  </section>
+
+  <!-- Demo clip: shown only when /demo.mp4 exists in the public folder -->
+  <section class="demo" id="demo" hidden>
+    <video id="demo-video" src="/demo.mp4" muted loop playsinline autoplay controls preload="metadata"></video>
+    <p>Fifteen seconds: a few questions, a spin, and the day is decided.</p>
   </section>
 
   <!-- Three pathways -->
@@ -778,38 +831,19 @@
       </svg>
     </div>
     <div class="pricing-right">
-      <p><strong>Beta testers:</strong> we’d love your say in how <em>softplay</em> is priced. One-time fee? Monthly subscription? You tell us. Whatever we decide together, you’ll have free lifetime access.</p>
+      <span class="founding-badge">Founding Membership</span>
+      <p style="margin-top:14px;"><span class="price-num" style="font-size:2.4rem;">$9.99</span> once, for life.</p>
+      <ul class="offer-list">
+        <li>Save up to 100 favorite spots to your Playground</li>
+        <li>A Playbill that remembers your crew, so there is no starting over</li>
+        <li>Full day plans with a food stop, and add-ons for before and after</li>
+      </ul>
+      <p>Free for everyone: Free Play, and Playbook up to the wheel's pick.</p>
+      <a class="btn btn-primary offer-cta" id="offer-cta" href="/upgrade">Become a Founding Member</a>
+      <p class="fine"><span id="offer-count">First 200 members only.</span> 14-day refund. US only for now. &ldquo;Lifetime&rdquo; means the lifetime of the softplay service. See the <a href="/terms">Terms</a>.</p>
     </div>
   </div>
 
-
-  <!-- Roadmap -->
-  <section class="roadmap">
-    <div class="section-label">Where we're going</div>
-    <div class="roadmap-items">
-      <div class="roadmap-item">
-        <span class="phase">Now</span>
-        <div>
-          <h3>Core planning app</h3>
-          <p><em>softplay</em> is more than a search or a chatbot. It's a planning companion that offers suggestions through an interface that makes the experience feel less like research and more like play. It's familiar enough to feel like you, surprising enough to get you out of a rut.</p>
-        </div>
-      </div>
-      <div class="roadmap-item">
-        <span class="phase">Coming</span>
-        <div>
-          <h3>Calendar + community</h3>
-          <p>Date-sensitive events, local happenings, and early community features. Plus playlist sync to get you in the mood, and calendar sync to get you organized.</p>
-        </div>
-      </div>
-      <div class="roadmap-item">
-        <span class="phase">The dream</span>
-        <div>
-          <h3>Helping you find your place</h3>
-          <p><em>softplay</em> started as a tool to beat decision fatigue, but the dream is bigger: a travel companion who surprises you with suggestions and gets smarter with every play. When you land somewhere new, you see the spots locals actually love, plus flagged issues like closures before they cost you a Saturday. Real one-time events, shows, and meetups recommended by other families, not by an algorithm. Your Playbill will still remember your crew. The dream is a community that knows everywhere.</p>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- Privacy -->
   <div class="privacy-block">
@@ -822,9 +856,41 @@
   <footer class="footer">
     <span class="logo-sm"><em>softplay</em></span>
     <span>Built for days out. No sponsored results. No funny business.</span>
-    <a href="https://mysoftplay.app" style="color:var(--teal);font-weight:600;text-decoration:none;">Go play &rarr;</a>
+    <span class="footer-links">
+      <a href="/free-play">Try Free Play</a>
+      <a href="/terms">Terms</a>
+      <a href="/privacy">Privacy</a>
+      <a href="mailto:hello@mysoftplay.app">hello@mysoftplay.app</a>
+    </span>
   </footer>
 
 </div>
+<script>
+  // Demo clip: reveal the section only if /demo.mp4 exists and loads.
+  (function () {
+    var v = document.getElementById('demo-video');
+    var s = document.getElementById('demo');
+    if (v && s) v.addEventListener('loadeddata', function () { s.hidden = false; });
+  })();
+
+  // Live Founding Membership count from the app's own database.
+  fetch('/api/founder-slots')
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (typeof d.remaining !== 'number') return;
+      var pill = document.getElementById('count-pill');
+      var note = document.getElementById('offer-count');
+      var cta = document.getElementById('offer-cta');
+      if (d.remaining === 0) {
+        if (pill) pill.textContent = 'All 200 Founding Memberships are taken';
+        if (note) note.textContent = 'All 200 Founding Memberships are taken.';
+        if (cta) cta.style.display = 'none';
+      } else {
+        if (pill) pill.textContent = 'Founding Memberships: ' + d.remaining + ' of ' + d.cap + ' left';
+        if (note) note.textContent = d.remaining + ' of ' + d.cap + ' left.';
+      }
+    })
+    .catch(function () {});
+</script>
 </body>
 </html>

@@ -72,6 +72,8 @@ Make the Playground a living space, not just a save list — more links, more in
 - **docs/PROGRESS.md** — Session-by-session changelog; what was built, bugs found, blockers
 - **docs/V1.5-MEMORY.md** — Working notes for the V1.5 effort
 - **docs/V1.5-V2-BRIEF.md** — Strategic brief: V1.5 status, V2 themes, monetization sequencing (Stripe/at-home planning)
+- **docs/MARKETING-NOTES.md** — Launch marketing: channel plan, ad rules and drafts, research links, open decisions, rulebook idea
+- **docs/SYSTEMS-OVERVIEW.md** — Plain-English map of every service (GitHub, Vercel, Supabase, Stripe, Anthropic, Cloudflare, Resend): what each does, costs, where keys live, what to check when something breaks
 
 ## How to Deploy
 1. Make code changes locally
