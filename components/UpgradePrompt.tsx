@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { getSupabase } from '@/lib/supabase'
+import { rememberBuyIntent, startCheckout } from '@/lib/checkout'
 
 const S = {
   page: { minHeight: '100vh', background: '#FEFBF3', display: 'flex', flexDirection: 'column' as const, alignItems: 'center', justifyContent: 'center', padding: '48px 20px', textAlign: 'center' as const },
@@ -33,30 +33,23 @@ interface Props {
 export default function UpgradePrompt({ variant = 'modal', onClose }: Props) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [needsSignIn, setNeedsSignIn] = useState(false)
 
   const upgrade = async () => {
     setLoading(true)
     setError(null)
-    const supabase = getSupabase()
-    const { data } = supabase ? await supabase.auth.getSession() : { data: { session: null } }
-    if (!data.session) {
-      setNeedsSignIn(true)
-      setLoading(false)
+    const result = await startCheckout()
+    if ('url' in result) {
+      window.location.href = result.url
       return
     }
-    try {
-      const res = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${data.session.access_token}` },
-      })
-      const json = await res.json()
-      if (!res.ok) throw new Error(json.error || 'Something went wrong')
-      window.location.href = json.url
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'Something went wrong')
-      setLoading(false)
+    if ('needsSignIn' in result) {
+      // Straight to sign-in; after signing in they go on to checkout automatically.
+      rememberBuyIntent()
+      window.location.href = '/account'
+      return
     }
+    setError(result.error)
+    setLoading(false)
   }
 
   const content = (
@@ -69,34 +62,18 @@ export default function UpgradePrompt({ variant = 'modal', onClose }: Props) {
           <li key={v.text} style={S.li}><span>{v.emoji}</span><span>{v.text}</span></li>
         ))}
       </ul>
-      {needsSignIn ? (
-        <>
-          <p style={S.lede}>Sign in first so we know where to attach your Founding Membership.</p>
-          <Link
-            href="/account"
-            onClick={() => {
-              try { localStorage.setItem('sp_next', JSON.stringify({ to: '/upgrade', t: Date.now() })) } catch { /* ignore */ }
-            }}
-            style={{ ...S.cta, textDecoration: 'none', boxSizing: 'border-box' as const }}>Sign in →</Link>
-        </>
-      ) : (
-        <button onClick={() => void upgrade()} disabled={loading} style={{ ...S.cta, opacity: loading ? 0.6 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}>
-          {loading ? 'Loading…' : 'Become a Founding Member — $9.99 once'}
-        </button>
-      )}
-      {!needsSignIn && (
-        <p style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: '#B0A090', lineHeight: 1.5, margin: '10px 0 0' }}>
-          US customers only for now. One-time payment, 14-day refund. By purchasing you agree to our{' '}
-          <Link href="/terms" style={{ color: '#3D9E8F', fontWeight: 600 }}>Terms</Link>.
-        </p>
-      )}
+      <button onClick={() => void upgrade()} disabled={loading} style={{ ...S.cta, opacity: loading ? 0.6 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}>
+        {loading ? 'Loading…' : 'Become a Founding Member — $9.99 once'}
+      </button>
+      <p style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: '#B0A090', lineHeight: 1.5, margin: '10px 0 0' }}>
+        US customers only for now. One-time payment, 14-day refund. By purchasing you agree to our{' '}
+        <Link href="/terms" style={{ color: '#3D9E8F', fontWeight: 600 }}>Terms</Link>.
+      </p>
       {error && <p style={S.error}>{error}</p>}
-      {!needsSignIn && (
-        <p style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: '#8C7B6B', margin: '12px 0 0' }}>
-          Have a code?{' '}
-          <Link href="/account" style={{ color: '#3D9E8F', fontWeight: 700 }}>Enter it on your Account page →</Link>
-        </p>
-      )}
+      <p style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: '#8C7B6B', margin: '12px 0 0' }}>
+        Have a code?{' '}
+        <Link href="/account" style={{ color: '#3D9E8F', fontWeight: 700 }}>Enter it on your Account page →</Link>
+      </p>
       {onClose && <button onClick={onClose} style={S.secondary}>Not now</button>}
     </>
   )

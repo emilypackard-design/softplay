@@ -23,6 +23,18 @@ export default function AccountPage() {
   const [redeemError, setRedeemError] = useState<string | null>(null)
   const [redeemed, setRedeemed] = useState(false)
   const router = useRouter()
+  const [pendingBuy, setPendingBuy] = useState(false)
+
+  // Remember (without consuming) that this person is on their way to checkout,
+  // so the sign-in screen can say so.
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('sp_next')
+      if (!raw) return
+      const note = JSON.parse(raw) as { to?: string; t?: number; buy?: boolean }
+      if (note.buy && typeof note.t === 'number' && Date.now() - note.t < 60 * 60 * 1000) setPendingBuy(true)
+    } catch { /* ignore */ }
+  }, [])
 
   // Someone who clicked "Sign in" from the upgrade prompt goes straight back to
   // /upgrade to finish buying (the note is set in UpgradePrompt; only /upgrade is
@@ -33,9 +45,9 @@ export default function AccountPage() {
       const raw = localStorage.getItem('sp_next')
       if (!raw) return
       localStorage.removeItem('sp_next')
-      const note = JSON.parse(raw) as { to?: string; t?: number }
+      const note = JSON.parse(raw) as { to?: string; t?: number; buy?: boolean }
       const fresh = typeof note.t === 'number' && Date.now() - note.t < 60 * 60 * 1000
-      if (note.to === '/upgrade' && fresh && !hasPaidAccess) router.replace('/upgrade')
+      if (note.to === '/upgrade' && fresh && !hasPaidAccess) router.replace(note.buy ? '/upgrade?buy=1' : '/upgrade')
     } catch { /* ignore */ }
   }, [entitlementLoading, userEmail, hasPaidAccess, router])
 
@@ -245,6 +257,7 @@ export default function AccountPage() {
               <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 22, fontWeight: 800, color: '#1C1917', margin: '0 0 10px' }}>Check your email</h1>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: '#5C4E3D', lineHeight: 1.6, margin: '0 0 24px' }}>
                 We sent a sign-in link to <strong>{email}</strong>. Tap it on this device and you&apos;re in — no password needed.
+                {pendingBuy && <> Then you&apos;ll go straight to checkout.</>}
               </p>
               <button onClick={() => { setCodeSent(false); setError(null) }}
                 style={{ background: 'none', border: 'none', fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 600, color: '#3D9E8F', cursor: 'pointer', textDecoration: 'underline' }}>
@@ -254,9 +267,13 @@ export default function AccountPage() {
           ) : (
             <>
               <div style={{ fontSize: 40, marginBottom: 12 }}>🔑</div>
-              <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 22, fontWeight: 800, color: '#1C1917', margin: '0 0 10px' }}>Sign in to softplay</h1>
+              <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 22, fontWeight: 800, color: '#1C1917', margin: '0 0 10px' }}>
+                {pendingBuy ? 'Almost there' : 'Sign in to softplay'}
+              </h1>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: '#5C4E3D', lineHeight: 1.6, margin: '0 0 24px' }}>
-                Your Playbill and Playground saves will be remembered and follow you across devices. No password needed — we&apos;ll email you a sign-in link.
+                {pendingBuy
+                  ? <>Sign in with your email and checkout comes next. No password needed — we&apos;ll email you a link, and it takes you straight to payment.</>
+                  : <>Your Playbill and Playground saves will be remembered and follow you across devices. No password needed — we&apos;ll email you a sign-in link.</>}
               </p>
               <input
                 type="email"
